@@ -39,10 +39,10 @@ class Login extends Component{
                 cookies.set('segundo_apellido', respuesta.segundo_apellido, {path: "/"});
                 cookies.set('nombre', respuesta.nombre, {path: "/"});
                 cookies.set('username', respuesta.username, {path: "/"});
-                //alert('Bienvenido');
-                //window.location.href="./menu";
+                alert('Bienvenido');
+                window.location.href="./menu";
             }else{
-                //alert('El usuario o la contraseña no son correctos');
+                alert('El usuario o la contraseña no son correctos');
             }
             
 
@@ -53,11 +53,11 @@ class Login extends Component{
 
     }
 
-    /* componentDidMount(){
+    componentDidMount(){
         if(cookies.get('username')){
             window.location.href="./menu";
         }
-    } */
+    }
 
 
     render() {
