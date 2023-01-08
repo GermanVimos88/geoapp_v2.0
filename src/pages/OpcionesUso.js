@@ -50,7 +50,11 @@ const OpcionesUso = () => {
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, cambiarFormularioValido] = useState(null);
 
-    
+    const expresiones = {
+		usuario: /^[a-zA-Z0-9_-]{1,400}$/, // Letras, numeros, guion y guion_bajo
+		nombre: /^[a-zA-ZÀ-ÿ\s]{1,400}$/, // Letras y espacios, pueden llevar acentos.
+				
+	}
 
 const peticionGet=async()=>{
     const response = await axios.get(baseUrl) 

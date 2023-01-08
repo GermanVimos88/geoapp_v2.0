@@ -109,7 +109,12 @@ const Construccion = () => {
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, cambiarFormularioValido] = useState(null);
 
-    
+    const expresiones = {
+		usuario: /^[a-zA-Z0-9_-]{1,40}$/, // Letras, numeros, guion y guion_bajo
+		nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
+        edad: /^\d{1,5}$/, // 1 a 5 numeros.
+        dimension: /^\d*(\.\d{1})?\d{0,2}$/ // 1 a 10 numeros.
+	}
 
 
 const onChangeTerminos = (e) => {
