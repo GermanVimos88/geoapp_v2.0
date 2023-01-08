@@ -1,0 +1,32 @@
+
+{
+    "usuarios":[
+        {
+            "id": 1,
+            "primer_apellido": "García",
+            "segundo_apellido": "López",
+            "nombre": "Pablo",
+            "username": "pgarcia",
+            "password": "827ccb0eea8a706c4c34a16891f84e7b"
+        },
+        {
+            "id": 2,
+            "primer_apellido": "Derbez",
+            "segundo_apellido": "Villalpando",
+            "nombre": "Lautaro",
+            "username": "lderbez",
+            "password": "dfdc20cbab482c8d159f42d3250d1f7c"
+
+
+
+        }
+    ]
+
+}
+
+
+
+
+
+
+
