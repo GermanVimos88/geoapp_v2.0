@@ -109,7 +109,12 @@ const Construccion = () => {
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, cambiarFormularioValido] = useState(null);
 
-    
+    const expresiones = {
+		usuario: /^[a-zA-Z0-9_-]{1,40}$/, // Letras, numeros, guion y guion_bajo
+		nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
+        edad: /^\d{1,5}$/, // 1 a 5 numeros.
+        dimension: /^\d*(\.\d{1})?\d{0,2}$/ // 1 a 10 numeros.
+	}
 
 
 const onChangeTerminos = (e) => {
@@ -134,9 +139,49 @@ const peticionGet=async()=>{
     const response = await axios.get(baseUrl); 
     setData(response.data);
     cambiarClavePredio({campo: response.data[0].clave_predio});
+    
+}
 
+const postConstruccion=async()=>{       
+        
     
+    await axios.post(baseUrl,construccionSeleccionada)
+    .then(response=>{
+        setData(data.concat(response.data));
+        abrirCerrarModalInsertar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const putConstruccion=async()=>{
+          
     
+    await axios.put('http://apicatastro/construccion/actualizar?id='+construccionSeleccionada.id, construccionSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
+    .then(response=>{
+        var dataNueva=data;
+        dataNueva.map(predio=>{
+        
+
+        })
+        setData(dataNueva); 
+
+        abrirCerrarModalEditar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const deleteConstruccion=async()=>{
+    await axios.delete('http://apicatastro/construccion/eliminar?id='+construccionSeleccionada.id)
+    .then(response=>{
+        setData(data.filter(predio=>predio.idpredio!==construccionSeleccionada.id))
+        abrirCerrarModalEliminar();
+        peticionGet();
+    })
+
 }
 
 

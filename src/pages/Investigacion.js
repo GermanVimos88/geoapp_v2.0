@@ -82,7 +82,12 @@ const InvestigacionPredial = () => {
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, cambiarFormularioValido] = useState(null);
 
-    
+    const expresiones = {
+		usuario: /^[a-zA-Z0-9_-]{1,40}$/, // Letras, numeros, guion y guion_bajo
+		nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
+        coordenada: /^\d*(\.\d{1})?\d{0,5}$/, // 1 a 5 numeros. con 6 digitos de precisión
+        dimension: /^\d*(\.\d{1})?\d{0,2}$/ // 1 a 10 numeros. 
+	}    
 
 const onChangeTerminos = (e) => {
     cambiarTerminos(e.target.checked); 
@@ -116,6 +121,44 @@ const peticionGet=async()=>{
 }
 
 
+const postInvestigacion=async()=>{
+       
+    await axios.post(baseUrl,investigacionSeleccionada)
+    .then(response=>{
+        setData(data.concat(response.data));
+        abrirCerrarModalInsertar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const putInvestigacion=async()=>{
+    
+    await axios.put('http://apicatastro/investigacion/actualizar?id='+investigacionSeleccionada.id, investigacionSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
+    .then(response=>{
+        var dataNueva=data;
+        dataNueva.map(predio=>{
+        
+        })
+        setData(dataNueva); 
+
+        abrirCerrarModalEditar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const deleteInvestigacion=async()=>{
+    await axios.delete('http://apicatastro/investigacion/eliminar?id='+investigacionSeleccionada.id)
+    .then(response=>{
+        setData(data.filter(predio=>predio.idpredio!==investigacionSeleccionada.id))
+        abrirCerrarModalEliminar();
+        peticionGet();
+    })
+
+}
 
 
 
