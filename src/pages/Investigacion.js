@@ -116,6 +116,44 @@ const peticionGet=async()=>{
 }
 
 
+const postInvestigacion=async()=>{
+       
+    await axios.post(baseUrl,investigacionSeleccionada)
+    .then(response=>{
+        setData(data.concat(response.data));
+        abrirCerrarModalInsertar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const putInvestigacion=async()=>{
+    
+    await axios.put('http://apicatastro/investigacion/actualizar?id='+investigacionSeleccionada.id, investigacionSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
+    .then(response=>{
+        var dataNueva=data;
+        dataNueva.map(predio=>{
+        
+        })
+        setData(dataNueva); 
+
+        abrirCerrarModalEditar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const deleteInvestigacion=async()=>{
+    await axios.delete('http://apicatastro/investigacion/eliminar?id='+investigacionSeleccionada.id)
+    .then(response=>{
+        setData(data.filter(predio=>predio.idpredio!==investigacionSeleccionada.id))
+        abrirCerrarModalEliminar();
+        peticionGet();
+    })
+
+}
 
 
 

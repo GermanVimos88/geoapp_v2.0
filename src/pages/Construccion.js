@@ -134,9 +134,49 @@ const peticionGet=async()=>{
     const response = await axios.get(baseUrl); 
     setData(response.data);
     cambiarClavePredio({campo: response.data[0].clave_predio});
+    
+}
 
+const postConstruccion=async()=>{       
+        
     
+    await axios.post(baseUrl,construccionSeleccionada)
+    .then(response=>{
+        setData(data.concat(response.data));
+        abrirCerrarModalInsertar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const putConstruccion=async()=>{
+          
     
+    await axios.put('http://apicatastro/construccion/actualizar?id='+construccionSeleccionada.id, construccionSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
+    .then(response=>{
+        var dataNueva=data;
+        dataNueva.map(predio=>{
+        
+
+        })
+        setData(dataNueva); 
+
+        abrirCerrarModalEditar();
+        peticionGet();
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+const deleteConstruccion=async()=>{
+    await axios.delete('http://apicatastro/construccion/eliminar?id='+construccionSeleccionada.id)
+    .then(response=>{
+        setData(data.filter(predio=>predio.idpredio!==construccionSeleccionada.id))
+        abrirCerrarModalEliminar();
+        peticionGet();
+    })
+
 }
 
 
