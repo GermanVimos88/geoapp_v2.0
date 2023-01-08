@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "leaflet-draw-toolbar": "^0.3.0-alpha.1",
+    "leaflet-filelayer": "^1.2.0",
+    "leaflet-search": "^2.9.9",
+    "leaflet-toolbar": "^0.3.0"
+  }
+}

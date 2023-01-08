@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoApp</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+
+    
+
+    <link rel="stylesheet" href="./lib/leaflet.fullscreen.css" /> 
+    <link rel="stylesheet" href="./lib/leaflet-measure.css" />
+    <link rel="stylesheet" href="./node_modules/leaflet-toolbar/dist/leaflet.toolbar.css"/>
+    <link rel="stylesheet" href="./node_modules/leaflet-draw-toolbar/dist/leaflet.draw-toolbar.css"/>
+    <link rel="stylesheet" href="./node_modules/leaflet-search/src/leaflet-search.css"/>
+
+
+    
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        #export {
+            position: absolute;
+            top: 250px;
+            left: 10px;
+            z-index: 1200;
+            background:white;
+            color: black;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: 'Helvetica Neue';
+            font-size: 12px;
+            text-decoration: none;
+            border-style: solid;
+            border-color:rgb(181, 181, 181);  
+            border-width: 1.8px;                           
+        }
+        
+        .coordinate {
+            position: absolute;
+            bottom: 10px;
+            right: 50%;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background-color: #000000;
+            color: #fff;
+            border: 1px solid orange;
+            border-radius: 10px;
+        }
+        .leaflet-toolbar-icon .fa { color: #000;width:"30px";height:"30px"; }
+		.leaflet-color-swatch { background-color: #fff; }
+        .icon {
+            max-width: 70%;
+            max-height: 70%;
+            margin: 4px;
+        }
+           
+    </style>
+
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" 
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" 
+        crossorigin="anonymous"></script>
+
+    
+    <!-- <script type="text/javascript"  src="https://unpkg.com/leaflet.vectorgrid@1.2.0"></script> -->
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>      
+    
+
+    <script src="./lib/Leaflet.fullscreen.min.js" ></script>
+    <script src="./lib/leaflet.browser.print.min.js" ></script>
+    <script src="./lib/leaflet-measure.js" ></script>    
+    
+    <script src="./node_modules/leaflet-draw/dist/leaflet.draw-src.js" ></script>
+  
+    <script src="./node_modules/leaflet-toolbar/dist/leaflet.toolbar-src.js" ></script>
+    <script src="./node_modules/leaflet-toolbar/dist/leaflet.toolbar.js"></script>
+    <script src="./node_modules/leaflet-draw-toolbar/dist/leaflet.draw-toolbar.js"></script>   
+    
+    <script src="./node_modules/leaflet-search/src/leaflet-search.js"></script>
+    <script src="./node_modules/togeojson/togeojson.js"></script>
+    <script src="./node_modules/leaflet-filelayer/src/leaflet.filelayer.js"></script>
+    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>    
+    
+  
+</head>
+
+<body>
+    <!-- <div id="mapid" style="width: 80%; height: 500px" ></div> -->
+    <div id="map">
+        
+        <div class="leaflet-control coordinate"></div>
+        <a href='#' id='export' title="Guardar en archivo GeoJson" >💾</a>
+        <!-- <button class="print-map">Imprimir Mapa</button>   -->
+    </div>
+    
+    
+    
+</body>
+</html>
+
+<script type="module" src="script.js"></script>
+<script type="module" src="data/line.js"></script>
+<script type="module" src="data/point.js"></script>
+<script type="module" src="data/polygon.js"></script>
+<script type="module" src="data/red_vial_urbana.js"></script>
+<script type="module" src="data/predios.js"></script>
+<script type="module" src="data/manzanas.js"></script>
+<script type="module" src="data/manzanas_b.js"></script>
+<script type="module" src="data/limite_parroquial.js"></script>
+<script type="module" src="data/edificaciones.js"></script>
+<script type="module" src="data/curvas_nivel.js"></script>
+<script type="module" src="data/coordenadas_predios.js"></script>
+<script>
+    
+
+    // Botón Full screen Map View (Vista completa)
+    var mapId = document.getElementById('map');
+    function fullScreenView() {
+        mapId.requestFullscreen();
+        }
+    
+    //Imprimir mapa con libreria browser-print
+    $('.print-map').click(function () {
+        window.print();
+    });
+
+    //L.control.browserPrint().addTo(map);
+
+
+</script>
