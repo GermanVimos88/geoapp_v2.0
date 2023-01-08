@@ -442,7 +442,33 @@ L.control.search({
 
 //////////////////////////////////////////////////////////
 
+//*********************** Cargar archivos geojson   *********************/
 
+L.Control.FileLayerLoad.LABEL = '<img class="icon" src="./img/folder.svg" alt="file icon"/>';
+
+L.Control.fileLayerLoad({
+    // Allows you to use a customized version of L.geoJson.
+    // For example if you are using the Proj4Leaflet leaflet plugin,
+    // you can pass L.Proj.geoJson and load the files into the
+    // L.Proj.GeoJson instead of the L.geoJson.
+    layer: L.geoJson,
+
+    fitBounds: true,
+    // See http://leafletjs.com/reference.html#geojson-options
+    layerOptions: {style: {color:'red'}},
+    // Add to map after loading (default: true) ?
+    addToMap: true,
+    // File size limit in kb (default: 1024) ?
+    fileSizeLimit: 1024,
+    // Restrict accepted file formats (default: .geojson, .json, .kml, and .gpx) ?
+    formats: [
+        '.geojson',
+        '.json',
+        '.kml'
+    ]
+    
+    
+}).addTo(map);
 
 ////////////////////////////////////////////////////
 //***********************  TOOLBAR  */
@@ -1074,10 +1100,6 @@ var drawnItems = new L.FeatureGroup();
 
     
 
-
-
-    
-
 ////////////////////////////////////////////////////////////
 
 //******************   Controlador de Layers    *****************
@@ -1091,13 +1113,7 @@ var baseMap = {
     "Carto": carto    
 };
 
-var overlayMaps = {
-    //"Marker 1": marker,
-    //"Marker 2": secondmarker,
-    //"Puntos": pointData,
-    //"Lineas": lineData,
-    //"Polígonos": polygonData,
-    //"WMS Ejemplo": wms,
+var overlayMaps = {    
     "Ríos": riosData,
     "río Papallacta": rioPapallactaData,
     "volcán Antisana": antisanaData,
@@ -1120,11 +1136,36 @@ var overlayMaps = {
     "Figuras": drawnItems
 };
 
-//map.removeLayer(osm)
-//map.removeLayer(marker)
 
 L.control.layers(baseMap, overlayMaps, {position: 'bottomright', collapsed: true }).addTo(map);
 
+
+//********************   Exportar a archivo GeoJson      */
+
+document.getElementById('export').onclick = function(e) {
+    // Extract GeoJson from featureGroup
+    var data = drawnItems.toGeoJSON();
+
+    // Stringify the GeoJson
+    var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+
+    // Create export
+    document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+    document.getElementById('export').setAttribute('download','data.geojson');
+}
+
+
+
+// ********** EVENTOS LEAFLET   ***************
+
+map.on('mouseover', function() {
+//console.log("Mouse sobre el mapa")
+})
+
+map.on('mousemove', function(e) {
+document.getElementsByClassName('coordinate')[0].innerHTML = 'lat: ' + e.latlng.lat + ' lng: ' + e.latlng.lng;
+//console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng)
+})
 
 
 
