@@ -3,7 +3,7 @@
         private $dbHost = 'localhost';
         private $dbUser = 'root';
         private $dbPass = 'root';
-        private $dbName = 'mydb1';
+        private $dbName = 'f0783168_mydb1';
 
         //Conexión a la BD
 

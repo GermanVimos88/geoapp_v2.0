@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/infraestructura.php");
+include_once ("./src/infraestructura.php");
 
 class controladorInfraestructura{
 

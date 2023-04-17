@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class Infraestructura {
 

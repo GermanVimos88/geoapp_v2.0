@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class Propietario {
     
@@ -169,7 +169,7 @@ class Propietario {
 
             // GET Recuperar propietario por ID
 
-            public static function verPropietario($id){
+            public static function verPropietario($id){                
                 $id_propietario = $id;
                 $sql = "SELECT * FROM propietario WHERE pro_idpropietario = $id_propietario";
                 try {

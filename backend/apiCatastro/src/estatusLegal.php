@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class EstatusLegal{
 
@@ -227,7 +227,7 @@ class EstatusLegal{
             //$estatus = json_decode($request->getBody());
         
             $sql = "INSERT INTO estatus_legal (elg_idestatus_legal,elg_clave_predio,elg_titulo,elg_escritura,elg_celebrado_ante,elg_nombre_numero_notaria,elg_provincia_titulacion,elg_canton_inscripcion,elg_dia_protocolizacion,elg_mes_protocolizacion,elg_anio_protocolizacion,elg_registro_propiedad,elg_tomo,elg_partida,elg_dia_inscripcion_registro_propiedad,elg_mes_inscripcion_registro_propiedad,elg_anio_inscripcion_registro_propiedad,elg_area_segun_titulo,elg_unidad_medida,elg_forma_tenencia,elg_forma_adquisicion,elg_requiere_perfeccionamiento,elg_anios_sin_perfeccionamiento,elg_anios_posesion,elg_pueblo_etnia,elg_adquisicion_sin_titulo,elg_documento_presentado,elg_primer_apellido_posesionario,elg_segundo_apellido_posesionario,elg_primer_nombre_posesionario,elg_segundo_nombre_posesionario,elg_tipo_documento_posesionario,elg_identificacion_posesionario,elg_email_posesionario,elg_telefono_posesionario) VALUES
-                    (:idestatus,:clave_predio,:titulo,:escritura,:celebrado_ante,:nombre_notaria,:provincia_titulacion,:canton_inscripcion,:dia_protocolo,:mes_protocolo,:anio_protocolo,:registro_propiedad,:tomo,:partida,:dia_inscripcion,:mes_inscripcion,:anio_inscripcion,:area_titulo,:unidad,:tenencia,:adquisicion,:perfeccionamiento,:sin_perfeccionamiento,:anios_posesion,:pueblo_etnia,:sin_titulo,documento,:posesionario_apellidouno,:posesionario_apellidodos,:posesionario_nombreuno,:posesionario_nombredos,:posesionario_documento,:posesionario_id,:posesionario_email,:posesionario_telefono)";
+                    (:idestatus,:clave_predio,:titulo,:escritura,:celebrado_ante,:nombre_notaria,:provincia_titulacion,:canton_inscripcion,:dia_protocolo,:mes_protocolo,:anio_protocolo,:registro_propiedad,:tomo,:partida,:dia_inscripcion,:mes_inscripcion,:anio_inscripcion,:area_titulo,:unidad,:tenencia,:adquisicion,:perfeccionamiento,:sin_perfeccionamiento,:anios_posesion,:pueblo_etnia,:sin_titulo,:documento,:posesionario_apellidouno,:posesionario_apellidodos,:posesionario_nombreuno,:posesionario_nombredos,:posesionario_documento,:posesionario_id,:posesionario_email,:posesionario_telefono)";
             try {
                 $db = new db();
                 $db = $db->conexionDB();
@@ -242,40 +242,40 @@ class EstatusLegal{
                 $resultado = $db->prepare($sql);        
         
                 $resultado->bindParam(':idestatus', intval($ultimo));
-                $resultado->bindParam(':clave_predio',$this->clave_predio);   
-                $resultado->bindParam(':eje_principal',$this->titulo);
-                $resultado->bindParam(':titulo',$this->escritura);   
-                $resultado->bindParam(':escritura',$this->celebrado_ante);   
-                $resultado->bindParam(':celebrado_ante',$this->nombre_notaria);   
-                $resultado->bindParam(':nombre_notaria',$this->provincia_titulacion);   
-                $resultado->bindParam(':provincia_titulacion',$this->canton_inscripcion);   
-                $resultado->bindParam(':canton_inscripcion',$this->dia_protocolo);   
-                $resultado->bindParam(':dia_protocolo',$this->mes_protocolo);   
-                $resultado->bindParam(':mes_protocolo',$this->anio_protocolo);  
-                $resultado->bindParam(':anio_protocolo',$this->registro_propiedad);
-                $resultado->bindParam(':registro_propiedad',$this->tomo);
-                $resultado->bindParam(':tomo',$this->partida);
-                $resultado->bindParam(':partida',$this->dia_inscripcion);
-                $resultado->bindParam(':dia_inscripcion',$this->mes_inscripcion);
-                $resultado->bindParam(':mes_inscripcion',$this->anio_inscripcion);
-                $resultado->bindParam(':anio_inscripcion',$this->area_titulo);   
-                $resultado->bindParam(':area_titulo',$this->unidad);   
-                $resultado->bindParam(':unidad',$this->tenencia);   
-                $resultado->bindParam(':tenencia',$this->adquisicion);   
-                $resultado->bindParam(':adquisicion',$this->perfeccionamiento);   
-                $resultado->bindParam(':perfeccionamiento',$this->sin_perfeccionamiento);   
-                $resultado->bindParam(':sin_perfeccionamiento',$this->anios_posesion);   
-                $resultado->bindParam(':anios_posesion',$this->pueblo_etnia);       
-                $resultado->bindParam(':pueblo_etnia',$this->sin_titulo);       
-                $resultado->bindParam(':sin_titulo',$this->documento);   
-                $resultado->bindParam(':documento',$this->posesionario_apellidouno);       
-                $resultado->bindParam(':posesionario_apellidouno',$this->posesionario_apellidodos);       
-                $resultado->bindParam(':posesionario_apellidodos',$this->posesionario_nombreuno);       
-                $resultado->bindParam(':posesionario_nombreuno',$this->posesionario_nombredos);       
-                $resultado->bindParam(':posesionario_nombredos',$this->posesionario_documento);       
+                $resultado->bindParam(':clave_predio',$this->clave_predio); 
+                $resultado->bindParam(':titulo',$this->titulo);
+                $resultado->bindParam(':escritura',$this->escritura);   
+                $resultado->bindParam(':celebrado_ante',$this->celebrado_ante);   
+                $resultado->bindParam(':nombre_notaria',$this->nombre_notaria);   
+                $resultado->bindParam(':provincia_titulacion',$this->provincia_titulacion);   
+                $resultado->bindParam(':canton_inscripcion',$this->canton_inscripcion);   
+                $resultado->bindParam(':dia_protocolo',$this->dia_protocolo);   
+                $resultado->bindParam(':mes_protocolo',$this->mes_protocolo);   
+                $resultado->bindParam(':anio_protocolo',$this->anio_protocolo);  
+                $resultado->bindParam(':registro_propiedad',$this->registro_propiedad);
+                $resultado->bindParam(':tomo',$this->tomo);
+                $resultado->bindParam(':partida',$this->partida);
+                $resultado->bindParam(':dia_inscripcion',$this->dia_inscripcion);
+                $resultado->bindParam(':mes_inscripcion',$this->mes_inscripcion);
+                $resultado->bindParam(':anio_inscripcion',$this->anio_inscripcion);
+                $resultado->bindParam(':area_titulo',$this->area_titulo);   
+                $resultado->bindParam(':unidad',$this->unidad);   
+                $resultado->bindParam(':tenencia',$this->tenencia);   
+                $resultado->bindParam(':adquisicion',$this->adquisicion);   
+                $resultado->bindParam(':perfeccionamiento',$this->perfeccionamiento);   
+                $resultado->bindParam(':sin_perfeccionamiento',$this->sin_perfeccionamiento);   
+                $resultado->bindParam(':anios_posesion',$this->anios_posesion);   
+                $resultado->bindParam(':pueblo_etnia',$this->pueblo_etnia);       
+                $resultado->bindParam(':sin_titulo',$this->sin_titulo);       
+                $resultado->bindParam(':documento',$this->documento);   
+                $resultado->bindParam(':posesionario_apellidouno',$this->posesionario_apellidouno);       
+                $resultado->bindParam(':posesionario_apellidodos',$this->posesionario_apellidodos);       
+                $resultado->bindParam(':posesionario_nombreuno',$this->posesionario_nombreuno);       
+                $resultado->bindParam(':posesionario_nombredos',$this->posesionario_nombredos);       
+                $resultado->bindParam(':posesionario_documento',$this->posesionario_documento);       
                 $resultado->bindParam(':posesionario_id',$this->posesionario_id);       
                 $resultado->bindParam(':posesionario_email',$this->posesionario_email);       
-                $resultado->bindParam(':posesionario_telefono',$this->posesionario_telefono);               
+                $resultado->bindParam(':posesionario_telefono',$this->posesionario_telefono);  
             
                 $resultado->execute();
                 echo json_encode("Nueva estatus legal guardado exitosamente", JSON_UNESCAPED_UNICODE);
@@ -340,37 +340,37 @@ class EstatusLegal{
         
 
                 $resultado->bindParam(':idestatus', $id_estatus);                
-                $resultado->bindParam(':clave_predio',$this->clave_predio);   
-                $resultado->bindParam(':eje_principal',$this->titulo);
-                $resultado->bindParam(':titulo',$this->escritura);   
-                $resultado->bindParam(':escritura',$this->celebrado_ante);   
-                $resultado->bindParam(':celebrado_ante',$this->nombre_notaria);   
-                $resultado->bindParam(':nombre_notaria',$this->provincia_titulacion);   
-                $resultado->bindParam(':provincia_titulacion',$this->canton_inscripcion);   
-                $resultado->bindParam(':canton_inscripcion',$this->dia_protocolo);   
-                $resultado->bindParam(':dia_protocolo',$this->mes_protocolo);   
-                $resultado->bindParam(':mes_protocolo',$this->anio_protocolo);  
-                $resultado->bindParam(':anio_protocolo',$this->registro_propiedad);
-                $resultado->bindParam(':registro_propiedad',$this->tomo);
-                $resultado->bindParam(':tomo',$this->partida);
-                $resultado->bindParam(':partida',$this->dia_inscripcion);
-                $resultado->bindParam(':dia_inscripcion',$this->mes_inscripcion);
-                $resultado->bindParam(':mes_inscripcion',$this->anio_inscripcion);
-                $resultado->bindParam(':anio_inscripcion',$this->area_titulo);   
-                $resultado->bindParam(':area_titulo',$this->unidad);   
-                $resultado->bindParam(':unidad',$this->tenencia);   
-                $resultado->bindParam(':tenencia',$this->adquisicion);   
-                $resultado->bindParam(':adquisicion',$this->perfeccionamiento);   
-                $resultado->bindParam(':perfeccionamiento',$this->sin_perfeccionamiento);   
-                $resultado->bindParam(':sin_perfeccionamiento',$this->anios_posesion);   
-                $resultado->bindParam(':anios_posesion',$this->pueblo_etnia);       
-                $resultado->bindParam(':pueblo_etnia',$this->sin_titulo);       
-                $resultado->bindParam(':sin_titulo',$this->documento);   
-                $resultado->bindParam(':documento',$this->posesionario_apellidouno);       
-                $resultado->bindParam(':posesionario_apellidouno',$this->posesionario_apellidodos);       
-                $resultado->bindParam(':posesionario_apellidodos',$this->posesionario_nombreuno);       
-                $resultado->bindParam(':posesionario_nombreuno',$this->posesionario_nombredos);       
-                $resultado->bindParam(':posesionario_nombredos',$this->posesionario_documento);       
+                $resultado->bindParam(':clave_predio',$this->clave_predio); 
+                $resultado->bindParam(':titulo',$this->titulo);
+                $resultado->bindParam(':escritura',$this->escritura);   
+                $resultado->bindParam(':celebrado_ante',$this->celebrado_ante);   
+                $resultado->bindParam(':nombre_notaria',$this->nombre_notaria);   
+                $resultado->bindParam(':provincia_titulacion',$this->provincia_titulacion);   
+                $resultado->bindParam(':canton_inscripcion',$this->canton_inscripcion);   
+                $resultado->bindParam(':dia_protocolo',$this->dia_protocolo);   
+                $resultado->bindParam(':mes_protocolo',$this->mes_protocolo);   
+                $resultado->bindParam(':anio_protocolo',$this->anio_protocolo);  
+                $resultado->bindParam(':registro_propiedad',$this->registro_propiedad);
+                $resultado->bindParam(':tomo',$this->tomo);
+                $resultado->bindParam(':partida',$this->partida);
+                $resultado->bindParam(':dia_inscripcion',$this->dia_inscripcion);
+                $resultado->bindParam(':mes_inscripcion',$this->mes_inscripcion);
+                $resultado->bindParam(':anio_inscripcion',$this->anio_inscripcion);
+                $resultado->bindParam(':area_titulo',$this->area_titulo);   
+                $resultado->bindParam(':unidad',$this->unidad);   
+                $resultado->bindParam(':tenencia',$this->tenencia);   
+                $resultado->bindParam(':adquisicion',$this->adquisicion);   
+                $resultado->bindParam(':perfeccionamiento',$this->perfeccionamiento);   
+                $resultado->bindParam(':sin_perfeccionamiento',$this->sin_perfeccionamiento);   
+                $resultado->bindParam(':anios_posesion',$this->anios_posesion);   
+                $resultado->bindParam(':pueblo_etnia',$this->pueblo_etnia);       
+                $resultado->bindParam(':sin_titulo',$this->sin_titulo);       
+                $resultado->bindParam(':documento',$this->documento);   
+                $resultado->bindParam(':posesionario_apellidouno',$this->posesionario_apellidouno);       
+                $resultado->bindParam(':posesionario_apellidodos',$this->posesionario_apellidodos);       
+                $resultado->bindParam(':posesionario_nombreuno',$this->posesionario_nombreuno);       
+                $resultado->bindParam(':posesionario_nombredos',$this->posesionario_nombredos);       
+                $resultado->bindParam(':posesionario_documento',$this->posesionario_documento);       
                 $resultado->bindParam(':posesionario_id',$this->posesionario_id);       
                 $resultado->bindParam(':posesionario_email',$this->posesionario_email);       
                 $resultado->bindParam(':posesionario_telefono',$this->posesionario_telefono);  

@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class Usos {
 
@@ -148,7 +148,7 @@ class Usos {
                 
             $id_uso = intval($id);        
             $sql = "UPDATE uso_predio SET            
-                    upd_clave_predio=:clave_predio,
+                    
                     upd_uso_principal=:uso_principal,
                     upd_uso_secundario=:uso_secundario,
                     upd_descripcion=:descripcion                        
@@ -159,7 +159,7 @@ class Usos {
                 $resultado = $db->prepare($sql);
                                 
                 $resultado->bindParam(':iduso_predio', intval($id_uso));
-                $resultado->bindParam(':clave_predio',$this->clave_predio);
+                //$resultado->bindParam(':clave_predio',$this->clave_predio);
                 $resultado->bindParam(':uso_principal',$this->uso_principal);
                 $resultado->bindParam(':uso_secundario',$this->uso_secundario);
                 $resultado->bindParam(':descripcion',$this->descripcion); 

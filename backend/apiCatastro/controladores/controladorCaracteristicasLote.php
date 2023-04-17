@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/caracteristicas.php");
+include_once ("./src/caracteristicas.php");
 
 class controladorCaracteristicasLote{
 

@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/usos.php");
+include_once ("./src/usos.php");
 
 class controladorUsoPredio{
 

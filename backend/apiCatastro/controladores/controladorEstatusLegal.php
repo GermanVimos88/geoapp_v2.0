@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/estatusLegal.php");
+include_once ("./src/estatusLegal.php");
 
 class controladorEstatusLegal{
 

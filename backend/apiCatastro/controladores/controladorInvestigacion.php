@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/investigacion.php");
+include_once ("./src/investigacion.php");
 
 class controladorInvestigacion{
 

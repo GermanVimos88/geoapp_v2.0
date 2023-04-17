@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class Construcccion {
 
@@ -57,7 +57,7 @@ class Construcccion {
     private $total_propiedad_comunal;
     private $alicuota_porcentaje;
 
-            function __construct($cdc_clave_predio,$cdc_idubicacion,$cdc_numero_bloque,$cdc_numero_piso,$cdc_numero_unidad,$cdc_nivel_piso,$cdc_condicion_fisica,$cdc_uso_constructivo,$cdc_valor_cultural,$cdc_area_construccion,$cdc_anio_construccion,$cdc_anio_restauracion,$cdc_estado_conservacion,$cdc_mamposteria_soportante,$cdc_columnas,$cdc_vigas,$cdc_entrepiso,$cdc_cubierta_entrepiso,$cdc_gradas,$cdc_contrapiso,$cdc_paredes,$cdc_enlucido_paredes,$cdc_enlucido_tumbados,$cdc_revestimiento_pared_interior,$cdc_revestimiento_pared_exterior,$cdc_revestimiento_cubierta,$cdc_tumbados,$cdc_ventanas,$cdc_vidrios,$cdc_puertas,$cdc_closets,$cdc_pisos,$cdc_proteccion_ventanas,$cdc_gradas_acabados,$cdc_clasificacion_vivienda,$cdc_tipo_vivienda,$cdc_condicion_ocupacion,$cdc_acabado_piso,$cdc_estado_piso,$cdc_numero_hogares,$cdc_numero_habitantes,$cdc_numero_habitaciones,$cdc_numero_dormitorios,$cdc_espacios_aseo_duchas,$cdc_tenencia_vivienda,$cdc_telefono_convencional,$cdc_cantidad_celulares,$cdc_servicio_internet,$cdc_total_propiedad_exclusiva,$cdc_total_propiedad_comunal,$cdc_alicuota_porcentaje)
+            function __construct($cdc_clave_predio,$cdc_idubicacion,$cdc_numero_bloque,$cdc_numero_piso,$cdc_numero_unidad,$cdc_nivel_piso,$cdc_condicion_fisica,$cdc_uso_constructivo,$cdc_valor_cultural,$cdc_area_construccion,$cdc_anio_construccion,$cdc_anio_restauracion,$cdc_estado_conservacion,$cdc_mamposteria_soportante,$cdc_columnas,$cdc_vigas,$cdc_entrepiso,$cdc_cubierta_entrepiso,$cdc_gradas,$cdc_contrapiso,$cdc_paredes,$cdc_elucido_paredes,$cdc_enlucido_tumbados,$cdc_revestimiento_pared_interior,$cdc_revestimiento_pared_exterior,$cdc_revestimiento_cubierta,$cdc_tumbados,$cdc_ventanas,$cdc_vidrios,$cdc_puertas,$cdc_closets,$cdc_pisos,$cdc_proteccion_ventanas,$cdc_gradas_acabados,$cdc_clasificacion_vivienda,$cdc_tipo_vivienda,$cdc_condicion_ocupacion,$cdc_acabado_piso,$cdc_estado_piso,$cdc_numero_hogares,$cdc_numero_habitantes,$cdc_numero_habitaciones,$cdc_numero_dormitorios,$cdc_espacios_aseo_duchas,$cdc_tenencia_vivienda,$cdc_telefono_convencional,$cdc_cantidad_celulares,$cdc_servicio_internet,$cdc_total_propiedad_exclusiva,$cdc_total_propiedad_comunal,$cdc_alicuota_porcentaje)
             {               
                 $this->clave_predio = $cdc_clave_predio;
                 $this->idubicacion = $cdc_idubicacion;
@@ -81,7 +81,7 @@ class Construcccion {
                 $this->contrapiso = $cdc_contrapiso;
                 $this->paredes = $cdc_paredes;
                 $this->enlucido_paredes = $cdc_enlucido_paredes;
-                $this->enlucido_tumbados = $cdc_enlucido_tumbados;
+                $this->enlucido_tumbados = $cdc_elucido_tumbados;
                 $this->revestimiento_pared_interior = $cdc_revestimiento_pared_interior;
                 $this->revestimiento_pared_exterior = $cdc_revestimiento_pared_exterior;
                 $this->revestimiento_cubierta = $cdc_revestimiento_cubierta;
@@ -161,7 +161,7 @@ class Construcccion {
                                     "contrapiso"=>$construccion[$i]->cdc_contrapiso,
                                     "paredes"=>$construccion[$i]->cdc_paredes,
                                     "enlucido_paredes"=>$construccion[$i]->cdc_enlucido_paredes,
-                                    "enlucido_tumbados"=>$construccion[$i]->cdc_enlucido_tumbados,
+                                    "enlucido_tumbados"=>$construccion[$i]->cdc_elucido_tumbados,
                                     "revestimiento_pared_interior"=>$construccion[$i]->cdc_revestimiento_pared_interior,
                                     "revestimiento_pared_exterior"=>$construccion[$i]->cdc_revestimiento_pared_exterior,
                                     "revestimiento_cubierta"=>$construccion[$i]->cdc_revestimiento_cubierta,
@@ -243,7 +243,7 @@ class Construcccion {
                                         "contrapiso"=>$construccion[$i]->cdc_contrapiso,
                                         "paredes"=>$construccion[$i]->cdc_paredes,
                                         "enlucido_paredes"=>$construccion[$i]->cdc_enlucido_paredes,
-                                        "enlucido_tumbados"=>$construccion[$i]->cdc_enlucido_tumbados,
+                                        "enlucido_tumbados"=>$construccion[$i]->cdc_elucido_tumbados,
                                         "revestimiento_pared_interior"=>$construccion[$i]->cdc_revestimiento_pared_interior,
                                         "revestimiento_pared_exterior"=>$construccion[$i]->cdc_revestimiento_pared_exterior,
                                         "revestimiento_cubierta"=>$construccion[$i]->cdc_revestimiento_cubierta,
@@ -296,7 +296,7 @@ class Construcccion {
     
             $rs = "SELECT MAX(cdc_idconstruccion_caracteristicas) AS maxid from construccion_caracteristicas"; // UltimoRegistro    
                         
-            $sql = "INSERT INTO construccion_caracteristicas (cdc_idconstruccion_caracteristicas,cdc_clave_predio,cdc_idubicacion,cdc_numero_bloque,cdc_numero_piso,cdc_numero_unidad,cdc_nivel_piso,cdc_condicion_fisica,cdc_uso_constructivo,cdc_valor_cultural,cdc_area_construccion,cdc_anio_construccion,cdc_anio_restauracion,cdc_estado_conservacion,cdc_mamposteria_soportante,cdc_columnas,cdc_vigas,cdc_entrepiso,cdc_cubierta_entrepiso,cdc_gradas,cdc_contrapiso,cdc_paredes,cdc_enlucido_paredes,cdc_enlucido_tumbados,cdc_revestimiento_pared_interior,cdc_revestimiento_pared_exterior,cdc_revestimiento_cubierta,cdc_tumbados,cdc_ventanas,cdc_vidrios,cdc_puertas,cdc_closets,cdc_pisos,cdc_proteccion_ventanas,cdc_gradas_acabados,cdc_clasificacion_vivienda,cdc_tipo_vivienda,cdc_condicion_ocupacion,cdc_acabado_piso,cdc_estado_piso,cdc_numero_hogares,cdc_numero_habitantes,cdc_numero_habitaciones,cdc_numero_dormitorios,cdc_espacios_aseo_duchas,cdc_tenencia_vivienda,cdc_telefono_convencional,cdc_cantidad_celulares,cdc_servicio_internet,cdc_total_propiedad_exclusiva,cdc_total_propiedad_comunal,cdc_alicuota_porcentaje) VALUES
+            $sql = "INSERT INTO construccion_caracteristicas (cdc_idconstruccion_caracteristicas,cdc_clave_predio,cdc_idubicacion,cdc_numero_bloque,cdc_numero_piso,cdc_numero_unidad,cdc_nivel_piso,cdc_condicion_fisica,cdc_uso_constructivo,cdc_valor_cultural,cdc_area_construccion,cdc_anio_construccion,cdc_anio_restauracion,cdc_estado_conservacion,cdc_mamposteria_soportante,cdc_columnas,cdc_vigas,cdc_entrepiso,cdc_cubierta_entrepiso,cdc_gradas,cdc_contrapiso,cdc_paredes,cdc_enlucido_paredes,cdc_elucido_tumbados,cdc_revestimiento_pared_interior,cdc_revestimiento_pared_exterior,cdc_revestimiento_cubierta,cdc_tumbados,cdc_ventanas,cdc_vidrios,cdc_puertas,cdc_closets,cdc_pisos,cdc_proteccion_ventanas,cdc_gradas_acabados,cdc_clasificacion_vivienda,cdc_tipo_vivienda,cdc_condicion_ocupacion,cdc_acabado_piso,cdc_estado_piso,cdc_numero_hogares,cdc_numero_habitantes,cdc_numero_habitaciones,cdc_numero_dormitorios,cdc_espacios_aseo_duchas,cdc_tenencia_vivienda,cdc_telefono_convencional,cdc_cantidad_celulares,cdc_servicio_internet,cdc_total_propiedad_exclusiva,cdc_total_propiedad_comunal,cdc_alicuota_porcentaje) VALUES
                     (:idconstruccion,:clave_predio,:idubicacion,:numero_bloque,:numero_piso,:numero_unidad,:nivel_piso,:condicion_fisica,:uso_constructivo,:valor_cultural,:area_construccion,:anio_construccion,:anio_restauracion,:estado_conservacion,:mamposteria_soportante,:columnas,:vigas,:entrepiso,:cubierta_entrepiso,:gradas,:contrapiso,:paredes,:enlucido_paredes,:enlucido_tumbados,:revestimiento_pared_interior,:revestimiento_pared_exterior,:revestimiento_cubierta,:tumbados,:ventanas,:vidrios,:puertas,:closets,:pisos,:proteccion_ventanas,:gradas_acabados,:clasificacion_vivienda,:tipo_vivienda,:condicion_ocupacion,:acabado_piso,:estado_piso,:numero_hogares,:numero_habitantes,:numero_habitaciones,:numero_dormitorios,:espacios_aseo_duchas,:tenencia_vivienda,:telefono_convencional,:cantidad_celulares,:servicio_internet,:total_propiedad_exclusiva,:total_propiedad_comunal,:alicuota_porcentaje)";
 
             try {
@@ -402,7 +402,7 @@ class Construcccion {
                     cdc_contrapiso=:contrapiso,
                     cdc_paredes=:paredes,
                     cdc_enlucido_paredes=:enlucido_paredes,
-                    cdc_enlucido_tumbados=:enlucido_tumbados,
+                    cdc_elucido_tumbados=:enlucido_tumbados,
                     cdc_revestimiento_pared_interior=:revestimiento_pared_interior,
                     cdc_revestimiento_pared_exterior=:revestimiento_pared_exterior,
                     cdc_revestimiento_cubierta=:revestimiento_cubierta,

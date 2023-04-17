@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/predios.php");
+include_once ("./src/predios.php");
 
 class controladorPredio{
 
@@ -72,7 +72,7 @@ class controladorPredio{
                                                             $predio->regimen,
                                                             $predio->bloque,
                                                             $predio->piso,
-                                                            $predio->unidad,
+                                                            $predio->unidad
                                                             //$predio->numero                                       
                                                             );
                                                         $objeto->actualizarPredio($_GET['id']);

@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class Grafico {
 
@@ -207,7 +207,7 @@ class Grafico {
     public function actualizarGrafico($id){
         
         $id_grafico = intval($id);        
-        $sql = "UPDATE construccion_caracteristicas SET                         
+        $sql = "UPDATE grafico_predio SET                         
                 grp_clave_predio=:clave_predio,
                 grp_link_grafico=:link_grafico,
                 grp_link_foto_fachada=:link_foto_fachada,

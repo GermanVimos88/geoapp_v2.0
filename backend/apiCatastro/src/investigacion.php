@@ -1,6 +1,6 @@
 <?php
 
-include_once ("../src/db.php");
+include_once ("./src/db.php");
 
 class Investigacion {
 
@@ -134,8 +134,8 @@ class Investigacion {
 
         // GET Recuperar investigación predial por ID
         public static function verInvestigacion($id){
-            $id_investigacion = intval($id);    
-            $sql = "SELECT * FROM investigacion_predial WHERE inv_idinvestigacion_predial = $id_investigacion";
+            $id_investigacion = "'".$id."'";    
+            $sql = "SELECT * FROM investigacion_predial WHERE inv_clave_predio = $id_investigacion";
             try {
                 $db = new db();
                 $db = $db->conexionDB();

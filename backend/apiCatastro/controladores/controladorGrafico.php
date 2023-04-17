@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/grafico.php");
+include_once ("./src/grafico.php");
 
 class controladorGrafico{
 

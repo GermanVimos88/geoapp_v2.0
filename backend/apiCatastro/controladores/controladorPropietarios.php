@@ -1,6 +1,6 @@
 <?php 
 
-include_once ("../src/propietario.php");
+include_once ("./src/propietario.php");
 
 class controladorPropietario{
 
@@ -11,7 +11,7 @@ class controladorPropietario{
 				 	       	  //Obtener propietarios
                                                         //echo($url);
                                                         if (isset($_GET['id'])){                        
-                                                        
+                                                                                                                    
                                                             Propietario::verPropietario($_GET['id']);                         
                                                         
                                                         }else{
