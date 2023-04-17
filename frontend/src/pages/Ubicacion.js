@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -33,19 +33,18 @@ const Ubicacion = () => {
         }
         }
     }
-
         
-    const baseUrl='http://apicatastro/ubicacion/?id='+id;
-    const [data, setData]=useState([]);
-    const [id_ubicacion, cambiarIdUbicacion] = useState({campo: '', valido: null});
-	const [clave_catastral, cambiarClaveCatastral] = useState({campo: '', valido: null}); 
+     
+    const baseUrl='http://localhost/apicatastro/index.php/ubicacion/?id='+id; //'http://f0783168.xsph.ru/index.php/ubicacion/?id='+id;
+    
+    const [id_ubicacion, cambiarIdUbicacion] = useState({campo: '', valido: null});	
+    const [clave_catastral, cambiarClaveCatastral] = useState({campo: '', valido: null}); 
     //const [clave_anterior, cambiarClaveAnterior] = useState({campo: '', valido: null}); 
 	const [eje_principal, cambiarEjePrincipal] = useState({campo: '', valido: null}); // Input
   	const [codigo_placa, cambiarCodigoPlaca] = useState({campo: '', valido: null}); // Input
   	const [eje_secundario, cambiarEjeSecundario] = useState({campo: '', valido: null}); //Input
   	const [nombre_predio, cambiarNombrePredio] = useState({campo: '', valido: null}); // Input
   	const [sector, cambiarSector] = useState({campo: '', valido: null}); //Input   
-
 
 
     //const [telefono, cambiarTelefono] = useState({campo: '', valido: null});
@@ -74,6 +73,33 @@ const Ubicacion = () => {
         
     }
 
+    
+    //Función PUT
+    const putUbicacion=async()=>{
+        const ubicacion = {
+            clave_predio: clave_catastral.campo,
+            eje_principal: eje_principal.campo,
+            codigo_placa: codigo_placa.campo,         
+            eje_secundario: eje_secundario.campo,          
+            nombre_predio: nombre_predio.campo,          
+            sector: sector.campo            
+        } 
+    
+        await axios.put('http://localhost/apicatastro/index.php/ubicacion/actualizar?id='+id, ubicacion)
+        .then(response=>{
+            cambiarClaveCatastral({campo: ubicacion.clave_predio });
+            cambiarEjePrincipal({campo: ubicacion.eje_principal});
+            cambiarCodigoPlaca({campo: ubicacion.codigo_placa});
+            cambiarEjeSecundario({campo: ubicacion.eje_secundario});
+            cambiarNombrePredio({campo: ubicacion.nombre_predio});
+            cambiarSector({campo: ubicacion.sector}); 
+            
+        }).catch(error=>{
+            console.error(error);
+        });
+    }
+
+        
     const onChangeTerminos = (e) => {
 
         cambiarTerminos(e.target.checked); 
@@ -83,12 +109,14 @@ const Ubicacion = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(
-            
+        if(            
             terminos
-        ){
-            
+        ){            
             // CONEXION CRUD (PETICIONES AJAX/HTTP)
+            putUbicacion();
+            peticionGet();
+            cambiarFormularioValido(true);
+            //alert('Datos actualizados correctamente');
             
         } else {
             cambiarFormularioValido(false);         
@@ -106,13 +134,11 @@ useEffect(()=>{
         }            
 },[])
     
-if (!data) return null;            
-
 
     return (        
         <main>
               
-              <h1><b>📌 Ubicación</b></h1> 
+              <h1><b>Ubicación  <FontAwesomeIcon icon={faMapMarkedAlt}/></b></h1> 
               <br/>
                 <label>Clave Catastral: <b>{clave_catastral.campo}</b></label> <td> </td>                
               <br/>
@@ -120,7 +146,7 @@ if (!data) return null;
             <Formulario onSubmit={onSubmit}>
 
             <center>
-            <div>                
+            <div style={{textAlign: 'center'}}>                
                 
                 <p>
                     <td><b>Eje principal:</b></td>
@@ -134,7 +160,7 @@ if (!data) return null;
                         value= {eje_principal}
                         onChange = {(e) => {
                             const ejePrincipalSeleccionado = e.target.value;
-                            cambiarEjePrincipal(ejePrincipalSeleccionado);
+                            cambiarEjePrincipal({campo: ejePrincipalSeleccionado});
                         }} 
                     >
                         
@@ -160,7 +186,7 @@ if (!data) return null;
                         value={eje_secundario}
                         onChange = {(e) => {
                             const ejeSecundarioSeleccionado = e.target.value;
-                            cambiarEjeSecundario(ejeSecundarioSeleccionado);
+                            cambiarEjeSecundario({campo:ejeSecundarioSeleccionado});
                         }}                      
                     >                       
 
@@ -174,19 +200,14 @@ if (!data) return null;
                     </select> </td>
                     </tr>
                 </p>  
-                <br/>       
-       
-        </div>
-            
+                <br/>              
+        </div>            
     </center>
-
 
     <center>          
         <br/>
-        <div>  
-              
-            <p>
-                
+        <div> 
+            <p> 
                 <ComponenteInput
                     estado={codigo_placa}
                     cambiarEstado={cambiarCodigoPlaca}
@@ -227,7 +248,7 @@ if (!data) return null;
                         value={sector}
                         onChange = {(e) => {
                             const sectorSeleccionado = e.target.value;
-                            cambiarSector(sectorSeleccionado);
+                            cambiarSector({campo: sectorSeleccionado});
                         }}
                     >
                     <option value={sector.campo} checked>{sector.campo}</option>
@@ -240,11 +261,21 @@ if (!data) return null;
                     </tr>
                     <br/>
                     <br/>
-                </p>    
-                
-                </ContenedorBotonCentrado>  
-
-
+                </p>
+                </ContenedorBotonCentrado>
+                <ContenedorTerminos>
+                    <Label>
+                        <input 
+                            type="checkbox" 
+                            name="terminos" 
+                            id="terminos" 
+                            checked={terminos}
+                            onChange={onChangeTerminos}
+                            
+                            />
+                        Acepto los Términos y Condiciones
+                    </Label>                    
+                </ContenedorTerminos>
                 
                 {formularioValido === false && <MensajeError>
                     <p>

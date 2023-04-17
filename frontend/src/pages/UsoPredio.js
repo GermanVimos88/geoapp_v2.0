@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faStoreAlt } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -16,24 +16,31 @@ const cookies = new Cookies();
 const UsoPredio = () => {
        
     const location = useLocation();
-    const query = new URLSearchParams(location.search) // url con parametros tipo query (id,clave)
-    //console.log(query);
-    const id = parseInt(query.get("id")) || 0
-    const clave = query.get("clave") || 0
-    //console.log(id);
-    //console.log(clave);
+    const path = location.pathname
     
-    const baseUrl='http://apicatastro/uso/?id='+id;
-    const [data, setData]=useState();    
-    //const [id_caracteristicas, cambiarIdCaracteristicas] = useState({campo: '', valido: null});
-	//const [clave_catastral, cambiarClaveCatastral] = useState({campo: '', valido: null}); 
-       
+    var id = ''
+    var clave = ''
+
+    for (var i=0 ; i < path.length ; i++) {
+        if(path.substring(i, i+1)==':' )
+        {
+        for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)==':' ) {
+            id= path.substring(i+1, j)
+            clave=path.substring(j+1, path.length)
+            }
+        }
+        }
+    }
+        
+    const baseUrl='http://localhost/apicatastro/index.php/uso/?id='+id; //'http://f0783168.xsph.ru/index.php/uso/?id='+id; 
+           
     const [iduso_predio, cambiarIdusoPredio] = useState ({campo: '', valido: null});
     const [clave_predio, cambiarClavePredio] = useState ({campo: '', valido: null});
     const [uso_principal, cambiarUsoPrincipal] = useState ({campo: '', valido: null});
     const [uso_secundario, cambiarUsoSecundario] = useState ({campo: '', valido: null});
     const [descripcion, cambiarDescripcion] = useState ({campo: '', valido: null});
-    
+        
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, cambiarFormularioValido] = useState(null);
 
@@ -49,9 +56,36 @@ const peticionGet=async()=>{
     cambiarClavePredio({campo: response.data[0].clave_predio});
     cambiarUsoPrincipal({campo: response.data[0].uso_principal});
     cambiarUsoSecundario({campo: response.data[0].uso_secundario});
-    cambiarDescripcion({campo: response.data[0].descripcion});    
+    cambiarDescripcion({campo: response.data[0].descripcion});
+    
+    //console.log(clave_predio.campo);
+    //console.log(uso_principal.campo);
+    //console.log(uso_secundario.campo);
+    //console.log(descripcion.campo);
     
 }
+
+//Función PUT
+ const putUsoPredio=async()=>{
+        const uso = {
+            //clave_predio: clave,
+            uso_principal: uso_principal.campo,
+            uso_secundario: uso_secundario.campo,          
+            descripcion: descripcion.campo  
+
+        } 
+        
+        await axios.put('http://localhost/apicatastro/index.php/uso/actualizar?id='+id, uso)
+        .then(response=>{
+            //cambiarClavePredio({campo: uso.clave_predio});
+            cambiarUsoPrincipal({campo: uso.uso_principal});
+            cambiarUsoSecundario({campo: uso.uso_secundario});
+            cambiarDescripcion({campo: uso.descripcion});
+            
+        }).catch(error=>{
+            console.error(error);
+        });
+    }
 
 
 const onChangeTerminos = (e) => {
@@ -62,17 +96,18 @@ const onChangeTerminos = (e) => {
 const onSubmit = (e) => {
     e.preventDefault();
 
-    if(
-        
+    if(        
         terminos
-     ){
-         
+     ){         
          // CONEXION CRUD (PETICIONES AJAX/HTTP)
+         putUsoPredio();
+         peticionGet();
+         cambiarFormularioValido(true);
+         //alert('Datos actualizados correctamente');
          
      } else {
         cambiarFormularioValido(false);         
      }
-
 }
 
 
@@ -92,9 +127,9 @@ useEffect(()=>{
 
     return (
         <main>
-               <h1><b>Uso del Predio 🏪</b></h1> 
+               <h1><b>Uso del Predio <FontAwesomeIcon icon={faStoreAlt} /></b></h1> 
               <br/>
-              <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>                
+              <label>Clave Catastral: <b>{clave}</b></label> <td> </td>                
               <br/>
 
             <Formulario action="" onSubmit={onSubmit}>
@@ -111,10 +146,10 @@ useEffect(()=>{
                             className="custom-select"
                             id="uso_principal" 
                             name="uso_principal" 
-                            value={uso_principal}
+                            value={uso_principal.campo}
                             onChange = {(e) => {
                             const usoPrincipalSeleccionado = e.target.value;
-                            cambiarUsoPrincipal(usoPrincipalSeleccionado);
+                            cambiarUsoPrincipal({campo: usoPrincipalSeleccionado});
                         }}     
                         >
                 
@@ -176,10 +211,11 @@ useEffect(()=>{
                             className="custom-select"
                             id="uso_secundario" 
                             name="uso_secundario" 
-                            value={uso_secundario}
+                            value={uso_secundario.campo}
                             onChange = {(e) => {
                             const usoSecundarioSeleccionado = e.target.value;
-                            cambiarUsoSecundario(usoSecundarioSeleccionado);
+                            cambiarUsoSecundario({campo: usoSecundarioSeleccionado});
+                            
                         }} 
                         >
                         

@@ -5,9 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import ComponenteInput from './componentes/input.js'
-//import styled from 'styled-components';
+import { faBorderStyle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -16,10 +14,8 @@ const cookies = new Cookies();
 const CaracteristicasLote = () => {
 
    
-    const location = useLocation();
-  
-    const path = location.pathname
-    
+    const location = useLocation();  
+    const path = location.pathname    
     var id = ''
     var clave = ''
 
@@ -35,9 +31,10 @@ const CaracteristicasLote = () => {
         }
     }
 
+    //console.log(clave);
+    //console.log(id);
     
-    
-    const baseUrl='http://apicatastro/caracteristicas/?id='+id;
+    const baseUrl= 'http://localhost/apicatastro/index.php/caracteristicas/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/caracteristicas/?id='+id; //'http://f0783168.xsph.ru/index.php/caracteristicas/?id='+id 
     
 
     const [idcaracteristicas_lote, cambiarIdCaracteristicas] = useState ({campo: '', valido: null});
@@ -85,6 +82,42 @@ const peticionGet=async()=>{
         
     }
 
+   //Función PUT
+   const putCaracteristicasLote=async()=>{
+    const c_lote = {        
+        clave_predio: clave_predio.campo,
+        idubicacion: idubicacion.campo,
+        ocupacion: ocupacion.campo,
+        manzana_locacion: localizacion_manzana.campo,
+        forma: forma.campo,
+        topografia: topografia.campo,
+        cobertura_nativa: cobertura_nativa_predominante.campo,
+        ecosistema: ecosistema_relevante.campo,
+        afectaciones: afectaciones.campo,
+        riesgos: riesgos.campo,
+        calidad_suelo: calidad_suelo.campo
+    } 
+
+    await axios.put('http://localhost/apicatastro/index.php/caracteristicas/actualizar/?id='+id, c_lote)
+    .then(response=>{
+        //cambiarIdCaracteristicas({campo: c_lote.idcaracteristicas});
+        cambiarClavePredio({campo: c_lote.clave_predio});
+        cambiaridUbicacion({campo: c_lote.idubicacion});
+        cambiarOcupacion({campo: c_lote.ocupacion});
+        cambiarLocalizacionManzana({campo: c_lote.manzana_locacion});
+        cambiarForma({campo: c_lote.forma});
+        cambiarTopografia({campo: c_lote.topografia});
+        cambiarCoberturaNativaPredominante({campo: c_lote.cobertura_nativa});
+        cambiarEcosistemaRelevante({campo: c_lote.ecosistema});
+        cambiarAfectaciones({campo: c_lote.afectaciones});
+        cambiarRiesgos({campo: c_lote.riesgos});
+        cambiarCalidadSuelo({campo: c_lote.calidad_suelo}); 
+        
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
 const onChangeTerminos = (e) => {
     cambiarTerminos(e.target.checked); 
 }
@@ -94,19 +127,14 @@ const onSubmit = (e) => {
     e.preventDefault();
 
     if(
-        //predio.valido === 'true' &&
-        //catastro.valido === 'true' &&
-        //password.valido === 'true' &&
-        //password2.valido === 'true' &&
-        //correo.valido === 'true' &&
+        //predio.valido === 'true' &&        
         terminos
-     ){
-         //cambiarFormularioValido(true);         
-         //cambiarPredio({campo: '', valido: null});
-         //cambiarCatastro({campo: '', valido: null});         
-         //cambiarCorreo({campo: '', valido: null});
-
-         // CONEXION CRUD (PETICIONES AJAX/HTTP)
+     ){         
+        // CONEXION CRUD (PETICIONES AJAX/HTTP)
+        putCaracteristicasLote();
+        peticionGet();
+        cambiarFormularioValido(true);
+        //alert('Datos actualizados correctamente');
          
      } else {
         cambiarFormularioValido(false);         
@@ -129,8 +157,8 @@ useEffect(()=>{
 
     return (
         <main>
-               <h1><b>Características del Lote 🏡</b></h1> 
-              <br/>
+               <h1><b>Características del Lote <FontAwesomeIcon icon={faBorderStyle} /></b></h1> 
+              <br/> 
               <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>
               
 
@@ -151,7 +179,7 @@ useEffect(()=>{
                         value= {ocupacion}
                         onChange = {(e) => {
                             const ocupacionSeleccionado = e.target.value;
-                            cambiarOcupacion(ocupacionSeleccionado);
+                            cambiarOcupacion({campo: ocupacionSeleccionado});
                         }}  
                     
                     >
@@ -177,7 +205,7 @@ useEffect(()=>{
                             value= {localizacion_manzana}
                             onChange = {(e) => {
                                 const localizacionSeleccionado = e.target.value;
-                                cambiarLocalizacionManzana(localizacionSeleccionado);
+                                cambiarLocalizacionManzana({campo: localizacionSeleccionado});
                         }}  
                     
                     >
@@ -211,7 +239,7 @@ useEffect(()=>{
                             value= {forma}
                             onChange = {(e) => {
                                 const formaSeleccionado = e.target.value;
-                                cambiarForma(formaSeleccionado);
+                                cambiarForma({campo: formaSeleccionado});
                         }}  
                     
                     >
@@ -225,17 +253,12 @@ useEffect(()=>{
                         </select> </td>
                     </tr>
                 </p>       
-       
-       
-        </div>
-            
+        </div>            
     </center>
-
 
     <center>          
         
-        <div id="contenedor">
-              
+        <div id="contenedor">              
                 <p>
                     <tr>        
                         <td>Topografía:</td> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -247,7 +270,7 @@ useEffect(()=>{
                             value= {topografia}
                             onChange = {(e) => {
                                 const topografiaSeleccionado = e.target.value;
-                                cambiarTopografia(topografiaSeleccionado);
+                                cambiarTopografia({campo: topografiaSeleccionado});
                         }}  
                     
                     >
@@ -277,7 +300,7 @@ useEffect(()=>{
                             value= {cobertura_nativa_predominante}
                             onChange = {(e) => {
                                 const coberturaSeleccionado = e.target.value;
-                                cambiarCoberturaNativaPredominante(coberturaSeleccionado);
+                                cambiarCoberturaNativaPredominante({campo: coberturaSeleccionado});
                         }}  
                     
                     >
@@ -306,7 +329,7 @@ useEffect(()=>{
                             value= {ecosistema_relevante}
                             onChange = {(e) => {
                                 const ecosistemaSeleccionado = e.target.value;
-                                cambiarEcosistemaRelevante(ecosistemaSeleccionado);
+                                cambiarEcosistemaRelevante({campo: ecosistemaSeleccionado});
                         }}  
                     
                     >
@@ -341,7 +364,7 @@ useEffect(()=>{
                         value= {afectaciones}
                             onChange = {(e) => {
                                 const afectacionesSeleccionado = e.target.value;
-                                cambiarAfectaciones(afectacionesSeleccionado);
+                                cambiarAfectaciones({campo: afectacionesSeleccionado});
                         }}  
                     
                     >
@@ -373,7 +396,7 @@ useEffect(()=>{
                             value= {riesgos}
                             onChange = {(e) => {
                                 const riesgosSeleccionado = e.target.value;
-                                cambiarRiesgos(riesgosSeleccionado);
+                                cambiarRiesgos({campo: riesgosSeleccionado});
                         }}  
                     
                     >
@@ -402,7 +425,7 @@ useEffect(()=>{
                             value= {calidad_suelo}
                             onChange = {(e) => {
                                 const calidadSeleccionado = e.target.value;
-                                cambiarCalidadSuelo(calidadSeleccionado);
+                                cambiarCalidadSuelo({campo: calidadSeleccionado});
                         }}  
                     
                     >
@@ -418,11 +441,9 @@ useEffect(()=>{
                     </tr>
                 </p>
             </div>  
-        </center>        
-        
+        </center>      
         <br/>
-        <br/>                
-
+        <br/>          
                 <ContenedorTerminos>
                     <Label>
                         <input 
@@ -445,14 +466,10 @@ useEffect(()=>{
                 <ContenedorBotonCentrado>
                     <Boton type="submit">Enviar</Boton>
                     {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                </ContenedorBotonCentrado>                
-                
+                </ContenedorBotonCentrado> 
             </Formulario>
-
         </main>
     )
-
 }
-
 
 export default CaracteristicasLote;

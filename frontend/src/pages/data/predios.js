@@ -1,4 +1,8 @@
-export var prediosJson = {
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+const baseUrl = 'http://f0783168.xsph.ru/index.php/prediogeo/';
+
+export var prediosJson={
     "type": "FeatureCollection",
     "name": "predios",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -138,4 +142,23 @@ export var prediosJson = {
     { "type": "Feature", "properties": { "OBJECTID": 2429, "prov_cod": "15", "cant_cod": "07", "parr_cod": "52", "zona_cod": "03", "sector_cod": "01", "mzn_cod": "021", "lot_cod": "013", "clave": "1507520301021013", "fcode": "HE007", "SHAPE_Leng": 98.1001261599, "SHAPE_Area": 382.50466876399997 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -78.025730655541594, -0.416121611450066 ], [ -78.02575423944586, -0.416198400186922 ], [ -78.025837114170841, -0.416170598325998 ], [ -78.025802206179335, -0.416057046217152 ], [ -78.025767557275387, -0.415944226955588 ], [ -78.025733127977176, -0.415832121552551 ], [ -78.025649720858709, -0.415858081892062 ], [ -78.025659408104218, -0.415889623280966 ], [ -78.025677088422881, -0.415947191331991 ], [ -78.025730655541594, -0.416121611450066 ] ] ] ] } },
     { "type": "Feature", "properties": { "OBJECTID": 2430, "prov_cod": "15", "cant_cod": "07", "parr_cod": "52", "zona_cod": "03", "sector_cod": "01", "mzn_cod": "021", "lot_cod": "009", "clave": "1507520301021009", "fcode": "HE007", "SHAPE_Leng": 85.581004514300005, "SHAPE_Area": 387.06365913899998 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -78.025733127977176, -0.415832121552551 ], [ -78.025767557275387, -0.415944226955588 ], [ -78.026022975696037, -0.415864726112717 ], [ -78.025988793214168, -0.415752543982971 ], [ -78.025733127977176, -0.415832121552551 ] ] ] ] } }
     ]
-    }
+
+
+};
+
+/* const peticionGet=async()=>{
+    const response = await axios.get(baseUrl)    
+    const res = response.data;
+    console.log(res);     
+    return res;
+}
+
+prediosJson = peticionGet();
+
+
+console.log(JSON.stringify prediosJson); */
+
+
+
+
+

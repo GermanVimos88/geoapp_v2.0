@@ -6,7 +6,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faIdCard } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -39,10 +39,8 @@ const Propietarios = () => {
     //console.log(id)
     //console.log(clave)
     
-    const baseUrl='http://apicatastro/propietarios/?id='+id;
-    const [data, setData]=useState(); 
-    
-    
+    const baseUrl='http://localhost/apicatastro/index.php/propietarios/?id='+id; //'http://f0783168.xsph.ru/index.php/propietarios/?id='+id;
+       
     const [predio, cambiarPredio] = useState({campo: '', valido: null});
     const [catastro, cambiarCatastro] = useState({campo: '', valido: null});
     
@@ -93,8 +91,6 @@ const Propietarios = () => {
     const [porcentaje_conyugue, cambiarPorcentajeConyugue] = useState({campo: '', valido: null}); //Input number entero positivo 0-100
     const [email_conyugue, cambiarEmailConyugue] = useState({campo: '', valido: null}); // Input email validacion
 
-
-
     //const [telefono, cambiarTelefono] = useState({campo: '', valido: null});
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, cambiarFormularioValido] = useState(null);
@@ -109,22 +105,6 @@ const Propietarios = () => {
     ruc: /^\d{10,13}$/ // 10 a 13 numeros.
 	}
 
-const validarPassword2 = () =>{
-    if(password.campo.length > 0){
-        if(password.campo !== password2.campo && password.campo.length !== password2.campo.length){
-            //console.log("Las contraseñas nos son iguales");
-            cambiarPassword2((prevState)=>{
-                return {...prevState, valido: 'false'}
-            });
-        } else {
-            //console.log("Las contraseñas son iguales");
-            cambiarPassword2((prevState)=>{
-                return {...prevState, valido: 'true'}
-            });
-        }
-    }
-
-    }
 
     const peticionGet=async()=>{
         const response = await axios.get(baseUrl) 
@@ -171,6 +151,99 @@ const validarPassword2 = () =>{
             
     }
 
+    //Función PUT
+ const putUsoPropietarios=async()=>{
+    const propietario = {
+        identificacion: cedula.campo,
+        tipo: tipo.campo,
+        primer_apellido: primer_apellido.campo,
+        segundo_apellido: segundo_apellido.campo,
+        primer_nombre: primer_nombre.campo,
+        segundo_nombre: segundo_nombre.campo,
+        documento_tipo: tipo_documento.campo,
+        estado_civil: estado_civil.campo,
+        porcentaje_participacion: porcentaje_prt.campo,
+        representante: representante.campo,
+        anio_nacimiento: anio_nacimiento.campo,
+        mes_nacimiento: mes_nacimiento.campo,
+        dia_nacimiento: dia_nacimiento.campo,
+        nacionalidad: nacionalidad.campo,
+        email: email.campo,
+        telefono: telefono.campo,
+        ciudad_domicilio: ciudad_domicilio.campo,
+        direccion_domicilio: dir_domicilio.campo,
+        jefe_hogar: jefe_hogar.campo,
+        p_juridica: personeria.campo,
+        ruc: ruc.campo,
+        razon_social: razon_social.campo,
+        inscrito: inscrito.campo,
+        lugar_inscripcion: lugarInscripcion.campo,
+        acuerdo_reg: acuerdo.campo,
+        representante_legal: representante_legal.campo,
+        doc_representante: docRepresentante.campo,
+        idrepresentante: idRepresentante.campo,
+        email_representante: emailRepresentante.campo,
+        telf_representante: telefonoRepresentante.campo,
+        conyugue: conyugue.campo,
+        conyugue_apellidos: apellidos_conyugue.campo,
+        conyugue_nombres: nombres_conyugue.campo,
+        conyugue_doc: doc_conyugue.campo,
+        conyugueid: id_conyugue.campo,
+        conyugue_telf: telefono_conyugue.campo,
+        conyugue_participacion: porcentaje_conyugue.campo,
+        conyugue_email: email_conyugue.campo
+
+    } 
+    
+    await axios.put('http://localhost/apicatastro/index.php/propietarios/actualizar?id='+id, propietario)
+    .then(response=>{
+        
+            cambiarCedula({campo: propietario.identificacion});
+            cambiarTipo({campo: propietario.tipo});
+            cambiarPrimerApellido({campo: propietario.primer_apellido});
+            cambiarSegundoApellido({campo: propietario.segundo_apellido});
+            cambiarPrimerNombre({campo: propietario.primer_nombre});
+            cambiarSegundoNombre({campo: propietario.segundo_nombre});
+            cambiarTipoDocumento({campo: propietario.documento_tipo});
+            cambiarEstadoCivil({campo: propietario.estado_civil});
+            cambiarPorcentajePrt({campo: propietario.porcentaje_participacion});
+            cambiarRepresentante({campo: propietario.representante});
+            cambiarAnioNacimiento({campo: propietario.anio_nacimiento});
+            cambiarMesNacimiento({campo: propietario.mes_nacimiento});
+            cambiarDiaNacimiento({campo: propietario.dia_nacimiento});
+            cambiarNacionalidad({campo: propietario.nacionalidad});
+            cambiarEmail({campo: propietario.email});
+            cambiarTelefono({campo: propietario.telefono});
+            cambiarCiudadDomicilio({campo: propietario.ciudad_domicilio});
+            cambiarDirDomicilio({campo: propietario.direccion_domicilio});
+            cambiarJefeHogar({campo: propietario.jefe_hogar});
+            cambiarPersoneria({campo: propietario.p_juridica});
+            cambiarRuc({campo: propietario.ruc});
+            cambiarRazonSocial({campo: propietario.razon_social});
+            cambiarAcuerdo({campo: propietario.acuerdo_reg});
+            cambiarRepLegal({campo: propietario.representante_legal});
+            cambiarConyugue({campo: propietario.conyugue});
+            cambiarApellidosConyugue({campo: propietario.conyugue_apellidos});
+            cambiarNombresConyugue({campo: propietario.conyugue_nombres});
+            cambiarDocConyugue({campo: propietario.conyugue_doc});
+            cambiarIdConyugue({campo: propietario.conyugueid});
+            cambiarTelefonoConyugue({campo: propietario.conyugue_telf});
+            cambiarPorcentajeConyugue({campo: propietario.conyugue_participacion});
+            cambiarEmailConyugue({campo: propietario.conyugue_email});
+            cambiarInscrito({campo: propietario.inscrito});   
+            cambiarLugarInscripcion({campo: propietario.lugar_inscripcion});   
+            cambiarDocRepresentante({campo: propietario.doc_representante});  
+            cambiarIDRepresentante({campo: propietario.idrepresentante});  
+            cambiarEmailRepresentante({campo: propietario.email_representante}); 
+            cambiarTelefonoRepresentante({campo: propietario.telf_representante});
+        
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
+
+
 const onChangeTerminos = (e) => {
     cambiarTerminos(e.target.checked); 
 }
@@ -179,22 +252,17 @@ const onChangeTerminos = (e) => {
 const onSubmit = (e) => {
     e.preventDefault();
 
-    if(
-        predio.valido === 'true' &&
-        catastro.valido === 'true' &&
-        password.valido === 'true' &&
-        password2.valido === 'true' &&
-        correo.valido === 'true' &&
+    if(        
+        //password.valido === 'true' &&
+        //password2.valido === 'true' &&
+        //correo.valido === 'true' &&
         terminos
-     ){
-         cambiarFormularioValido(true);         
-         cambiarPredio({campo: '', valido: null});
-         cambiarCatastro({campo: '', valido: null});
-         cambiarPassword({campo: '', valido: null});
-         cambiarPassword2({campo: '', valido: null});
-         cambiarCorreo({campo: '', valido: null});
-
-         // CONEXION CRUD (PETICIONES AJAX/HTTP)
+     ){         
+        // CONEXION CRUD (PETICIONES AJAX/HTTP)
+        putUsoPropietarios();
+        peticionGet();        
+        cambiarFormularioValido(true);
+        //alert('Datos actualizados correctamente');         
          
      } else {
         cambiarFormularioValido(false);         
@@ -215,7 +283,7 @@ useEffect(()=>{
 
     return (
         <main>              
-            <h1><b>Propietario 🙋</b></h1> 
+            <h1><b>Propietario <FontAwesomeIcon icon={faIdCard}/></b></h1> 
             <br/>
             
             <Formulario action="" onSubmit={onSubmit}> 
@@ -233,7 +301,7 @@ useEffect(()=>{
                         value= {tipo}
                         onChange = {(e) => {
                             const tipoSeleccionado = e.target.value;
-                            cambiarTipo(tipoSeleccionado);
+                            cambiarTipo({campo: tipoSeleccionado});
                             }} 
                         >
                                 
@@ -334,7 +402,7 @@ useEffect(()=>{
                         value= {dia_nacimiento}
                         onChange = {(e) => {
                             const diaSeleccionado = e.target.value;
-                            cambiarDiaNacimiento(diaSeleccionado);
+                            cambiarDiaNacimiento({campo: diaSeleccionado});
                             }} 
                         >
                                 
@@ -387,7 +455,7 @@ useEffect(()=>{
                             value= {mes_nacimiento}
                             onChange = {(e) => {
                                 const mesSeleccionado = e.target.value;
-                                cambiarMesNacimiento(mesSeleccionado);
+                                cambiarMesNacimiento({campo: mesSeleccionado});
                             }} 
                         >                        
                         <option value={mes_nacimiento.campo} checked>{mes_nacimiento.campo}</option>
@@ -421,7 +489,7 @@ useEffect(()=>{
                             value= {anio_nacimiento}
                             onChange = {(e) => {
                                 const anioSeleccionado = e.target.value;
-                                cambiarAnioNacimiento(anioSeleccionado);
+                                cambiarAnioNacimiento({campo: anioSeleccionado});
                             }} 
                         >                        
                         <option value={anio_nacimiento.campo} checked>{anio_nacimiento.campo}</option>
@@ -535,7 +603,7 @@ useEffect(()=>{
 
                     <NumericInput 
                         className="form-control" 
-                        value={ porcentaje_prt.campo } 
+                        value={ porcentaje_prt } 
                         min={ 0 } 
                         max={ 100 } 
                         step={ 1 } 
@@ -592,7 +660,7 @@ useEffect(()=>{
                         value= {representante}
                         onChange = {(e) => {
                             const representanteSeleccionado = e.target.value;
-                            cambiarRepresentante(representanteSeleccionado);
+                            cambiarRepresentante({campo: representanteSeleccionado});
                             }} 
                         >
                                 
@@ -617,7 +685,7 @@ useEffect(()=>{
                 value= {tipo_documento}
                 onChange = {(e) => {
                     const docSeleccionado = e.target.value;
-                    cambiarTipoDocumento(docSeleccionado);
+                    cambiarTipoDocumento({campo: docSeleccionado});
                     }} 
                 >
                         
@@ -641,7 +709,7 @@ useEffect(()=>{
                 value= {estado_civil}
                 onChange = {(e) => {
                     const estadoSeleccionado = e.target.value;
-                    cambiarEstadoCivil(estadoSeleccionado);
+                    cambiarEstadoCivil({campo: estadoSeleccionado});
                     }} 
                 >
                         
@@ -731,7 +799,7 @@ useEffect(()=>{
                            value= {jefe_hogar}
                            onChange = {(e) => {
                                const jefeSeleccionado = e.target.value;
-                               cambiarJefeHogar(jefeSeleccionado);
+                               cambiarJefeHogar({campo: jefeSeleccionado});
                            }} 
                        >                        
                        <option value={jefe_hogar.campo} checked>{jefe_hogar.campo}</option>
@@ -762,7 +830,7 @@ useEffect(()=>{
                         value= {personeria}
                         onChange = {(e) => {
                             const personeriaSeleccionada = e.target.value;
-                            cambiarPersoneria(personeriaSeleccionada);
+                            cambiarPersoneria({campo: personeriaSeleccionada});
                             }} 
                         >
                                 
@@ -815,7 +883,7 @@ useEffect(()=>{
                             value= {inscrito}
                             onChange = {(e) => {
                                 const inscritoSeleccionado = e.target.value;
-                                cambiarInscrito(inscritoSeleccionado);
+                                cambiarInscrito({campo: inscritoSeleccionado});
                                 }} 
                             >
                                     
@@ -940,7 +1008,7 @@ useEffect(()=>{
 
                 <NumericInput 
                     className="form-control" 
-                    value={ porcentaje_conyugue.campo } 
+                    value={ porcentaje_conyugue } 
                     min={ 0 } 
                     max={ 100 } 
                     step={ 1 } 

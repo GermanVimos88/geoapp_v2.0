@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faHouseDamage } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -34,13 +34,10 @@ const OpcionesUso = () => {
         }
     }
 
-   
-    
-    const baseUrl='http://apicatastro/opcion/?id='+id;
+       
+    const baseUrl='http://localhost/apicatastro/index.php/opcion/?id='+id; //'http://f0783168.xsph.ru/index.php/opcion/?id='+id;
     const [data, setData]=useState();    
         
-    
-       
     const [idopciones, cambiarIdOpciones] = useState ({campo: '', valido: null});
     const [clave_predio, cambiarClavePredio] = useState ({campo: '', valido: null});
 
@@ -102,7 +99,7 @@ useEffect(()=>{
 
     return (
         <main>
-               <h1><b>Opciones de Uso:</b></h1> 
+               <h1><b>Opciones de Uso: <FontAwesomeIcon icon={faHouseDamage}/></b></h1> 
               <br/>
               <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>                
               <br/>

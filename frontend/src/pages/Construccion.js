@@ -1,12 +1,12 @@
 import React, {useState , useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
-import {Formulario, Label, ContenedorTerminos, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError} from './elementos/Formularios';
+import {Formulario} from './elementos/Formularios';
 import '../css/estilos.css';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import { faClipboardList, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCity, faClipboardList, faEdit, faTrashAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
@@ -17,13 +17,9 @@ const cookies = new Cookies();
 
 
 const Construccion = () => {
-       
-   
 
-    const location = useLocation();
-  
-    const path = location.pathname
-    
+    const location = useLocation();  
+    const path = location.pathname    
     var id = ''
     var clave = ''
 
@@ -38,11 +34,8 @@ const Construccion = () => {
         }
         }
     }
-
     
-
-
-    const baseUrl='http://apicatastro/construccion/?id='+id;
+    const baseUrl= 'http://localhost/apicatastro/index.php/construccion/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/construccion/?id='+id;// http://f0783168.xsph.ru/index.php/construccion/?id='+id
     //const urlInsertar = 'http://apicatastro/obras/nuevo?id=';
 
     const [data, setData]=useState([]);    
@@ -142,10 +135,62 @@ const peticionGet=async()=>{
     
 }
 
-const postConstruccion=async()=>{       
-        
+const postConstruccion=async()=>{ 
+    const construccion_nuevo = {        
+        clave_predio:clave,//clave_predio.campo,
+        idubicacion: id,//idubicacion.campo,
+        numero_bloque: numero_bloque.campo,
+        numero_piso: numero_piso.campo,
+        numero_unidad: numero_unidad.campo,
+        nivel_piso: nivel_piso.campo,
+        condicion_fisica: condicion_fisica.campo,
+        uso_constructivo: uso_constructivo.campo,
+        valor_cultural: valor_cultural.campo,
+        area_construccion: area_construccion.campo,
+        anio_construccion: anio_construccion.campo,
+        anio_restauracion: anio_restauracion.campo,
+        estado_conservacion: estado_conservacion.campo,
+        mamposteria_soportante: mamposteria_soportante.campo,
+        columnas: columnas.campo,
+        vigas: vigas.campo,
+        entrepiso: entrepiso.campo,
+        cubierta_entrepiso: cubierta_entrepiso.campo,
+        gradas: gradas.campo,
+        contrapiso: contrapiso.campo,
+        paredes: paredes.campo,
+        enlucido_paredes: enlucido_paredes.campo,
+        enlucido_tumbados: enlucido_tumbados.campo,
+        revestimiento_pared_interior: revestimiento_pared_interior.campo,
+        revestimiento_pared_exterior: revestimiento_pared_exterior.campo,
+        revestimiento_cubierta: revestimiento_cubierta.campo,
+        tumbados: tumbados.campo,
+        ventanas: ventanas.campo,
+        vidrios: vidrios.campo,
+        puertas: puertas.campo,
+        closets: closets.campo,
+        pisos: pisos.campo,
+        proteccion_ventanas: proteccion_ventanas.campo,
+        gradas_acabados: gradas_acabados.campo,
+        clasificacion_vivienda: clasificacion_vivienda.campo,
+        tipo_vivienda: tipo_vivienda.campo,
+        condicion_ocupacion: condicion_ocupacion.campo,
+        acabado_piso: acabado_piso.campo,
+        estado_piso: estado_piso.campo,
+        numero_hogares: numero_hogares.campo,
+        numero_habitantes: numero_habitantes.campo,
+        numero_habitaciones: numero_habitaciones.campo,
+        numero_dormitorios: numero_dormitorios.campo,
+        espacios_aseo_duchas: espacios_aseo_duchas.campo,
+        tenencia_vivienda: tenencia_vivienda.campo,
+        telefono_convencional: telefono_convencional.campo,
+        cantidad_celulares: cantidad_celulares.campo,
+        servicio_internet: servicio_internet.campo,
+        total_propiedad_exclusiva: total_propiedad_exclusiva.campo,
+        total_propiedad_comunal: total_propiedad_comunal.campo,
+        alicuota_porcentaje: alicuota_porcentaje.campo
+    }   
     
-    await axios.post(baseUrl,construccionSeleccionada)
+    await axios.post('http://localhost/apicatastro/index.php/construccion/nuevo', construccion_nuevo)
     .then(response=>{
         setData(data.concat(response.data));
         abrirCerrarModalInsertar();
@@ -156,16 +201,64 @@ const postConstruccion=async()=>{
 }
 
 const putConstruccion=async()=>{
+    const cons = {        
+        clave_predio:clave_predio.campo,//
+        idubicacion: idubicacion.campo,//
+        numero_bloque: numero_bloque.campo,
+        numero_piso: numero_piso.campo,
+        numero_unidad: numero_unidad.campo,
+        nivel_piso: nivel_piso.campo,
+        condicion_fisica: condicion_fisica.campo,
+        uso_constructivo: uso_constructivo.campo,
+        valor_cultural: valor_cultural.campo,
+        area_construccion: area_construccion.campo,
+        anio_construccion: anio_construccion.campo,
+        anio_restauracion: anio_restauracion.campo,
+        estado_conservacion: estado_conservacion.campo,
+        mamposteria_soportante: mamposteria_soportante.campo,
+        columnas: columnas.campo,
+        vigas: vigas.campo,
+        entrepiso: entrepiso.campo,
+        cubierta_entrepiso: cubierta_entrepiso.campo,
+        gradas: gradas.campo,
+        contrapiso: contrapiso.campo,
+        paredes: paredes.campo,
+        enlucido_paredes: enlucido_paredes.campo,
+        enlucido_tumbados: enlucido_tumbados.campo,
+        revestimiento_pared_interior: revestimiento_pared_interior.campo,
+        revestimiento_pared_exterior: revestimiento_pared_exterior.campo,
+        revestimiento_cubierta: revestimiento_cubierta.campo,
+        tumbados: tumbados.campo,
+        ventanas: ventanas.campo,
+        vidrios: vidrios.campo,
+        puertas: puertas.campo,
+        closets: closets.campo,
+        pisos: pisos.campo,
+        proteccion_ventanas: proteccion_ventanas.campo,
+        gradas_acabados: gradas_acabados.campo,
+        clasificacion_vivienda: clasificacion_vivienda.campo,
+        tipo_vivienda: tipo_vivienda.campo,
+        condicion_ocupacion: condicion_ocupacion.campo,
+        acabado_piso: acabado_piso.campo,
+        estado_piso: estado_piso.campo,
+        numero_hogares: numero_hogares.campo,
+        numero_habitantes: numero_habitantes.campo,
+        numero_habitaciones: numero_habitaciones.campo,
+        numero_dormitorios: numero_dormitorios.campo,
+        espacios_aseo_duchas: espacios_aseo_duchas.campo,
+        tenencia_vivienda: tenencia_vivienda.campo,
+        telefono_convencional: telefono_convencional.campo,
+        cantidad_celulares: cantidad_celulares.campo,
+        servicio_internet: servicio_internet.campo,
+        total_propiedad_exclusiva: total_propiedad_exclusiva.campo,
+        total_propiedad_comunal: total_propiedad_comunal.campo,
+        alicuota_porcentaje: alicuota_porcentaje.campo
+    }   
           
     
-    await axios.put('http://apicatastro/construccion/actualizar?id='+construccionSeleccionada.id, construccionSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
+    await axios.put('https://cheerful-marzipan-12e313.netlify.app/construccion/actualizar?id='+id_construccion.campo, cons)    //f, {params:{id: predioSeleccionado.id}})
     .then(response=>{
-        var dataNueva=data;
-        dataNueva.map(predio=>{
         
-
-        })
-        setData(dataNueva); 
 
         abrirCerrarModalEditar();
         peticionGet();
@@ -175,9 +268,9 @@ const putConstruccion=async()=>{
 }
 
 const deleteConstruccion=async()=>{
-    await axios.delete('http://apicatastro/construccion/eliminar?id='+construccionSeleccionada.id)
+    await axios.delete('https://cheerful-marzipan-12e313.netlify.app/construccion/eliminar?id='+id_construccion.campo)
     .then(response=>{
-        setData(data.filter(predio=>predio.idpredio!==construccionSeleccionada.id))
+        setData(data.filter(predio=>predio.idpredio!==id_construccion.campo))
         abrirCerrarModalEliminar();
         peticionGet();
     })
@@ -191,7 +284,7 @@ const seleccionarConstruccion=(construccion, caso)=>{
     //setInvestigacionSeleccionada(investigacion);
     cambiarIdConstruccion({campo:construccion.idconstruccion, valido: true});
     cambiarClavePredio({campo:construccion.clave_predio, valido: true});
-    cambiarIdUbicacion({campo:construccion.idubicacion, valido: true});//CONFIRMAR
+    cambiarIdUbicacion({campo:construccion.idubicacion, valido: true});
     cambiarNumeroBloque({campo:construccion.numero_bloque, valido: true});
     cambiarNumeroPiso({campo:construccion.numero_piso, valido: true});
     cambiarNumeroUnidad({campo:construccion.numero_unidad, valido: true});
@@ -256,8 +349,8 @@ const seleccionarConstruccion=(construccion, caso)=>{
 const nuevoFormulario=()=>{
        
     cambiarIdConstruccion({campo: '', valido: null});
-    cambiarClavePredio({campo:'', valido: null});
-    cambiarIdUbicacion({campo:'', valido: null});
+    //cambiarClavePredio({campo:'', valido: null});
+    //cambiarIdUbicacion({campo:'', valido: null});
     cambiarNumeroBloque({campo:'', valido: null});
     cambiarNumeroPiso({campo:'', valido: null});
     cambiarNumeroUnidad({campo:'', valido: null});
@@ -340,17 +433,17 @@ useEffect(()=>{
 
     return (
         <main>
-            <h1><b>Características de Construcción 🏗</b></h1> 
+            <h1><b>Características de Construcción <FontAwesomeIcon icon={faCity}/></b></h1> 
             <br/>
-            <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>            
+            <label>Clave Catastral: <b>{clave}</b></label> <td> </td>            
             <br/>            
             <center>
-                <button class="left" className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva construcción 📤</button> 
+                <button class="left" className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva construcción <FontAwesomeIcon icon={faUpload}/></button> 
             </center>
             
             <Formulario action="" onSubmit={onSubmit}>
             
-            <div class="center-block fix-width scroll-inner" style={{textAlign: 'center'}}> 
+            <div class="center-block fix-width scroll-inner" style={{textAlign: 'center', scale: "88%", marginLeft: '-8rem'}}> 
                                             
                 <table className="table table-striped table-hover">
 	            
@@ -451,7 +544,8 @@ useEffect(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(construccion=>(
+                        {Array.isArray(data)
+                            ?data.map(construccion=>(
                                 
                                 <tr key={construccion.idconstruccion}>
                                     
@@ -534,7 +628,7 @@ useEffect(()=>{
                                     </td>
                                 </tr>
                             
-                        ))}
+                        )):null}
                         
                     </tbody>                    
                 </table>
@@ -545,38 +639,26 @@ useEffect(()=>{
 
             <Modal isOpen={modalInsertar}>
                             
-                        <ModalHeader><b>Insertar nueva construcción (características)</b></ModalHeader>
+                        <ModalHeader><b>Insertar nueva construcción y características</b></ModalHeader>
                             <ModalBody>
 
-
-                            <div className="form-group">                
-
-                                <label htmlFor="id">ID Construcción: </label>
-                                <br/>
-                                <input type="text" className="form-control" name="id" id="id" readOnly /> 
-                                <br/>
-                                <br/>
-                                                
+                            <div className="form-group">                                                                                 
                                 <center>
-                                
-                                
                                 <div id="contenedor">
                                 <h4><b>Clave Bloque:</b></h4>
-                                <hr/>
-                                    
+                                <hr/>                                    
                                         <p>
-                                            <tr>    
-                                            
+                                            <tr>                                                
                                                 <td>No. Bloque:</td>
                                                 <td>
                                                 <select 
                                                     className="custom-select"
                                                     id="bloque" 
                                                     name="bloque" 
-                                                    value = {numero_bloque}
+                                                    value = {numero_bloque.campo}
                                                     onChange = {(e) => {
                                                     const bloqueSeleccionada = e.target.value;
-                                                    cambiarNumeroBloque(bloqueSeleccionada);
+                                                    cambiarNumeroBloque({campo: bloqueSeleccionada});
                                                     }}
                                                 >
                                                     
@@ -605,10 +687,10 @@ useEffect(()=>{
                                                         id="piso" 
                                                         name="piso" 
                                                         
-                                                        value = {numero_piso}
+                                                        value = {numero_piso.campo}
                                                         onChange = {(e) => {
                                                         const pisoSeleccionado = e.target.value;
-                                                        cambiarNumeroPiso(pisoSeleccionado);
+                                                        cambiarNumeroPiso({campo: pisoSeleccionado});
                                                         }}
                                                     >
                                                         
@@ -636,10 +718,10 @@ useEffect(()=>{
                                                         className="custom-select"
                                                         id="unidad" 
                                                         name="unidad" 
-                                                        value = {numero_unidad}
+                                                        value = {numero_unidad.campo}
                                                         onChange = {(e) => {
                                                         const unidadSeleccionada = e.target.value;
-                                                        cambiarNumeroUnidad(unidadSeleccionada);
+                                                        cambiarNumeroUnidad({campo: unidadSeleccionada});
                                                         }}
                                                     >
                                                     
@@ -675,10 +757,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="nivel_piso" 
                                                             name="nivel_piso" 
-                                                            value = {nivel_piso}
+                                                            value = {nivel_piso.campo}
                                                             onChange = {(e) => {
                                                             const nivelPisoSeleccionado = e.target.value;
-                                                            cambiarNivelPiso(nivelPisoSeleccionado);
+                                                            cambiarNivelPiso({campo: nivelPisoSeleccionado});
                                                             }}
                                                         >
 
@@ -699,10 +781,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="condicion_fisica" 
                                                             name="condicion_fisica" 
-                                                            value = {condicion_fisica}
+                                                            value = {condicion_fisica.campo}
                                                             onChange = {(e) => {
                                                             const condicionSeleccionada = e.target.value;
-                                                            cambiarCondicionFisica(condicionSeleccionada);
+                                                            cambiarCondicionFisica({campo: condicionSeleccionada});
                                                             }}
 
                                                         >
@@ -729,10 +811,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="uso" 
                                                             name="uso" 
-                                                            value = {uso_constructivo}
+                                                            value = {uso_constructivo.campo}
                                                             onChange = {(e) => {
                                                             const usoConstructivoSeleccionado = e.target.value;
-                                                            cambiarUsoConstructivo(usoConstructivoSeleccionado);
+                                                            cambiarUsoConstructivo({campo: usoConstructivoSeleccionado});
                                                             }}
                                                         >
 
@@ -810,10 +892,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="valor_cultural" 
                                                             name="valor_cultural" 
-                                                            value = {valor_cultural}
+                                                            value = {valor_cultural.campo}
                                                             onChange = {(e) => {
                                                             const valorCulturalSeleccionado = e.target.value;
-                                                            cambiarValorCultural(valorCulturalSeleccionado);
+                                                            cambiarValorCultural({campo: valorCulturalSeleccionado});
                                                             }}
                                                         >
 
@@ -852,10 +934,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="anio_construccion" 
                                                             name="anio_construccion"
-                                                            value = {anio_construccion}
+                                                            value = {anio_construccion.campo}
                                                             onChange = {(e) => {
                                                             const anioConstruccionSeleccionado = e.target.value;
-                                                            cambiarAnioConstruccion(anioConstruccionSeleccionado);
+                                                            cambiarAnioConstruccion({campo: anioConstruccionSeleccionado});
                                                             }}
                                                         >
                                                         
@@ -959,10 +1041,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="anio_restauracion" 
                                                             name="anio_restauracion"
-                                                            value = {anio_restauracion}
+                                                            value = {anio_restauracion.campo}
                                                             onChange = {(e) => {
                                                             const anioRestauracionSeleccionado = e.target.value;
-                                                            cambiarAnioRestauracion(anioRestauracionSeleccionado);
+                                                            cambiarAnioRestauracion({campo: anioRestauracionSeleccionado});
                                                             }}
                                                         >
                                                         
@@ -1069,10 +1151,10 @@ useEffect(()=>{
                                                                 class="custom-select"
                                                                 id="conservacion" 
                                                                 name="conservacion" 
-                                                                value = {estado_conservacion}
+                                                                value = {estado_conservacion.campo}
                                                                 onChange = {(e) => {
                                                                 const estadoConservacionSeleccionado = e.target.value;
-                                                                cambiarEstadoConservacion(estadoConservacionSeleccionado);
+                                                                cambiarEstadoConservacion({campo: estadoConservacionSeleccionado});
                                                                 }}
                                                             >
                                                                 
@@ -1107,10 +1189,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="mamposteria" 
                                                                 name="mamposteria" 
-                                                                value = {mamposteria_soportante}
+                                                                value = {mamposteria_soportante.campo}
                                                                 onChange = {(e) => {
                                                                 const mamposteriaSoportanteSeleccionado = e.target.value;
-                                                                cambiarMamposteriaSoportante(mamposteriaSoportanteSeleccionado);
+                                                                cambiarMamposteriaSoportante({campo: mamposteriaSoportanteSeleccionado});
                                                                 }}
                                                             >
                                                                                         
@@ -1137,10 +1219,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="columnas" 
                                                                 name="columnas" 
-                                                                value = {columnas}
+                                                                value = {columnas.campo}
                                                                 onChange = {(e) => {
                                                                 const columnasSeleccionadas = e.target.value;
-                                                                cambiarColumnas(columnasSeleccionadas);
+                                                                cambiarColumnas({campo: columnasSeleccionadas});
                                                                 }}
                                                             >
                                                                                             
@@ -1170,10 +1252,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="vigas" 
                                                                 name="vigas" 
-                                                                value = {vigas}
+                                                                value = {vigas.campo}
                                                                 onChange = {(e) => {
                                                                 const vigasSeleccionadas = e.target.value;
-                                                                cambiarVigas(vigasSeleccionadas);
+                                                                cambiarVigas({campo: vigasSeleccionadas});
                                                                 }}
                                                             >
                                                 
@@ -1200,10 +1282,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="entrepiso" 
                                                                 name="entrepiso" 
-                                                                value = {entrepiso}
+                                                                value = {entrepiso.campo}
                                                                 onChange = {(e) => {
                                                                 const entrepisoSeleccionadas = e.target.value;
-                                                                cambiarEntrepiso(entrepisoSeleccionadas);
+                                                                cambiarEntrepiso({campo: entrepisoSeleccionadas});
                                                                 }}
                                                             >
                                                 
@@ -1231,10 +1313,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="cubierta_piso" 
                                                                 name="cubierta_piso" 
-                                                                value = {cubierta_entrepiso}
+                                                                value = {cubierta_entrepiso.campo}
                                                                 onChange = {(e) => {
                                                                 const cubiertaEntrepisoSeleccionada = e.target.value;
-                                                                cambiarCubiertaEntrepiso(cubiertaEntrepisoSeleccionada);
+                                                                cambiarCubiertaEntrepiso({campo: cubiertaEntrepisoSeleccionada});
                                                                 }}
                                                             >
                                                 
@@ -1262,10 +1344,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="gradas" 
                                                                 name="gradas" 
-                                                                value = {gradas}
+                                                                value = {gradas.campo}
                                                                 onChange = {(e) => {
                                                                 const gradasSeleccionadas = e.target.value;
-                                                                cambiarGradas(gradasSeleccionadas);
+                                                                cambiarGradas({campo: gradasSeleccionadas});
                                                                 }}
                                                             >
                                                 
@@ -1296,10 +1378,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="contrapiso" 
                                                                 name="contrapiso" 
-                                                                value = {contrapiso}
+                                                                value = {contrapiso.campo}
                                                                 onChange = {(e) => {
                                                                 const contrapisoSeleccionado = e.target.value;
-                                                                cambiarContrapiso(contrapisoSeleccionado);
+                                                                cambiarContrapiso({campo: contrapisoSeleccionado});
                                                                 }}
                                                             >
                                                                                         
@@ -1324,10 +1406,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="paredes" 
                                                                 name="paredes" 
-                                                                value = {paredes}
+                                                                value = {paredes.campo}
                                                                 onChange = {(e) => {
                                                                 const paredesSeleccionadas = e.target.value;
-                                                                cambiarParedes(paredesSeleccionadas);
+                                                                cambiarParedes({campo: paredesSeleccionadas});
                                                                 }}
                                                             >
                                                                                         
@@ -1360,10 +1442,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="enlucido_paredes" 
                                                                 name="enlucido_paredes" 
-                                                                value = {enlucido_paredes}
+                                                                value = {enlucido_paredes.campo}
                                                                 onChange = {(e) => {
                                                                 const enlucidoParedesSeleccionadas = e.target.value;
-                                                                cambiarEnlucidoParedes(enlucidoParedesSeleccionadas);
+                                                                cambiarEnlucidoParedes({campo: enlucidoParedesSeleccionadas});
                                                                 }}
                                                             >
                                                 
@@ -1385,10 +1467,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="enlucido_tumbados" 
                                                                 name="enlucido_tumbados" 
-                                                                value = {enlucido_tumbados}
+                                                                value = {enlucido_tumbados.campo}
                                                                 onChange = {(e) => {
                                                                 const enlucidoTumbadosSeleccionadas = e.target.value;
-                                                                cambiarEnlucidoTumbados(enlucidoTumbadosSeleccionadas);
+                                                                cambiarEnlucidoTumbados({campo: enlucidoTumbadosSeleccionadas});
                                                                 }}
                                                             >
                                                 
@@ -1419,10 +1501,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="rev_interior" 
                                                                 name="rev_interior" 
-                                                                value = {revestimiento_pared_interior}
+                                                                value = {revestimiento_pared_interior.campo}
                                                                 onChange = {(e) => {
                                                                 const paredInteriorSeleccionada = e.target.value;
-                                                                cambiarRevestimientoParedInterior(paredInteriorSeleccionada);
+                                                                cambiarRevestimientoParedInterior({campo: paredInteriorSeleccionada});
                                                                 }}
                                                                 >
                                                         
@@ -1453,10 +1535,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="rev_exterior" 
                                                                 name="rev_exterior" 
-                                                                value = {revestimiento_pared_exterior}
+                                                                value = {revestimiento_pared_exterior.campo}
                                                                 onChange = {(e) => {
                                                                 const paredExteriorSeleccionada = e.target.value;
-                                                                cambiarRevestimientoParedExterior(paredExteriorSeleccionada);
+                                                                cambiarRevestimientoParedExterior({campo: paredExteriorSeleccionada});
                                                                 }}
                                                             >
 
@@ -1486,10 +1568,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="rev_cubierta" 
                                                                 name="rev_cubierta" 
-                                                                value = {revestimiento_cubierta}
+                                                                value = {revestimiento_cubierta.campo}
                                                                 onChange = {(e) => {
                                                                 const cubiertaSeleccionada = e.target.value;
-                                                                cambiarRevestimientoCubierta(cubiertaSeleccionada);
+                                                                cambiarRevestimientoCubierta({campo: cubiertaSeleccionada});
                                                                 }}
                                                             >
 
@@ -1525,10 +1607,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="tumbados" 
                                                                 name="tumbados" 
-                                                                value = {tumbados}
+                                                                value = {tumbados.campo}
                                                                 onChange = {(e) => {
                                                                 const tumbadosSeleccionados = e.target.value;
-                                                                cambiarTumbados(tumbadosSeleccionados);
+                                                                cambiarTumbados({campo: tumbadosSeleccionados});
                                                                 }}
                                                             >
 
@@ -1559,10 +1641,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="ventanas" 
                                                                 name="ventanas" 
-                                                                value = {ventanas}
+                                                                value = {ventanas.campo}
                                                                 onChange = {(e) => {
                                                                 const ventanasSeleccionadas = e.target.value;
-                                                                cambiarVentanas(ventanasSeleccionadas);
+                                                                cambiarVentanas({campo: ventanasSeleccionadas});
                                                                 }}
                                                             >
 
@@ -1589,10 +1671,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="vidrios" 
                                                                 name="vidrios" 
-                                                                value = {vidrios}
+                                                                value = {vidrios.campo}
                                                                 onChange = {(e) => {
                                                                 const vidrioSeleccionado = e.target.value;
-                                                                cambiarVidrios(vidrioSeleccionado);
+                                                                cambiarVidrios({campo: vidrioSeleccionado});
                                                                 }} 
                                                             >
                                                             
@@ -1617,10 +1699,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="puertas" 
                                                                 name="puertas" 
-                                                                value = {puertas}
+                                                                value = {puertas.campo}
                                                                 onChange = {(e) => {
                                                                 const puertasSeleccionadas = e.target.value;
-                                                                cambiarPuertas(puertasSeleccionadas);
+                                                                cambiarPuertas({campo: puertasSeleccionadas});
                                                                 }}
                                                             >
 
@@ -1656,10 +1738,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="closets" 
                                                                 name="closets" 
-                                                                value = {closets}
+                                                                value = {closets.campo}
                                                                 onChange = {(e) => {
                                                                 const closetsSeleccionados = e.target.value;
-                                                                cambiarClosets(closetsSeleccionados);
+                                                                cambiarClosets({campo: closetsSeleccionados});
                                                                 }}
                                                             >
 
@@ -1681,10 +1763,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="pisos" 
                                                                 name="pisos" 
-                                                                value = {pisos}
+                                                                value = {pisos.campo}
                                                                 onChange = {(e) => {
                                                                 const pisosSeleccionados = e.target.value;
-                                                                cambiarPisos(pisosSeleccionados);
+                                                                cambiarPisos({campo: pisosSeleccionados});
                                                                 }}
                                                             >
                                                             
@@ -1722,10 +1804,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="gradas_acabados" 
                                                                 name="gradas_acabados" 
-                                                                value = {gradas_acabados}
+                                                                value = {gradas_acabados.campo}
                                                                 onChange = {(e) => {
                                                                 const gradasAcabadosSeleccionados = e.target.value;
-                                                                cambiarGradasAcabados(gradasAcabadosSeleccionados);
+                                                                cambiarGradasAcabados({campo: gradasAcabadosSeleccionados});
                                                                 }}
                                                             >
 
@@ -1762,10 +1844,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="ventanas_proteccion" 
                                                                 name="ventanas_proteccion" 
-                                                                value = {proteccion_ventanas}
+                                                                value = {proteccion_ventanas.campo}
                                                                 onChange = {(e) => {
                                                                 const proteccionVentanasSeleccionadas = e.target.value;
-                                                                cambiarProteccion_ventanas(proteccionVentanasSeleccionadas);
+                                                                cambiarProteccion_ventanas({campo: proteccionVentanasSeleccionadas});
                                                                 }}
                                                             >
 
@@ -1796,10 +1878,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="clasificacion" 
                                                                 name="clasificacion" 
-                                                                value = {clasificacion_vivienda}
+                                                                value = {clasificacion_vivienda.campo}
                                                                 onChange = {(e) => {
                                                                 const clasificacionViviendaSeleccionada = e.target.value;
-                                                                cambiarClasificacionVivienda(clasificacionViviendaSeleccionada);
+                                                                cambiarClasificacionVivienda({campo: clasificacionViviendaSeleccionada});
                                                                 }}
                                                             >
                                                         
@@ -1832,10 +1914,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="tipo_vivienda" 
                                                                 name="tipo_vivienda" 
-                                                                value = {tipo_vivienda}
+                                                                value = {tipo_vivienda.campo}
                                                                 onChange = {(e) => {
                                                                 const tipoViviendaSeleccionada = e.target.value;
-                                                                cambiarTipoVivienda(tipoViviendaSeleccionada);
+                                                                cambiarTipoVivienda({campo: tipoViviendaSeleccionada});
                                                                 }}
                                                             >
 
@@ -1857,10 +1939,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="ocupacion" 
                                                                 name="ocupacion" 
-                                                                value = {condicion_ocupacion}
+                                                                value = {condicion_ocupacion.campo}
                                                                 onChange = {(e) => {
                                                                 const ocupacionSeleccionada = e.target.value;
-                                                                cambiarCondicionOcupacion(ocupacionSeleccionada);
+                                                                cambiarCondicionOcupacion({campo: ocupacionSeleccionada});
                                                                 }}
                                                             >
 
@@ -1882,10 +1964,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="piso_acabado" 
                                                                 name="piso_acabado" 
-                                                                value = {acabado_piso}
+                                                                value = {acabado_piso.campo}
                                                                 onChange = {(e) => {
                                                                 const acabadoPisoSeleccionado = e.target.value;
-                                                                cambiarAcabadoPiso(acabadoPisoSeleccionado);
+                                                                cambiarAcabadoPiso({campo: acabadoPisoSeleccionado});
                                                                 }}
                                                             >
 
@@ -1907,10 +1989,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="piso_estado" 
                                                                 name="piso_estado" 
-                                                                value = {estado_piso}
+                                                                value = {estado_piso.campo}
                                                                 onChange = {(e) => {
                                                                 const estadoPisoSeleccionado = e.target.value;
-                                                                cambiarEstadoPiso(estadoPisoSeleccionado);
+                                                                cambiarEstadoPiso({campo: estadoPisoSeleccionado});
                                                                 }}
                                                             >
 
@@ -1932,24 +2014,14 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="hogares" 
                                                                 name="hogares" 
-                                                                value = {numero_hogares}
+                                                                value = {numero_hogares.campo}
                                                                 onChange = {(e) => {
                                                                 const hogaresSeleccionados = e.target.value;
-                                                                cambiarNumeroHogares(hogaresSeleccionados);
+                                                                cambiarNumeroHogares({campo: hogaresSeleccionados});
                                                                 }}
                                                             >
-
+                                                  
                                                             
-                                                            {   
-                                                            
-                                                                /*  EVALUAR FUNCIONAMIENTO
-                                                            () => {for (let i = 0; i<20; i++){
-                                                                echo `<option value={i}>{i}</option>`;
-
-                                                                }}
-
-                                                                */
-                                                            }
                                                             
                                                             <option value="">-------------</option>
                                                             <option value="0">0</option>
@@ -1988,10 +2060,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="habitantes" 
                                                                 name="habitantes" 
-                                                                value = {numero_habitantes}
+                                                                value = {numero_habitantes.campo}
                                                                 onChange = {(e) => {
                                                                 const habitantesSeleccionados = e.target.value;
-                                                                cambiarNumeroHabitantes(habitantesSeleccionados);
+                                                                cambiarNumeroHabitantes({campo: habitantesSeleccionados});
                                                                 }}
                                                             >
 
@@ -2031,10 +2103,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="habitaciones" 
                                                                 name="habitaciones" 
-                                                                value = {numero_habitaciones}
+                                                                value = {numero_habitaciones.campo}
                                                                 onChange = {(e) => {
                                                                 const habitacionesSeleccionadas = e.target.value;
-                                                                cambiarNumeroHabitaciones(habitacionesSeleccionadas);
+                                                                cambiarNumeroHabitaciones({campo: habitacionesSeleccionadas});
                                                                 }}
                                                             >
 
@@ -2074,10 +2146,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="dormitorios" 
                                                                 name="dormitorios" 
-                                                                value = {numero_dormitorios}
+                                                                value = {numero_dormitorios.campo}
                                                                 onChange = {(e) => {
                                                                 const dormitoriosSeleccionados = e.target.value;
-                                                                cambiarNumeroDormitorios(dormitoriosSeleccionados);
+                                                                cambiarNumeroDormitorios({campo: dormitoriosSeleccionados});
                                                                 }}
                                                             >
 
@@ -2117,10 +2189,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="duchas" 
                                                                 name="duchas" 
-                                                                value = {espacios_aseo_duchas}
+                                                                value = {espacios_aseo_duchas.campo}
                                                                 onChange = {(e) => {
                                                                 const duchasSeleccionadas = e.target.value;
-                                                                cambiarEspaciosAseoDuchas(duchasSeleccionadas);
+                                                                cambiarEspaciosAseoDuchas({campo: duchasSeleccionadas});
                                                                 }}
                                                             >
 
@@ -2162,10 +2234,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="tenencia_vivienda" 
                                                                 name="tenencia_vivienda" 
-                                                                value = {tenencia_vivienda}
+                                                                value = {tenencia_vivienda.campo}
                                                                 onChange = {(e) => {
                                                                 const tenenciaViviendaSeleccionada = e.target.value;
-                                                                cambiarTenenciaVivienda(tenenciaViviendaSeleccionada);
+                                                                cambiarTenenciaVivienda({campo: tenenciaViviendaSeleccionada});
                                                                 }}
                                                             >
 
@@ -2192,10 +2264,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="telf_convencional" 
                                                                 name="telf_convencional" 
-                                                                value = {telefono_convencional}
+                                                                value = {telefono_convencional.campo}
                                                                 onChange = {(e) => {
                                                                 const telefonoSeleccionado = e.target.value;
-                                                                cambiarTelefonoConvencional(telefonoSeleccionado);
+                                                                cambiarTelefonoConvencional({campo: telefonoSeleccionado});
                                                                 }}
                                                             >
 
@@ -2217,10 +2289,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="celulares" 
                                                                 name="celulares" 
-                                                                value = {cantidad_celulares}
+                                                                value = {cantidad_celulares.campo}
                                                                 onChange = {(e) => {
                                                                 const celularSeleccionado = e.target.value;
-                                                                cambiarCantidadCelulares(celularSeleccionado);
+                                                                cambiarCantidadCelulares({campo: celularSeleccionado});
                                                                 }}
                                                             >
 
@@ -2261,10 +2333,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="internet" 
                                                                 name="internet" 
-                                                                value = {servicio_internet}
+                                                                value = {servicio_internet.campo}
                                                                 onChange = {(e) => {
                                                                 const internetSeleccionado = e.target.value;
-                                                                cambiarServicioInternet(internetSeleccionado);
+                                                                cambiarServicioInternet({campo: internetSeleccionado});
                                                                 }}
                                                             >
 
@@ -2301,29 +2373,18 @@ useEffect(()=>{
             <Modal isOpen={modalEditar}>
                 <ModalHeader><b>Editar Obra</b></ModalHeader>
                 <ModalBody>
-                            {
-                                //cambiarTipoInformante({campo: , valido: null}),         
-                                //cambiarApellidosInformante({campo: '', valido: null})
-                            }
-
-                                <div className="form-group">                
-
+                            
+                                <div className="form-group">
                                 <label htmlFor="id">ID Construcción: {id_construccion.campo}</label>
                                 <br/>
-                                <input type="text" className="form-control" name="id" id="id" value={id_construccion.campo} readOnly /> 
-                                <br/>
-                                <br/>
-                                                
+                                <br/>                                                
                                 <center>
-                                
-                                
                                 <div id="contenedor">
                                     <h4><b>Clave Bloque:</b></h4>
                                     <hr/>
                                     <br/>
-
                                         <p>
-                                            <tr>    
+                                            <tr>   
                                             
                                                 <td>No. Bloque:</td>
                                                 <td>
@@ -2331,10 +2392,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="bloque"
                                                     name="bloque" 
-                                                    value = {numero_bloque}
+                                                    value = {numero_bloque.campo}
                                                     onChange = {(e) => {
                                                     const bloqueSeleccionado = e.target.value;
-                                                    cambiarNumeroBloque(bloqueSeleccionado);
+                                                    cambiarNumeroBloque({campo: bloqueSeleccionado});
                                                 }} 
                                                 >
                                                                 
@@ -2365,10 +2426,10 @@ useEffect(()=>{
                                                         className="custom-select" 
                                                         id="piso"
                                                         name="piso" 
-                                                        value = {numero_piso}
+                                                        value = {numero_piso.campo}
                                                         onChange = {(e) => {
                                                         const pisoSeleccionado = e.target.value;
-                                                        cambiarNumeroPiso(pisoSeleccionado);
+                                                        cambiarNumeroPiso({campo: pisoSeleccionado});
                                                         }}
                                                     >
                                                     <option value={numero_piso.campo} selected>{numero_piso.campo}</option>    
@@ -2398,10 +2459,10 @@ useEffect(()=>{
                                                         className="custom-select" 
                                                         id="unidad" 
                                                         name="unidad" 
-                                                        value = {numero_unidad}
+                                                        value = {numero_unidad.campo}
                                                         onChange = {(e) => {
                                                         const unidadSeleccionada = e.target.value;
-                                                        cambiarNumeroUnidad(unidadSeleccionada);
+                                                        cambiarNumeroUnidad({campo: unidadSeleccionada});
                                                         }}
                                                     >
                                                     
@@ -2438,10 +2499,10 @@ useEffect(()=>{
                                                             className="custom-select" 
                                                             id="nivel_piso" 
                                                             name="nivel_piso" 
-                                                            value = {nivel_piso}
+                                                            value = {nivel_piso.campo}
                                                             onChange = {(e) => {
                                                             const nivelPisoSeleccionado = e.target.value;
-                                                            cambiarNivelPiso(nivelPisoSeleccionado);
+                                                            cambiarNivelPiso({campo: nivelPisoSeleccionado});
                                                             }}
                                                         >
 
@@ -2466,10 +2527,10 @@ useEffect(()=>{
                                                             className="custom-select" 
                                                             id="condicion_fisica"
                                                             name="condicion_fisica" 
-                                                            value = {condicion_fisica}
+                                                            value = {condicion_fisica.campo}
                                                             onChange = {(e) => {
                                                             const condicionSeleccionada = e.target.value;
-                                                            cambiarCondicionFisica(condicionSeleccionada);
+                                                            cambiarCondicionFisica({campo: condicionSeleccionada});
                                                             }}
                                                         >
 
@@ -2499,10 +2560,10 @@ useEffect(()=>{
                                                             className="custom-select" 
                                                             id="uso"
                                                             name="uso" 
-                                                            value = {uso_constructivo}
+                                                            value = {uso_constructivo.campo}
                                                             onChange = {(e) => {
                                                             const usoSeleccionado = e.target.value;
-                                                            cambiarUsoConstructivo(usoSeleccionado);
+                                                            cambiarUsoConstructivo({campo: usoSeleccionado});
                                                             }}
                                                         >
 
@@ -2584,10 +2645,10 @@ useEffect(()=>{
                                                             className="custom-select" 
                                                             id="valor_cultural" 
                                                             name="valor_cultural" 
-                                                            value = {valor_cultural}
+                                                            value = {valor_cultural.campo}
                                                             onChange = {(e) => {
                                                             const valorCulturalSeleccionado = e.target.value;
-                                                            cambiarValorCultural(valorCulturalSeleccionado);
+                                                            cambiarValorCultural({campo: valorCulturalSeleccionado});
                                                             }}
                                                         >
 
@@ -2630,10 +2691,10 @@ useEffect(()=>{
                                                             className="custom-select" 
                                                             id="anio_construccion" 
                                                             name="anio_construccion"
-                                                            value = {anio_construccion}
+                                                            value = {anio_construccion.campo}
                                                             onChange = {(e) => {
                                                             const anioConstruccionSeleccionado = e.target.value;
-                                                            cambiarAnioConstruccion(anioConstruccionSeleccionado);
+                                                            cambiarAnioConstruccion({campo: anioConstruccionSeleccionado});
                                                             }}
                                                         >
                                                         
@@ -2740,10 +2801,10 @@ useEffect(()=>{
                                                             className="custom-select"
                                                             id="anio_restauracion"
                                                             name="anio_restauracion"
-                                                            value = {anio_restauracion}
+                                                            value = {anio_restauracion.campo}
                                                             onChange = {(e) => {
                                                             const anioRestauracionSeleccionado = e.target.value;
-                                                            cambiarAnioRestauracion(anioRestauracionSeleccionado);
+                                                            cambiarAnioRestauracion({campo: anioRestauracionSeleccionado});
                                                             }}
                                                         >
                                                         
@@ -2851,10 +2912,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="conservacion"
                                                                 name="conservacion" 
-                                                                value = {estado_conservacion}
+                                                                value = {estado_conservacion.campo}
                                                                 onChange = {(e) => {
                                                                 const estadoConservacionSeleccionado = e.target.value;
-                                                                cambiarEstadoConservacion(estadoConservacionSeleccionado);
+                                                                cambiarEstadoConservacion({campo: estadoConservacionSeleccionado});
                                                                 }}
                                                             >
                                                                 
@@ -2890,10 +2951,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="mamposteria"
                                                                 name="mamposteria" 
-                                                                value = {mamposteria_soportante}
+                                                                value = {mamposteria_soportante.campo}
                                                                 onChange = {(e) => {
                                                                 const mamposteriaSeleccionada = e.target.value;
-                                                                cambiarMamposteriaSoportante(mamposteriaSeleccionada);
+                                                                cambiarMamposteriaSoportante({campo: mamposteriaSeleccionada});
                                                                 }}
                                                             >
                                                                                         
@@ -2921,10 +2982,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="columnas" 
                                                                 name="columnas" 
-                                                                value = {columnas}
+                                                                value = {columnas.campo}
                                                                 onChange = {(e) => {
                                                                 const columnasSeleccionadas = e.target.value;
-                                                                cambiarColumnas(columnasSeleccionadas);
+                                                                cambiarColumnas({campo: columnasSeleccionadas});
                                                                 }}
                                                             >
                                                                                             
@@ -2955,10 +3016,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="vigas" 
                                                                 name="vigas" 
-                                                                value = {vigas}
+                                                                value = {vigas.campo}
                                                                 onChange = {(e) => {
                                                                 const vigasSeleccionadas = e.target.value;
-                                                                cambiarVigas(vigasSeleccionadas);
+                                                                cambiarVigas({campo: vigasSeleccionadas});
                                                                 }}
                                                             >
                                                 
@@ -2986,10 +3047,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="entrepiso" 
                                                                 name="entrepiso"
-                                                                value = {entrepiso}
+                                                                value = {entrepiso.campo}
                                                                 onChange = {(e) => {
                                                                 const entrepisoSeleccionado = e.target.value;
-                                                                cambiarEntrepiso(entrepisoSeleccionado);
+                                                                cambiarEntrepiso({campo: entrepisoSeleccionado});
                                                                 }} 
                                                             >
                                                 
@@ -3018,10 +3079,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="cubierta_piso" 
                                                                 name="cubierta_piso" 
-                                                                value = {cubierta_entrepiso}
+                                                                value = {cubierta_entrepiso.campo}
                                                                 onChange = {(e) => {
                                                                 const cubiertaEntrepisoSeleccionado = e.target.value;
-                                                                cambiarCubiertaEntrepiso(cubiertaEntrepisoSeleccionado);
+                                                                cambiarCubiertaEntrepiso({campo: cubiertaEntrepisoSeleccionado});
                                                                 }} 
                                                             >
                                                 
@@ -3050,10 +3111,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="gradas" 
                                                                 name="gradas" 
-                                                                value = {gradas}
+                                                                value = {gradas.campo}
                                                                 onChange = {(e) => {
                                                                 const gradasSeleccionadas = e.target.value;
-                                                                cambiarGradas(gradasSeleccionadas);
+                                                                cambiarGradas({campo: gradasSeleccionadas});
                                                                 }} 
                                                             >
                                                 
@@ -3084,10 +3145,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="contrapiso" 
                                                                 name="contrapiso" 
-                                                                value = {contrapiso}
+                                                                value = {contrapiso.campo}
                                                                 onChange = {(e) => {
                                                                 const contrapisoSeleccionado = e.target.value;
-                                                                cambiarContrapiso(contrapisoSeleccionado);
+                                                                cambiarContrapiso({campo: contrapisoSeleccionado});
                                                                 }} 
                                                             >
                                                                                         
@@ -3113,10 +3174,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="paredes" 
                                                                 name="paredes" 
-                                                                value = {paredes}
+                                                                value = {paredes.campo}
                                                                 onChange = {(e) => {
                                                                 const paredesSeleccionadas = e.target.value;
-                                                                cambiarParedes(paredesSeleccionadas);
+                                                                cambiarParedes({campo: paredesSeleccionadas});
                                                                 }} 
                                                             >
                                                                                         
@@ -3150,10 +3211,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="enlucido_paredes" 
                                                                 name="enlucido_paredes" 
-                                                                value = {enlucido_paredes}
+                                                                value = {enlucido_paredes.campo}
                                                                 onChange = {(e) => {
                                                                 const enlucidoParedesSeleccionadas = e.target.value;
-                                                                cambiarEnlucidoParedes(enlucidoParedesSeleccionadas);
+                                                                cambiarEnlucidoParedes({campo: enlucidoParedesSeleccionadas});
                                                                 }} 
                                                             >
                                                 
@@ -3176,10 +3237,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="enlucido_tumbados" 
                                                                 name="enlucido_tumbados" 
-                                                                value = {enlucido_tumbados}
+                                                                value = {enlucido_tumbados.campo}
                                                                 onChange = {(e) => {
                                                                 const enlucidoTumbadosSeleccionadas = e.target.value;
-                                                                cambiarEnlucidoTumbados(enlucidoTumbadosSeleccionadas);
+                                                                cambiarEnlucidoTumbados({campo: enlucidoTumbadosSeleccionadas});
                                                                 }} 
                                                             >
                                                 
@@ -3210,10 +3271,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="rev_interior" 
                                                                 name="rev_interior" 
-                                                                value = {revestimiento_pared_interior}
+                                                                value = {revestimiento_pared_interior.campo}
                                                                 onChange = {(e) => {
                                                                 const revestimientoInteriorSeleccionado = e.target.value;
-                                                                cambiarRevestimientoParedInterior(revestimientoInteriorSeleccionado);
+                                                                cambiarRevestimientoParedInterior({campo: revestimientoInteriorSeleccionado});
                                                                 }} 
                                                             >
                                                         
@@ -3245,10 +3306,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="rev_exterior" 
                                                                 name="rev_exterior" 
-                                                                value = {revestimiento_pared_exterior}
+                                                                value = {revestimiento_pared_exterior.campo}
                                                                 onChange = {(e) => {
                                                                 const revestimientoExteriorSeleccionado = e.target.value;
-                                                                cambiarRevestimientoParedExterior(revestimientoExteriorSeleccionado);
+                                                                cambiarRevestimientoParedExterior({campo: revestimientoExteriorSeleccionado});
                                                                 }} 
                                                             >
 
@@ -3279,10 +3340,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="rev_cubierta" 
                                                                 name="rev_cubierta" 
-                                                                value = {revestimiento_cubierta}
+                                                                value = {revestimiento_cubierta.campo}
                                                                 onChange = {(e) => {
                                                                 const revestimientoCubiertaSeleccionado = e.target.value;
-                                                                cambiarRevestimientoCubierta(revestimientoCubiertaSeleccionado);
+                                                                cambiarRevestimientoCubierta({campo: revestimientoCubiertaSeleccionado});
                                                                 }} 
                                                             >
 
@@ -3319,10 +3380,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="tumbados" 
                                                                 name="tumbados" 
-                                                                value = {tumbados}
+                                                                value = {tumbados.campo}
                                                                 onChange = {(e) => {
                                                                 const tumbadosSeleccionados = e.target.value;
-                                                                cambiarTumbados(tumbadosSeleccionados);
+                                                                cambiarTumbados({campo: tumbadosSeleccionados});
                                                                 }} 
                                                             >
 
@@ -3354,10 +3415,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="ventanas" 
                                                                 name="ventanas" 
-                                                                value = {ventanas}
+                                                                value = {ventanas.campo}
                                                                 onChange = {(e) => {
                                                                 const ventanasSeleccionadas = e.target.value;
-                                                                cambiarVentanas(ventanasSeleccionadas);
+                                                                cambiarVentanas({campo: ventanasSeleccionadas});
                                                                 }} 
                                                             >
 
@@ -3385,10 +3446,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="vidrios" 
                                                                 name="vidrios" 
-                                                                value = {vidrios}
+                                                                value = {vidrios.campo}
                                                                 onChange = {(e) => {
                                                                 const vidrioSeleccionado = e.target.value;
-                                                                cambiarVidrios(vidrioSeleccionado);
+                                                                cambiarVidrios({campo: vidrioSeleccionado});
                                                                 }} 
                                                             >
 
@@ -3414,10 +3475,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="puertas" 
                                                                 name="puertas" 
-                                                                value = {puertas}
+                                                                value = {puertas.campo}
                                                                 onChange = {(e) => {
                                                                 const puertasSeleccionadas = e.target.value;
-                                                                cambiarPuertas(puertasSeleccionadas);
+                                                                cambiarPuertas({campo: puertasSeleccionadas});
                                                                 }}
                                                             >
 
@@ -3454,10 +3515,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="closets" 
                                                                 name="closets" 
-                                                                value = {closets}
+                                                                value = {closets.campo}
                                                                 onChange = {(e) => {
                                                                 const closetsSeleccionados = e.target.value;
-                                                                cambiarClosets(closetsSeleccionados);
+                                                                cambiarClosets({campo: closetsSeleccionados});
                                                                 }}
                                                             >
 
@@ -3480,10 +3541,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="pisos" 
                                                                 name="pisos" 
-                                                                value = {pisos}
+                                                                value = {pisos.campo}
                                                                 onChange = {(e) => {
                                                                 const pisosSeleccionados = e.target.value;
-                                                                cambiarPisos(pisosSeleccionados);
+                                                                cambiarPisos({campo: pisosSeleccionados});
                                                                 }}
                                                             >
                                                             
@@ -3522,10 +3583,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="gradas_acabados" 
                                                                 name="gradas_acabados" 
-                                                                value = {gradas_acabados}
+                                                                value = {gradas_acabados.campo}
                                                                 onChange = {(e) => {
                                                                 const gradasAcabadosSeleccionados = e.target.value;
-                                                                cambiarGradasAcabados(gradasAcabadosSeleccionados);
+                                                                cambiarGradasAcabados({campo: gradasAcabadosSeleccionados});
                                                                 }}
                                                             >
 
@@ -3563,10 +3624,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="ventanas_proteccion" 
                                                                 name="ventanas_proteccion" 
-                                                                value = {proteccion_ventanas}
+                                                                value = {proteccion_ventanas.campo}
                                                                 onChange = {(e) => {
                                                                 const proteccionVentanasSeleccionadas = e.target.value;
-                                                                cambiarProteccion_ventanas(proteccionVentanasSeleccionadas);
+                                                                cambiarProteccion_ventanas({campo: proteccionVentanasSeleccionadas});
                                                                 }}
                                                             >
 
@@ -3597,10 +3658,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="clasificacion" 
                                                                 name="clasificacion" 
-                                                                value = {clasificacion_vivienda}
+                                                                value = {clasificacion_vivienda.campo}
                                                                 onChange = {(e) => {
                                                                 const clasificacionViviendaSeleccionada = e.target.value;
-                                                                cambiarClasificacionVivienda(clasificacionViviendaSeleccionada);
+                                                                cambiarClasificacionVivienda({campo: clasificacionViviendaSeleccionada});
                                                                 }}
                                                             >
                                                         
@@ -3634,10 +3695,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="tipo_vivienda" 
                                                                 name="tipo_vivienda" 
-                                                                value = {tipo_vivienda}
+                                                                value = {tipo_vivienda.campo}
                                                                 onChange = {(e) => {
                                                                 const tipoViviendaSeleccionada = e.target.value;
-                                                                cambiarTipoVivienda(tipoViviendaSeleccionada);
+                                                                cambiarTipoVivienda({campo: tipoViviendaSeleccionada});
                                                                 }}
                                                             >
 
@@ -3660,10 +3721,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="ocupacion" 
                                                                 name="ocupacion" 
-                                                                value = {condicion_ocupacion}
+                                                                value = {condicion_ocupacion.campo}
                                                                 onChange = {(e) => {
                                                                 const ocupacionSeleccionada = e.target.value;
-                                                                cambiarCondicionOcupacion(ocupacionSeleccionada);
+                                                                cambiarCondicionOcupacion({campo: ocupacionSeleccionada});
                                                                 }}
                                                             >
 
@@ -3686,10 +3747,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="piso_acabado" 
                                                                 name="piso_acabado" 
-                                                                value = {acabado_piso}
+                                                                value = {acabado_piso.campo}
                                                                 onChange = {(e) => {
                                                                 const acabadoPisoSeleccionado = e.target.value;
-                                                                cambiarAcabadoPiso(acabadoPisoSeleccionado);
+                                                                cambiarAcabadoPiso({campo: acabadoPisoSeleccionado});
                                                                 }}
                                                             >
 
@@ -3711,10 +3772,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="piso_estado" 
                                                                 name="piso_estado" 
-                                                                value = {estado_piso}
+                                                                value = {estado_piso.campo}
                                                                 onChange = {(e) => {
                                                                 const estadoPisoSeleccionado = e.target.value;
-                                                                cambiarEstadoPiso(estadoPisoSeleccionado);
+                                                                cambiarEstadoPiso({campo: estadoPisoSeleccionado});
                                                                 }}
                                                             >
 
@@ -3737,10 +3798,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="hogares" 
                                                                 name="hogares" 
-                                                                value = {numero_hogares}
+                                                                value = {numero_hogares.campo}
                                                                 onChange = {(e) => {
                                                                 const hogaresSeleccionados = e.target.value;
-                                                                cambiarNumeroHogares(hogaresSeleccionados);
+                                                                cambiarNumeroHogares({campo: hogaresSeleccionados});
                                                                 }}
                                                             >
 
@@ -3794,10 +3855,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="habitantes" 
                                                                 name="habitantes" 
-                                                                value = {numero_habitantes}
+                                                                value = {numero_habitantes.campo}
                                                                 onChange = {(e) => {
                                                                 const habitantesSeleccionados = e.target.value;
-                                                                cambiarNumeroHabitantes(habitantesSeleccionados);
+                                                                cambiarNumeroHabitantes({campo: habitantesSeleccionados});
                                                                 }}
                                                             >
 
@@ -3838,10 +3899,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="habitaciones" 
                                                                 name="habitaciones"
-                                                                value = {numero_habitaciones}
+                                                                value = {numero_habitaciones.campo}
                                                                 onChange = {(e) => {
                                                                 const habitacionesSeleccionados = e.target.value;
-                                                                cambiarNumeroHabitaciones(habitacionesSeleccionados);
+                                                                cambiarNumeroHabitaciones({campo: habitacionesSeleccionados});
                                                                 }} 
                                                             >
 
@@ -3882,10 +3943,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="dormitorios" 
                                                                 name="dormitorios" 
-                                                                value = {numero_dormitorios}
+                                                                value = {numero_dormitorios.campo}
                                                                 onChange = {(e) => {
                                                                 const dormitoriosSeleccionados = e.target.value;
-                                                                cambiarNumeroDormitorios(dormitoriosSeleccionados);
+                                                                cambiarNumeroDormitorios({campo: dormitoriosSeleccionados});
                                                                 }} 
                                                             >
 
@@ -3926,10 +3987,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="duchas" 
                                                                 name="duchas" 
-                                                                value = {espacios_aseo_duchas}
+                                                                value = {espacios_aseo_duchas.campo}
                                                                 onChange = {(e) => {
                                                                 const duchasSeleccionados = e.target.value;
-                                                                cambiarEspaciosAseoDuchas(duchasSeleccionados);
+                                                                cambiarEspaciosAseoDuchas({campo: duchasSeleccionados});
                                                                 }} 
                                                             >
                                                             
@@ -3973,10 +4034,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="tenencia_vivienda" 
                                                                 name="tenencia_vivienda" 
-                                                                value = {tenencia_vivienda}
+                                                                value = {tenencia_vivienda.campo}
                                                                 onChange = {(e) => {
                                                                 const tenenciaViviendaSeleccionada = e.target.value;
-                                                                cambiarTenenciaVivienda(tenenciaViviendaSeleccionada);
+                                                                cambiarTenenciaVivienda({campo: tenenciaViviendaSeleccionada});
                                                                 }} 
                                                             >
 
@@ -4004,10 +4065,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="telf_convencional" 
                                                                 name="telf_convencional" 
-                                                                value = {telefono_convencional}
+                                                                value = {telefono_convencional.campo}
                                                                 onChange = {(e) => {
                                                                 const telefonoSeleccionado = e.target.value;
-                                                                cambiarTelefonoConvencional(telefonoSeleccionado);
+                                                                cambiarTelefonoConvencional({campo: telefonoSeleccionado});
                                                                 }} 
                                                             >
 
@@ -4030,10 +4091,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="celulares" 
                                                                 name="celulares" 
-                                                                value = {cantidad_celulares}
+                                                                value = {cantidad_celulares.campo}
                                                                 onChange = {(e) => {
                                                                 const celularSeleccionado = e.target.value;
-                                                                cambiarCantidadCelulares(celularSeleccionado);
+                                                                cambiarCantidadCelulares({campo: celularSeleccionado});
                                                                 }} 
                                                             >
 
@@ -4075,10 +4136,10 @@ useEffect(()=>{
                                                                 className="custom-select"
                                                                 id="internet" 
                                                                 name="internet" 
-                                                                value = {servicio_internet}
+                                                                value = {servicio_internet.campo}
                                                                 onChange = {(e) => {
                                                                 const internetSeleccionado = e.target.value;
-                                                                cambiarServicioInternet(internetSeleccionado);
+                                                                cambiarServicioInternet({campo: internetSeleccionado});
                                                                 }} 
                                                             >
 
@@ -4100,7 +4161,7 @@ useEffect(()=>{
                 </ModalBody>
                 <ModalFooter>
                     
-                    {/* <button className="btn btn-primary" onClick={()=>putInvestigacion()}>Editar</button>{"  "} */}
+                    <button className="btn btn-primary" onClick={()=>putConstruccion()}>Editar</button>
 
                     {/*
                         formularioValido === false && <MensajeError>
@@ -4108,12 +4169,11 @@ useEffect(()=>{
                         <FontAwesomeIcon icon={faExclamationTriangle} />
                         <b>Error: </b> Por favor rellena correctamente el formulario. 
                         </p>                    
-                        </MensajeError>
-                    */}
+                        </MensajeError>                  
                 
                     <Boton type="submit" onClick={()=>putConstruccion()}><b>Enviar</b></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                
+                    */}
 
                     <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><b>Cancelar</b></button>
                 </ModalFooter>

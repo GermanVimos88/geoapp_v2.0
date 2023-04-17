@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 
@@ -17,10 +17,8 @@ const cookies = new Cookies();
 
 
 const Grafico = () => {
-
    
-    const location = useLocation();
-  
+    const location = useLocation();  
     const path = location.pathname
     
     var id = ''
@@ -36,11 +34,9 @@ const Grafico = () => {
             }
         }
         }
-    }
-
+    }    
     
-    
-    const baseUrl='http://apicatastro/grafico/?id='+id;
+    const baseUrl= 'http://localhost/apicatastro/index.php/grafico/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/grafico/?id='+id; //'http://f0783168.xsph.ru/index.php/grafico/?id='+id;
     const [data, setData]=useState();        
     
     //const [idubicacion, cambiarIdUbicacion] = useState({campo:'', valido: null});    
@@ -82,16 +78,14 @@ const onChangeTerminos = (e) => {
 const onSubmit = (e) => {
     e.preventDefault();
 
-    if(
-        
+    if(        
         terminos
      ){
-         
-
-         // CONEXION CRUD (PETICIONES AJAX/HTTP)
-
-
-
+        // CONEXION CRUD (PETICIONES AJAX/HTTP)
+        putGrafico();
+        peticionGet();
+        cambiarFormularioValido(true);
+        //alert('Datos actualizados correctamente');
          
      } else {
         cambiarFormularioValido(false);         
@@ -104,6 +98,7 @@ const peticionGet=async()=>{
     const response = await axios.get(baseUrl) 
     
     cambiarIdGraficoPredio({campo: response.data[0].idgrafico});
+    cambiarClavePredio({campo: response.data[0].clave_predio});
     cambiarLinkGrafico({campo: response.data[0].link_grafico});
     cambiarLinkFotoFachada({campo: response.data[0].link_foto_fachada});
     cambiarDescripcionGrafico({campo: response.data[0].descripcion});    
@@ -124,6 +119,55 @@ const peticionGet=async()=>{
     
 }
 
+//Función PUT
+const putGrafico=async()=>{
+    const grafico = {
+        clave_predio: clave_predio.campo,
+        link_grafico:link_grafico.campo,
+        link_foto_fachada:link_foto_fachada.campo,
+        descripcion:descripcion_grafico.campo,
+        calle_norte:calle_norte.campo,
+        calle_sur:calle_sur.campo,
+        calle_este:calle_este.campo,
+        calle_oeste:calle_oeste.campo,
+        area_grafica_lote:area_grafica_lote.campo,
+        dimension_frente:dimension_frente.campo,
+        fondo_relativo:fondo_relativo.campo,
+        coordenada_x:coordenada_x.campo,
+        coordenada_y:coordenada_y.campo,
+        avaluo_tierras:avaluo_tierras.campo,
+        avaluo_construcciones:avaluo_construcciones.campo,
+        avaluo_total:avaluo_total.campo,
+        observaciones:observaciones.campo       
+                  
+    } 
+
+    await axios.put('http://localhost/apicatastro/index.php/grafico/actualizar?id='+id, grafico)
+    .then(response=>{
+        cambiarClavePredio({campo: grafico.clave_predio});
+        cambiarLinkGrafico({campo: grafico.link_grafico});
+        cambiarLinkFotoFachada({campo: grafico.link_foto_fachada});
+        cambiarDescripcionGrafico({campo: grafico.descripcion});    
+        cambiarClavePredio({campo: grafico.clave_predio});
+        cambiarCalleNorte({campo: grafico.calle_norte});
+        cambiarCalleSur({campo: grafico.calle_sur});
+        cambiarCalleEste({campo: grafico.calle_este});
+        cambiarCalleOeste({campo: grafico.calle_oeste});
+        cambiarAreaGraficaLote({campo: grafico.area_grafica_lote});
+        cambiarDimensionFrente({campo: grafico.dimension_frente});
+        cambiarFondoRelativo({campo: grafico.fondo_relativo});
+        cambiarCoordenada_x({campo: grafico.coordenada_x});
+        cambiarCoordenada_y({campo: grafico.coordenada_y});
+        cambiarAvaluoTierras({campo: grafico.avaluo_tierras});
+        cambiarAvaluoConstrucciones({campo: grafico.avaluo_construcciones});
+        cambiarAvaluoTotal({campo: grafico.avaluo_total});
+        cambiarObservaciones({campo: grafico.observaciones});
+        
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
 useEffect(()=>{
     
     if(!cookies.get('username')){
@@ -140,7 +184,7 @@ useEffect(()=>{
 
     return (
         <main>
-               <h1><b>Gráfico  🗺</b></h1> 
+               <h1><b>Gráfico  <FontAwesomeIcon icon={faGlobeAmericas}/></b></h1> 
               <br/>
               <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>               
               
@@ -148,14 +192,12 @@ useEffect(()=>{
             <Formulario action="" onSubmit={onSubmit}>
             <ContenedorBotonCentrado>
                 <div style={{ margin:'1.8rem', marginLeft :'1rem' , width:'58.5vw', height:'84.5vh', border: '2px solid black'}}>                                    
-                    <MapView idClave={clave} />                  
+                    <MapView idClave={clave} />
                     <br/>                                    
                 </div>
                 </ContenedorBotonCentrado> 
             
-            <div>
-            
-                     
+            <div>    
                                                
                 <center>
                 <div id="contenedor2"> 

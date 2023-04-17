@@ -6,7 +6,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import { faClipboardList, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faEdit, faHammer, faTrashAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,8 +21,7 @@ const cookies = new Cookies();
 const ObrasComplementarias = () => {
 
    
-    const location = useLocation();
-  
+    const location = useLocation();  
     const path = location.pathname
     
     var id = ''
@@ -41,9 +40,7 @@ const ObrasComplementarias = () => {
     }
 
     
-
-    //const urlInsertar = 'http://apicatastro/obras/nuevo?id=';
-    const baseUrl='http://apicatastro/obras/?id='+id;
+    const baseUrl='http://localhost/apicatastro/index.php/obras/?id='+id;//'http://f0783168.xsph.ru/index.php/obras/?id='+id;
     const [data, setData]=useState([]);
         
     //const [id_caracteristicas, cambiarIdCaracteristicas] = useState({campo: '', valido: null});
@@ -95,10 +92,6 @@ const abrirCerrarModalEliminar=()=>{
    setModalEliminar(!modalEliminar);
 }
 
-const soporte=(id)=>{
-    
-    window.location.href='./soporte/:'+id;//+predioSeleccionado.idpredio;
-}
 
 const peticionGet=async()=>{
     const response = await axios.get(baseUrl); 
@@ -107,8 +100,21 @@ const peticionGet=async()=>{
 }
 
 const postObra=async()=>{
+    const obra = {
+        clave_predio: clave,//clave_predio.campo,
+        idubicacion: id,//idubicacion.campo,
+        idinfraestructura: idinfraestructura.campo,
+        tipo_obra: tipo_obra.campo,
+        dimension_a: dimension_a.campo,
+        dimension_b: dimension_b.campo,
+        dimension_c: dimension_c.campo,
+        cantidad_metros: cantidad_metros.campo,
+        material: material.campo,
+        edad: edad.campo,
+        estado: estado.campo
+    }
     
-    await axios.post(baseUrl,obraSeleccionada)
+    await axios.post('http://localhost/apicatastro/index.php/obras/nuevo', obra)
     .then(response=>{
         setData(data.concat(response.data));
         abrirCerrarModalInsertar();
@@ -119,14 +125,33 @@ const postObra=async()=>{
 }
 
 const putObra=async()=>{
+    const obras = {
+        clave_predio: clave_predio.campo,
+        idubicacion: idubicacion.campo,
+        idinfraestructura: idinfraestructura.campo,
+        tipo_obra: tipo_obra.campo,
+        dimension_a: dimension_a.campo,
+        dimension_b: dimension_b.campo,
+        dimension_c: dimension_c.campo,
+        cantidad_metros: cantidad_metros.campo,
+        material: material.campo,
+        edad: edad.campo,
+        estado: estado.campo
+    }
             
-    await axios.put('http://apicatastro/investigacion/actualizar?id='+obraSeleccionada.id, obraSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
+    await axios.put('http://localhost/apicatastro/index.php/obras/actualizar?id='+id_obra.campo, obras)    //f, {params:{id: predioSeleccionado.id}})
     .then(response=>{
-        var dataNueva=data;
-        dataNueva.map(predio=>{
-        
-        })
-        setData(dataNueva); 
+        cambiarClavePredio({campo:obras.clave_predio, valido: true});
+        cambiarIdUbicacion({campo: obras.idubicacion, valido: true});     
+        cambiarIdInfraestructura({campo:obras.idinfraestructura, valido: true});
+        cambiarTipoObra({campo:obras.tipo_obra, valido: true});
+        cambiarDimension_a({campo:obras.dimension_a, valido: true});
+        cambiarDimension_b({campo:obras.dimension_b, valido: true});
+        cambiarDimension_c({campo:obras.dimension_c, valido: true});
+        cambiarCantidadMetros({campo:obras.cantidad_metros, valido: true});
+        cambiarMaterial({campo:obras.material, valido: true});
+        cambiarEdad({campo:obras.edad, valido: true});
+        cambiarEstado({campo:obras.estado, valido: true});        
 
         abrirCerrarModalEditar();
         peticionGet();
@@ -136,24 +161,21 @@ const putObra=async()=>{
 }
 
 const deleteObra=async()=>{
-    await axios.delete('http://apicatastro/investigacion/eliminar?id='+obraSeleccionada.id)
+    await axios.delete('http://localhost/apicatastro/index.php/obras/eliminar?id='+id_obra.campo)
     .then(response=>{
-        setData(data.filter(predio=>predio.idpredio!==obraSeleccionada.id))
+        setData(data.filter(predio=>predio.idpredio!==id_obra.campo))
         abrirCerrarModalEliminar();
         peticionGet();
     })
 
 }
 
-
-
 const seleccionarObra=(obra, caso)=>{
-    //setInvestigacionSeleccionada(investigacion);
     
-    cambiarIdObra({campo:obra.idobras, valido: true}); 
-    //cambiarClavePredio({campo:obra.tipo_informante, valido: true}); 
-    //cambiarIdUbicacion({campo:obra.apellidos_informante, valido: true});
-    //cambiarIdInfraestructura({campo:obra.nombre_informante, valido: true});
+    cambiarIdObra({campo: obra.idobras});
+    cambiarClavePredio({campo:obra.clave_predio, valido: true});
+    cambiarIdUbicacion({campo: obra.idubicacion});     
+    cambiarIdInfraestructura({campo:obra.idinfraestructura, valido: true});
     cambiarTipoObra({campo:obra.tipo_obra, valido: true});
     cambiarDimension_a({campo:obra.dimension_a, valido: true});
     cambiarDimension_b({campo:obra.dimension_b, valido: true});
@@ -188,18 +210,16 @@ const nuevoFormulario=()=>{
     cambiarEstado({campo:'', valido: null});
 }
 
-
 const onSubmit = (e) => {
     e.preventDefault();
 
-    if(
-        
+    if(        
         terminos
-     ){
-         
+     ){         
          // CONEXION CRUD (PETICIONES AJAX/HTTP)
-
-
+         
+         cambiarFormularioValido(true);
+         //alert('Datos actualizados correctamente');
 
          
      } else {
@@ -222,19 +242,19 @@ const onSubmit = (e) => {
 
     return (
         <main>
-            <h1><b>Obras complementarias 🚏</b></h1> 
+            <h1><b>Obras complementarias <FontAwesomeIcon icon={faHammer}/></b></h1> 
             <br/>
-            <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>                                          
+            <label>Clave Catastral: <b>{clave}</b></label> <td> </td>                                          
             <center>
-                <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva obra 📤</button> 
+                <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva obra <FontAwesomeIcon icon={faUpload}/></button> 
             </center>    
             <br/>
             
             <Formulario action="" onSubmit={onSubmit}>
 
-            <div class="center-block fix-width scroll-inner" style={{textAlign: 'center'}}>                                              
+            <div class="center-block fix-width scroll-inner" style={{textAlign: 'center', scale: "88%", marginLeft: '-8rem'}}>                                              
                 <table className="table table-striped table-hover">
-                    <thead>
+                    <thead id="cabecera">
                         <tr>
                             <th style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><b>ID Obra</b></th>                            
                             <th>Tipo de obra</th>
@@ -259,7 +279,8 @@ const onSubmit = (e) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(obra=>(
+                        {Array.isArray(data)
+                            ?data.map(obra=>(
                             
                                 
                                     <tr key={obra.idobras}>
@@ -281,7 +302,7 @@ const onSubmit = (e) => {
                                     </td>
                                 </tr>
                             
-                        ))}
+                        )):null}
                         
                     </tbody>                    
                 </table>
@@ -292,19 +313,13 @@ const onSubmit = (e) => {
                             
                         <ModalHeader><b>Insertar nueva obra</b></ModalHeader>
                             <ModalBody>
-                                <div className="form-group">
-                                    <label htmlFor="id">ID Obra: </label>
+                                <div className="form-group">                                     
                                     <br/>
-                                    <input type="text" className="form-control" name="id" id="id" readOnly /> 
-                                    <br/>
-
-                                    <center>
-                
+                                    <center>                
                                     <div id="contenedor">
                                         <br/>
-                                    <p>
-                                        <tr>    
-                                        
+                                        <p>
+                                        <tr>                                            
                                         <br/>
                                         <br/>
                                             <td><b>Tipo de Obra:</b></td>&nbsp;&nbsp;
@@ -313,14 +328,14 @@ const onSubmit = (e) => {
                                                 className="custom-select" 
                                                 id="tipo" 
                                                 name="tipo" 
-                                                value = {tipo_obra}
+                                                value = {tipo_obra.campo}
                                                 onChange = {(e) => {
                                                     const tipoSeleccionado = e.target.value;
-                                                    cambiarTipoObra(tipoSeleccionado);
+                                                    cambiarTipoObra({campo: tipoSeleccionado});
                                                 }} 
                                             >
                                     
-                                            <option value="" selected >----------</option>
+                                            <option value="">----------</option>
                                             <option value="No tiene">No tiene</option>
                                             <option value="Aceras y cercas">Aceras y cercas</option>
                                             <option value="Canal de riego ocasional">Canal de riego ocasional</option>
@@ -355,11 +370,8 @@ const onSubmit = (e) => {
                                             </select> </td>
                                         </tr>
                                     </p>
-
                                     <br/>
-
-                                    <p>
-                                    
+                                    <p>                                    
                                     <ComponenteInput
                                         estado={dimension_a}
                                         cambiarEstado={cambiarDimension_a}
@@ -400,33 +412,26 @@ const onSubmit = (e) => {
                                         name = "cantidad"
                                         leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
                                         expresionRegular = {expresiones.dimension}                
-                                    /> 
-                                    
-                                    </p>
-                                    
+                                    />                                     
+                                    </p>                                    
                                 </div>
-
                                 <br/>
-
                                 <div id="contenedor2">
                                     <br/>
-
                                     <br/>  
                                     <h5>Material:</h5>
-                                    <p>
-                                        
-                                    <tr>
-                                            
+                                    <p>                                        
+                                    <tr>                                            
                                             <td>
                                             <br/>    
                                             <select 
                                                 class="form-select form-select-sm"                                                  
                                                 id="material" 
                                                 name="material"
-                                                value = {material}
+                                                value = {material.campo}
                                                 onChange = {(e) => {
                                                     const materialSeleccionado = e.target.value;
-                                                    cambiarMaterial(materialSeleccionado);
+                                                    cambiarMaterial({campo: materialSeleccionado});
                                                 }}
                                             >
 
@@ -456,12 +461,10 @@ const onSubmit = (e) => {
                                             name = "edad"
                                             leyendaError = "Valores enteros hasta 5 dígitos numéricos "
                                             expresionRegular = {expresiones.edad}                
-                                        />                     
-                                    
+                                        />
                                     </p>   
                                     <br/>  
-                                    <p>
-                                            
+                                    <p>                                            
                                             <tr>
                                             <td><b>Estado:</b></td>&nbsp;&nbsp;&nbsp;
                                             <td>
@@ -470,13 +473,12 @@ const onSubmit = (e) => {
                                                 className="custom-select" 
                                                 id="estado" 
                                                 name="estado"
-                                                value = {estado}
+                                                value = {estado.campo}
                                                 onChange = {(e) => {
                                                     const estadoSeleccionado = e.target.value;
-                                                    cambiarEstado(estadoSeleccionado);
+                                                    cambiarEstado({campo: estadoSeleccionado});
                                                 }}
                                             >
-
                                             <option value="" >----------</option>
                                             <option value="Muy bueno">Muy bueno</option>
                                             <option value="Bueno">Bueno</option>
@@ -485,30 +487,18 @@ const onSubmit = (e) => {
                                                     
                                             </select> </td>
                                         </tr>
-                                    </p>                    
-                                        
-                                </div>                
-                              
-
+                                    </p>
+                                </div>  
                             </center>
                             <br/>
-
-
-                                </div>
-
+                            </div>
                             </ModalBody>
-                        <ModalFooter>
-                    
-                                    <button className="btn btn-primary" onClick={()=>postObra()} >Insertar</button>{"  "}                  
-                    
-                                    <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>                   
-                    
-                        </ModalFooter>
+                            <ModalFooter>                    
+                                    <button className="btn btn-primary" onClick={()=>postObra()} >Insertar</button>{"  "}
+                                    <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>                                       
+                            </ModalFooter>
             </Modal>
-
             <br/>
-
-
             <Modal isOpen={modalEditar}>
                 <ModalHeader><b>Editar Obra</b></ModalHeader>
                 <ModalBody>
@@ -520,18 +510,14 @@ const onSubmit = (e) => {
                     <div className="form-group">
                                  
                                     <div className="form-group">
-                                    <label htmlFor="id">ID Investigación: {id_obra.campo} </label>
-                                    
-                                    <input type="text" className="form-control" name="id" id="id" value={id_obra.campo} readOnly /> 
-                                    
-                                        <br/>
-                                        <br/>
-                                        
                                     <center>
-                
+                                    <label htmlFor="id">ID Obra: {id_obra.campo} </label>
+                                    </center>                                    
+                                        <br/>                                        
+                                    <center>                
                                     <div id="contenedor">
                                         <br/>
-                                    <p>
+                                        <p>
                                         <tr>    
                                         
                                         <br/>
@@ -545,7 +531,7 @@ const onSubmit = (e) => {
                                                 value = {tipo_obra}
                                                 onChange = {(e) => {
                                                     const tipoSeleccionado = e.target.value;
-                                                    cambiarTipoObra(tipoSeleccionado);
+                                                    cambiarTipoObra({campo:tipoSeleccionado});
                                                 }} 
                                                 
                                                 
@@ -658,7 +644,7 @@ const onSubmit = (e) => {
                                                 value = {material}
                                                 onChange = {(e) => {
                                                     const materialSeleccionado = e.target.value;
-                                                    cambiarMaterial(materialSeleccionado);
+                                                    cambiarMaterial({campo: materialSeleccionado});
                                                 }} 
                                             >
 
@@ -706,7 +692,7 @@ const onSubmit = (e) => {
                                                 value = {estado}
                                                 onChange = {(e) => {
                                                     const estadoSeleccionado = e.target.value;
-                                                    cambiarEstado(estadoSeleccionado);
+                                                    cambiarEstado({campo: estadoSeleccionado});
                                                 }} 
 
 
@@ -737,8 +723,8 @@ const onSubmit = (e) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    
-                    {/* <button className="btn btn-primary" onClick={()=>putInvestigacion()}>Editar</button>{"  "} */}
+                
+                    <button className="btn btn-primary" onClick={()=>putObra()}>Editar</button> 
 
                     {/*
                         formularioValido === false && <MensajeError>
@@ -747,13 +733,14 @@ const onSubmit = (e) => {
                         <b>Error: </b> Por favor rellena correctamente el formulario. 
                         </p>                    
                         </MensajeError>
-                    */}
+                    
                 
                     <Boton type="submit" onClick={()=>putObra()}><b>Enviar</b></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                
+                    */}
 
                     <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><b>Cancelar</b></button>
+                    
                 </ModalFooter>
             </Modal>
 

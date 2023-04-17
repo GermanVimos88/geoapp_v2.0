@@ -6,7 +6,7 @@ import axios from 'axios';
 import '../css/estilos.css';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -35,9 +35,8 @@ const EstatusLegal = () => {
         }
     }
 
-    
-    
-    const baseUrl='http://apicatastro/legal/?id='+id;
+        
+    const baseUrl= 'http://localhost/apicatastro/index.php/legal/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/legal/?id='+id; //'http://f0783168.xsph.ru/index.php/legal/?id='+id;
     const [data, setData]=useState();
        
         
@@ -106,7 +105,11 @@ const onSubmit = (e) => {
         terminos
      ){
          
-         // CONEXION CRUD (PETICIONES AJAX/HTTP)
+        // CONEXION CRUD (PETICIONES AJAX/HTTP)
+        putEstatusLegal();
+        peticionGet();
+        cambiarFormularioValido(true);
+        //alert('Datos actualizados correctamente');
 
 
 
@@ -158,6 +161,87 @@ const peticionGet=async()=>{
     
 }
 
+//Función PUT
+const putEstatusLegal=async()=>{
+    const estatus = {        
+        clave_predio:clave_predio.campo,
+        titulo: titulo.campo,
+        escritura: escritura.campo,
+        celebrado_ante: celebrado_ante.campo,
+        nombre_notaria: nombre_numero_notaria.campo,
+        provincia_titulacion: provincia_titulacion.campo,
+        canton_inscripcion: canton_inscripcion.campo,
+        dia_protocolo: dia_protocolizacion.campo,
+        mes_protocolo: mes_protocolizacion.campo,
+        anio_protocolo:anio_protocolizacion.campo,
+        registro_propiedad:registro_propiedad.campo,
+        tomo:tomo.campo,
+        partida:partida.campo,
+        dia_inscripcion:dia_inscripcion_registro_propiedad.campo,
+        mes_inscripcion: mes_inscripcion_registro_propiedad.campo,
+        anio_inscripcion:anio_inscripcion_registro_propiedad.campo,
+        area_titulo:area_segun_titulo.campo,
+        unidad:unidad_medida.campo,
+        tenencia:forma_tenencia.campo,
+        adquisicion:forma_adquisicion.campo,
+        perfeccionamiento:requiere_perfeccionamiento.campo,
+        sin_perfeccionamiento:anios_sin_perfeccionamiento.campo,
+        anios_posesion:anios_posesion.campo,
+        pueblo_etnia:pueblo_etnia.campo,
+        sin_titulo:adquisicion_sin_titulo.campo,
+        documento:documento_presentado.campo,
+        posesionario_apellidouno:primer_apellido_posesionario.campo,
+        posesionario_apellidodos:segundo_apellido_posesionario.campo,
+        posesionario_nombreuno:primer_nombre_posesionario.campo,
+        posesionario_nombredos:segundo_nombre_posesionario.campo,
+        posesionario_documento:tipo_documento_posesionario.campo,
+        posesionario_id:identificacion_posesionario.campo,
+        posesionario_email:email_posesionario.campo,
+        posesionario_telefono:telefono_posesionario.campo                  
+    } 
+
+    await axios.put('http://localhost/apicatastro/index.php/legal/actualizar?id='+id, estatus)
+    .then(response=>{
+        cambiarClavePredio({campo: estatus.clave_predio});
+        cambiarTitulo({campo: estatus.titulo});
+        cambiarEscritura({campo: estatus.escritura});
+        cambiarCelebradoAnte({campo: estatus.celebrado_ante});
+        cambiarNombreNumeroNotaria({campo: estatus.nombre_notaria});
+        cambiarProvinciaTitulacion({campo: estatus.provincia_titulacion});
+        cambiarCantonInscripcion({campo: estatus.canton_inscripcion});
+        cambiarDiaProtocolizacion({campo: estatus.dia_protocolo});
+        cambiarMesProtocolizacion({campo: estatus.mes_protocolo});
+        cambiarAnioProtocolizacion({campo: estatus.anio_protocolo});
+        cambiarRegistroPropiedad({campo: estatus.registro_propiedad});
+        cambiarTomo({campo: estatus.tomo});
+        cambiarPartida({campo: estatus.partida});
+        cambiarDiaInscripcionRegistroPropiedad({campo: estatus.dia_inscripcion});
+        cambiarmesInscripcionRegistroPropiedad({campo: estatus.mes_inscripcion});
+        cambiarAnioInscripcionRegistroPropiedad({campo: estatus.anio_inscripcion});
+        cambiarAreaSegunTitulo({campo: estatus.area_titulo});
+        cambiarUnidadMedida({campo: estatus.unidad});
+        cambiarFormaTenencia({campo: estatus.tenencia});
+        cambiarFormaAdquisicion({campo: estatus.adquisicion});
+        cambiarRequierePerfeccionamiento({campo: estatus.perfeccionamiento});
+        cambiarAniosSinPerfeccionamiento({campo: estatus.sin_perfeccionamiento});
+        cambiarAniosPosesion({campo: estatus.anios_posesion});
+        cambiarPuebloEtnia({campo: estatus.pueblo_etnia});
+        cambiarAdquisicionSinTitulo({campo: estatus.sin_titulo});
+        cambiarDocumentoPresentado({campo: estatus.documento});
+        cambiarPrimerApellidoPosesionario({campo: estatus.posesionario_apellidouno});
+        cambiarSegundoApellidoPosesionario({campo: estatus.posesionario_apellidodos});
+        cambiarPrimerNombrePosesionario({campo: estatus.posesionario_nombreuno});
+        cambiarSegundoNombrePosesionario({campo: estatus.posesionario_nombredos});
+        cambiarTipoDocumentoPosesionario({campo: estatus.posesionario_documento});
+        cambiarIdentificacionPosesionario({campo: estatus.posesionario_id});
+        cambiarEmailPosesionario({campo: estatus.posesionario_email});
+        cambiarTelefonoPosesionario({campo: estatus.posesionario_telefono}); 
+        
+    }).catch(error=>{
+        console.error(error);
+    });
+}
+
 useEffect(()=>{
     
     if(!cookies.get('username')){
@@ -175,7 +259,7 @@ useEffect(()=>{
     return (
         <main>
               
-              <h1><b>Estatus Legal 📜</b></h1> 
+              <h1><b>Estatus Legal <FontAwesomeIcon icon={faFileSignature}/></b></h1> 
               <br/>
                 <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>
                 
@@ -204,7 +288,7 @@ useEffect(()=>{
                             value= {titulo}
                             onChange = {(e) => {
                                 const tituloSeleccionado = e.target.value;
-                                cambiarTitulo(tituloSeleccionado);
+                                cambiarTitulo({campo: tituloSeleccionado});
                         }} 
                     >
                         
@@ -230,7 +314,7 @@ useEffect(()=>{
                         value= {escritura}
                             onChange = {(e) => {
                                 const escrituraSeleccionado = e.target.value;
-                                cambiarEscritura(escrituraSeleccionado);
+                                cambiarEscritura({campo: escrituraSeleccionado});
                         }} 
                     >
                         
@@ -256,7 +340,7 @@ useEffect(()=>{
                         value= {celebrado_ante}
                             onChange = {(e) => {
                                 const celebradoSeleccionado = e.target.value;
-                                cambiarCelebradoAnte(celebradoSeleccionado);
+                                cambiarCelebradoAnte({campo: celebradoSeleccionado});
                         }} 
                     >
                         
@@ -328,7 +412,7 @@ useEffect(()=>{
                             value= {dia_protocolizacion}
                             onChange = {(e) => {
                                 const diaSeleccionado = e.target.value;
-                                cambiarDiaProtocolizacion(diaSeleccionado);
+                                cambiarDiaProtocolizacion({campo: diaSeleccionado});
                         }} 
                         >
                         
@@ -382,7 +466,7 @@ useEffect(()=>{
                             value= {mes_protocolizacion}
                             onChange = {(e) => {
                                 const mesSeleccionado = e.target.value;
-                                cambiarMesProtocolizacion(mesSeleccionado);
+                                cambiarMesProtocolizacion({campo: mesSeleccionado});
                         }} 
                         >
                         
@@ -417,7 +501,7 @@ useEffect(()=>{
                             value= {anio_protocolizacion}
                             onChange = {(e) => {
                                 const anioSeleccionado = e.target.value;
-                                cambiarAnioProtocolizacion(anioSeleccionado);
+                                cambiarAnioProtocolizacion({campo: anioSeleccionado});
                         }} 
                         >                        
                         <option value={anio_protocolizacion.campo} checked>{anio_protocolizacion.campo}</option>
@@ -572,7 +656,7 @@ useEffect(()=>{
                                 value= {dia_inscripcion_registro_propiedad}
                                 onChange = {(e) => {
                                 const inscripcionSeleccionado = e.target.value;
-                                cambiarDiaInscripcionRegistroPropiedad(inscripcionSeleccionado);
+                                cambiarDiaInscripcionRegistroPropiedad({campo: inscripcionSeleccionado});
                             }} 
                             >                        
                             <option value={dia_inscripcion_registro_propiedad.campo} checked>{dia_inscripcion_registro_propiedad.campo}</option>
@@ -625,7 +709,7 @@ useEffect(()=>{
                                 value= {mes_inscripcion_registro_propiedad}
                                 onChange = {(e) => {
                                 const mesinscripcionSeleccionado = e.target.value;
-                                cambiarmesInscripcionRegistroPropiedad(mesinscripcionSeleccionado);
+                                cambiarmesInscripcionRegistroPropiedad({campo: mesinscripcionSeleccionado});
                                 }} 
                             >                        
                             <option value={mes_inscripcion_registro_propiedad.campo} checked>{mes_inscripcion_registro_propiedad.campo}</option>
@@ -658,7 +742,7 @@ useEffect(()=>{
                                 value= {anio_inscripcion_registro_propiedad}
                                 onChange = {(e) => {
                                 const anioinscripcionSeleccionado = e.target.value;
-                                cambiarAnioInscripcionRegistroPropiedad(anioinscripcionSeleccionado);
+                                cambiarAnioInscripcionRegistroPropiedad({campo: anioinscripcionSeleccionado});
                                 }} 
                             >                        
                             <option value={anio_inscripcion_registro_propiedad.campo} checked>{anio_inscripcion_registro_propiedad.campo}</option>
@@ -787,7 +871,7 @@ useEffect(()=>{
                                 value= {unidad_medida}
                                 onChange = {(e) => {
                                 const unidadSeleccionado = e.target.value;
-                                cambiarUnidadMedida(unidadSeleccionado);
+                                cambiarUnidadMedida({campo: unidadSeleccionado});
                                 }} 
                             >
                         
@@ -816,7 +900,7 @@ useEffect(()=>{
                                 value= {forma_tenencia}
                                 onChange = {(e) => {
                                 const formaSeleccionado = e.target.value;
-                                cambiarFormaTenencia(formaSeleccionado);
+                                cambiarFormaTenencia({campo: formaSeleccionado});
                                 }} 
                             >
                         
@@ -844,7 +928,7 @@ useEffect(()=>{
                                 value= {forma_adquisicion}
                                 onChange = {(e) => {
                                 const adquisicionSeleccionado = e.target.value;
-                                cambiarFormaAdquisicion(adquisicionSeleccionado);
+                                cambiarFormaAdquisicion({campo: adquisicionSeleccionado});
                                 }} 
                             >
                         
@@ -890,7 +974,7 @@ useEffect(()=>{
                                 value= {requiere_perfeccionamiento}
                                 onChange = {(e) => {
                                 const perfeccionamientoSeleccionado = e.target.value;
-                                cambiarRequierePerfeccionamiento(perfeccionamientoSeleccionado);
+                                cambiarRequierePerfeccionamiento({campo: perfeccionamientoSeleccionado});
                                 }} 
                             >
                         
@@ -1026,7 +1110,7 @@ useEffect(()=>{
                                 value= {adquisicion_sin_titulo}
                                 onChange = {(e) => {
                                 const adquisicionSeleccionado = e.target.value;
-                                cambiarAdquisicionSinTitulo(adquisicionSeleccionado);
+                                cambiarAdquisicionSinTitulo({campo: adquisicionSeleccionado});
                                 }} 
                             >
                         
@@ -1124,7 +1208,7 @@ useEffect(()=>{
                             value= {tipo_documento_posesionario}
                             onChange = {(e) => {
                             const docSeleccionado = e.target.value;
-                            cambiarTipoDocumentoPosesionario(docSeleccionado);
+                            cambiarTipoDocumentoPosesionario({campo: docSeleccionado});
                             }} 
                         >
                     

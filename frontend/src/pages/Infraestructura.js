@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faFaucet } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -35,13 +35,12 @@ const Infraestructura = () => {
         }
         }
     }
-
            
-    const baseUrl='http://apicatastro/infraestructura/?id='+id; 
+    const baseUrl= 'http://localhost/apicatastro/index.php/infraestructura/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/infraestructura/?id='+id; //'http://f0783168.xsph.ru/index.php/infraestructura/?id='+id;
     const [data, setData]=useState([]);    
     //const [id_caracteristicas, cambiarIdCaracteristicas] = useState({campo: '', valido: null});
 	//const [clave_catastral, cambiarClaveCatastral] = useState({campo: '', valido: null}); 
-    const [idcaracteristicas_lote, cambiarIdCaracteristicas] = useState ({campo: '', valido: null});
+    const [idinfraestructura, cambiarIdInfraestructura] = useState ({campo: '', valido: null});
     const [clave_predio, cambiarClavePredio] = useState ({campo: '', valido: null});    
     const [idubicacion, cambiarIdUbicacion] = useState ({campo: '', valido: null}); 
     const [tipo_via_acceso, cambiarTipoViaAcceso] = useState ({campo: '', valido: null}); 
@@ -184,12 +183,7 @@ const onChangeTerminos = (e) => {
         const onChangeAseocalles = (e) =>{
         cambiarAseoCalles(e.target.checked);
         }
-        
-
-        const onChangeAlcantarillado = (e) =>{
-            cambiarAlcantarillado(e.target.checked);
-        }
-        
+              
         
         const onChangeAceras = (e) =>{
             cambiarAceras(e.target.checked);
@@ -200,19 +194,18 @@ const onChangeTerminos = (e) => {
             cambiarBordillos(e.target.checked);
         }
         
-    
-
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(
-            
+        if(            
             terminos
-        ){
-            
+        ){            
             // CONEXION CRUD (PETICIONES AJAX/HTTP)
-
+            putInfraestructura();
+            peticionGet();
+            cambiarFormularioValido(true);
+            //alert('Datos actualizados correctamente');
             
         } else {
             cambiarFormularioValido(false);         
@@ -222,11 +215,7 @@ const onChangeTerminos = (e) => {
 
      const peticionGet=async()=>{
         const response = await axios.get(baseUrl)
-        //.then(response=>{
-        //    setData(response);
-
-            //setData(response)
-            //console.log(response.data[0].via_acceso)
+        
                 cambiarClavePredio ({campo: response.data[0].clave_predio});
                 cambiarIdUbicacion ({campo: response.data[0].idubicacion});
                 cambiarTipoViaAcceso ({campo: response.data[0].via_acceso});
@@ -265,6 +254,92 @@ const onChangeTerminos = (e) => {
                 cambiarBordillos ({campo: response.data[0].bordillos});                
     }
 
+    //Función PUT
+    const putInfraestructura=async()=>{
+        const inf = {
+            clave_predio: clave,
+            //idubicacion:idubicacion.campo,
+            via_acceso:tipo_via_acceso.campo,
+            rodadura:rodadura.campo,
+            vias_adicionales:vias_acceso_adicionales.campo,
+            agua_procedencia:agua_procedencia.campo,
+            medidor_agua:medidor_agua.campo,
+            agua_recepcion:agua_recepcion.campo,
+            eliminacion_excretas:eliminacion_excretas.campo,
+            energia_electrica_procedencia:energia_electrica_procedencia.campo,
+            medidor:medidor.campo,
+            energia_electrica_recepcion:energia_electrica_recepcion.campo,
+            eliminacion_basura:eliminacion_basura.campo,
+            telefono_convencional:telefono_convencional.campo,
+            celular:celular.campo,
+            tv_cable:tv_cable.campo,
+            internet:internet.campo,
+            metodo_riego:metodo_riego.campo,
+            disponibilidad_riego:disponibilidad_riego.campo,
+            instalaciones_especiales:instalaciones_especiales.campo,
+            ascensor:ascensor.campo,
+            circuito_cerrado_tv:circuito_cerrado_tv.campo,
+            montacarga:montacarga.campo,
+            sistema_alterno_electricidad:sistema_alterno_electricidad.campo,
+            aire_acondicionado:aire_acondicionado.campo,
+            sistema_contra_incendios:sistema_contra_incendios.campo,
+            gas_centralizado:gas_centralizado.campo,
+            ventilacion:ventilacion.campo,
+            sistema_voz_datos:sistema_voz_datos.campo,
+            alumbrado_publico:alumbrado_publico.campo,
+            recoleccion_basura:recoleccion_basura.campo,
+            transporte_urbano:transporte_urbano.campo,
+            aseo_calles:aseo_calles.campo,
+            alcantarillado: alcantarillado.campo,
+            aceras:aceras.campo,
+            bordillos:bordillos.campo
+        } 
+    
+        await axios.put('http://localhost/apicatastro/index.php/infraestructura/actualizar?id='+id, inf)
+        .then(response=>{
+            cambiarClavePredio ({campo: inf.clave_predio});
+                cambiarIdUbicacion ({campo: inf.idubicacion});
+                cambiarTipoViaAcceso ({campo: inf.via_acceso});
+                cambiarRodadura ({campo: inf.rodadura});
+                cambiarViasAccesoAdicionales ({campo: inf.vias_adicionales});
+                cambiarAguaProcedencia ({campo: inf.agua_procedencia});
+                cambiarMedidorAgua ({campo: inf.medidor_agua});
+                cambiarAguaRecepcion ({campo: inf.agua_recepcion});
+                cambiarEliminacionExcretas ({campo: inf.eliminacion_excretas});
+                cambiarEnergiaElectricaProcedencia ({campo: inf.energia_electrica_procedencia});
+                cambiarMedidor ({campo: inf.medidor});
+                cambiarEnergiaElectricaRecepcion ({campo: inf.energia_electrica_recepcion});
+                cambiarEliminacionBasura ({campo: inf.eliminacion_basura});
+                cambiarTelefonoConvencional ({campo: inf.telefono_convencional});
+                cambiarCelular ({campo: inf.celular});
+                cambiarTvCable ({campo: inf.tv_cable});
+                cambiarInternet ({campo: inf.internet});
+                cambiarMetodoRiego ({campo: inf.metodo_riego});
+                cambiarDisponibilidadRiego ({campo: inf.disponibilidad_riego});
+                cambiarInstalacionesEspeciales ({campo: inf.instalaciones_especiales});
+                cambiarAscensor ({campo: inf.ascensor});
+                cambiarCircuitoCerradoTv ({campo: inf.circuito_cerrado_tv});
+                cambiarMontacarga ({campo: inf.montacarga});
+                cambiarSistemaAlternoElectricidad ({campo: inf.sistema_alterno_electricidad});
+                cambiarAireAcondicionado ({campo: inf.aire_acondicionado});
+                cambiarSistemaContraIncendios ({campo: inf.sistema_contra_incendios});
+                cambiarGasCentralizado ({campo: inf.gas_centralizado});
+                cambiarVentilacion ({campo: inf.ventilacion});
+                cambiarSistemaVozDatos ({campo: inf.sistema_voz_datos});
+                cambiarAlumbradoPublico ({campo: inf.alumbrado_publico});
+                cambiarRecoleccionBasura ({campo: inf.recoleccion_basura});
+                cambiarTransporteUrbano ({campo: inf.transporte_urbano});
+                cambiarAseoCalles ({campo: inf.aseo_calles});
+                cambiarAlcantarillado ({campo: inf.alcantarillado});
+                cambiarAceras ({campo: inf.aceras});
+                cambiarBordillos ({campo: inf.bordillos});     
+            
+        }).catch(error=>{
+            console.error(error);
+        });
+    }
+
+    
     useEffect(()=>{
 
         if(!cookies.get('username')){
@@ -281,11 +356,11 @@ const onChangeTerminos = (e) => {
         
         <div>                    
         <main>
-            <h1><b>Infraestructura 🚰</b></h1> 
+            <h1><b>Infraestructura <FontAwesomeIcon icon={faFaucet}/></b></h1> 
             <br/>                
             <div class="form-group col-md-6"> 
                      
-                <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>
+                <label>Clave Catastral: <b>{clave}</b></label> <td> </td>
             </div>              
 
             <Formulario action="" onSubmit={onSubmit}>
@@ -313,7 +388,7 @@ const onChangeTerminos = (e) => {
                                 value = {tipo_via_acceso}
                                 onChange = {(e) => {
                                     const tipoViasSeleccionado = e.target.value;
-                                    cambiarTipoViaAcceso(tipoViasSeleccionado);
+                                    cambiarTipoViaAcceso({campo: tipoViasSeleccionado});
                                 }}        
                             >
                             
@@ -349,7 +424,7 @@ const onChangeTerminos = (e) => {
                                 value = {rodadura}
                                 onChange = {(e) => {
                                     const rodaduraSeleccionada = e.target.value;
-                                    cambiarRodadura(rodaduraSeleccionada);
+                                    cambiarRodadura({campo: rodaduraSeleccionada});
                                 }} 
                             >
                         
@@ -382,7 +457,7 @@ const onChangeTerminos = (e) => {
                                 value = {vias_acceso_adicionales}
                                 onChange = {(e) => {
                                     const viasAdicionalesSeleccionadas = e.target.value;
-                                    cambiarViasAccesoAdicionales(viasAdicionalesSeleccionadas);
+                                    cambiarViasAccesoAdicionales({campo: viasAdicionalesSeleccionadas});
                                 }} 
                             >
 
@@ -421,7 +496,7 @@ const onChangeTerminos = (e) => {
                                 value = {agua_procedencia}
                                 onChange = {(e) => {
                                     const aguaProcedenciaSeleccionada = e.target.value;
-                                    cambiarAguaProcedencia(aguaProcedenciaSeleccionada);
+                                    cambiarAguaProcedencia({campo: aguaProcedenciaSeleccionada});
                                 }} 
                             >
                             
@@ -450,7 +525,7 @@ const onChangeTerminos = (e) => {
                                 value = {agua_recepcion}
                                 onChange = {(e) => {
                                     const aguaRecepcionSeleccionada = e.target.value;
-                                    cambiarAguaRecepcion(aguaRecepcionSeleccionada);
+                                    cambiarAguaRecepcion({campo: aguaRecepcionSeleccionada});
                                 }} 
                             >
 
@@ -480,7 +555,7 @@ const onChangeTerminos = (e) => {
                                 value = {alcantarillado}
                                 onChange = {(e) => {
                                     const alcantarilladoSeleccionado = e.target.value;
-                                    cambiarAlcantarillado(alcantarilladoSeleccionado);
+                                    cambiarAlcantarillado({campo: alcantarilladoSeleccionado});
                                 }} 
                             >
 
@@ -507,7 +582,7 @@ const onChangeTerminos = (e) => {
                                 value = {metodo_riego}
                                 onChange = {(e) => {
                                     const metodoRiegoSeleccionado = e.target.value;
-                                    cambiarMetodoRiego(metodoRiegoSeleccionado);
+                                    cambiarMetodoRiego({campo: metodoRiegoSeleccionado});
                                 }} 
                             >
                         
@@ -537,7 +612,7 @@ const onChangeTerminos = (e) => {
                                 value = {disponibilidad_riego}
                                 onChange = {(e) => {
                                     const disponibleRiegoSeleccionado = e.target.value;
-                                    cambiarDisponibilidadRiego(disponibleRiegoSeleccionado);
+                                    cambiarDisponibilidadRiego({campo: disponibleRiegoSeleccionado});
                                 }} 
                             >
                         
@@ -577,7 +652,7 @@ const onChangeTerminos = (e) => {
                             value = {energia_electrica_procedencia}
                             onChange = {(e) => {
                                     const energiaProcedeSeleccionado = e.target.value;
-                                    cambiarEnergiaElectricaProcedencia(energiaProcedeSeleccionado);
+                                    cambiarEnergiaElectricaProcedencia({campo: energiaProcedeSeleccionado});
                                 }} 
                         >
                         
@@ -604,7 +679,7 @@ const onChangeTerminos = (e) => {
                             value = {medidor}
                             onChange = {(e) => {
                                     const medidorSeleccionado = e.target.value;
-                                    cambiarMedidor(medidorSeleccionado);
+                                    cambiarMedidor({campo: medidorSeleccionado});
                                 }} 
                         >                        
                         <option value={medidor.campo} checked>{medidor.campo}</option>
@@ -660,7 +735,7 @@ const onChangeTerminos = (e) => {
                                 </label>
                                 <br/> 
                                 <label>
-                                        <input class="form-check-input" type="checkbox" name="ascensor" id="ascensor" value={ascensor.campo} onChange={onChangeAscensor}/> Ascensor
+                                        <input class="form-check-input" type="checkbox" name="ascensor" id="ascensor" value={ascensor} onChange={onChangeAscensor}/> Ascensor
                                 </label>
                                 <br/> 
                                 <label>
@@ -758,7 +833,7 @@ const onChangeTerminos = (e) => {
                                     value = {eliminacion_basura}
                                     onChange = {(e) => {
                                             const eliminarBasuraSeleccionado = e.target.value;
-                                            cambiarEliminacionBasura(eliminarBasuraSeleccionado);
+                                            cambiarEliminacionBasura({campo: eliminarBasuraSeleccionado});
                                         }} 
                                 >
                             
@@ -789,7 +864,7 @@ const onChangeTerminos = (e) => {
                                     value = {eliminacion_excretas}
                                     onChange = {(e) => {
                                             const eliminarExcretasSeleccionado = e.target.value;
-                                            cambiarEliminacionExcretas(eliminarExcretasSeleccionado);
+                                            cambiarEliminacionExcretas({campo: eliminarExcretasSeleccionado});
                                         }} 
                                 >
 

@@ -27,7 +27,7 @@ class Menu extends Component {
     } */
 
     mapas=()=>{
-        window.location.href='./mapas'
+        window.location.href='./mapas'; //'./visor/index.html'
     }
 
     predios=()=>{

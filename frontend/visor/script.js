@@ -24,7 +24,7 @@ var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Layer de OSM Topo map
 var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	maxZoom: 17,
+	maxZoom: 25,
 	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
 
@@ -100,9 +100,6 @@ var icon = L.icon({
 });
 
 
-/* var marker = L.marker ([28.3949, 84.1240], { icon: icon, draggable: true });
-var popup = marker.bindPopup('This is Nepal, ' + marker.getLatLng()).openPopup()
-popup.addTo(map); */
 
 var secondmarker = L.marker ([28.3949, 84.1240], { 
     icon: icon,
@@ -149,7 +146,109 @@ import {pointJson} from './data/point.js';
 import {polygonJson} from './data/polygon.js';
 
 import {redVialJson} from './data/red_vial_urbana.js';
+
 import {prediosJson} from './data/predios.js';
+var jsonPrd = [];
+var poligonoPrd = [];
+var url = 'http://localhost/apicatastro/index.php/prediogeo/';
+
+var idCoord = '';
+var bandera=0;
+var tipo='';
+idCoord=[[0,0]];
+
+/* axios.get(url)
+.then(respuesta => respuesta.data )
+.then(data => { for(let i=0;i<data.length;i++){jsonPrd.push(data[i]);} }) //jsonPrd.push(data.shape)
+.catch(err => console.log(err));
+console.log(prediosJson);
+console.log(jsonPrd); */
+
+async function cargarPredios(){
+    var response = await fetch(url);
+    var prds = await response.json(); 
+    var shp = [];
+    
+    //console.log(prds[0].clavecatastral);
+    for(let i=0;i<prds.length;i++)
+        {   
+          if(prds[i].shape!==null && prds[i].shape!== undefined && prds[i].shape.geometry.type==='MultiPolygon'){
+            jsonPrd.push(prds[i].shape);                        
+            //var clv = shp.concat(prds[i].clavecatastral);
+            //jsonPrd.push(shp);
+            //shp.pop();            
+          }
+           if(prds[i].shape!==null && prds[i].shape!== undefined && prds[i].shape.geometry.type==='Polygon'){
+            prds[i].shape.geometry.coordinates?.map((k) =>{
+                //console.log(k[0]);
+                var j = 0
+                j=k[0]
+                k[0]=k[1]
+                k[1]=j
+                poligonoPrd.push([k[0],k[1]])
+                //prds[i].shape.geometry.coordinates=[k[0],k[1]];
+                //poligonoPrd.pop();
+                //console.log(j)
+              })
+              prds[i].shape.geometry.coordinates=[poligonoPrd];
+              poligonoPrd =[];  
+
+              jsonPrd.push(prds[i].shape);
+            
+            //shp.push(prds[i].shape);
+            //var clv = shp.concat(prds[i].clavecatastral);
+            //jsonPrd.push(clv);
+            //shp.pop();             
+          }   
+                    
+        }
+    return jsonPrd;
+       
+
+}
+idCoord=await cargarPredios();
+console.log(idCoord); 
+//console.log(idCoord[1].geometry.coordinates[0][0].length); 
+
+ /* for (let i=0;i<idCoord.length;i++){
+    if(idCoord[i].geometry.type==='polygon'){
+
+                 
+          
+            
+            idCoord[0].geometry.coordinates[0][0]?.map((i) =>{
+                  //console.log(i[1])
+                  var j = 0
+                  j=i[0]
+                  i[0]=i[1]
+                  i[1]=j
+                  poligono.push([i[1],i[0]])
+                  //console.log(j)
+                })                    
+
+
+    }
+    if(idCoord[i].geometry.type==='MultiPolygon'){
+        poligono.push(idCoord[i]);
+    }
+
+
+
+} */
+ 
+
+
+
+
+
+
+/*fetch(url)
+.then(respuesta => respuesta.json())
+.then(respuesta => { for(let i=0;i<respuesta.length;i++){jsonPrd.push(respuesta[i]);} });
+console.log(jsonPrd.length);//respuesta[0] JSON.stringify */
+
+
+
 import {manzanasJson} from './data/manzanas.js';
 import {manzanasBJson} from './data/manzanas_b.js';
 import {limiteParroquialJson} from './data/limite_parroquial.js';
@@ -369,18 +468,24 @@ var redVialData = L.geoJSON(redVialJson, {
 
 }).addTo(map);
 
-var prediosData = L.geoJSON(prediosJson, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup(`<b>Datos predio: </b>`+ "<br/><b>Clave predial: </b> " + feature.properties.clave + "<br/><b>Área: </b>" + feature.properties.SHAPE_Area + " (m²) " + "<br/><b>Perímetro: </b>" + feature.properties.SHAPE_Leng + " (m) ")
-    },
-    style: {
-        weight: 1,
-        fillColor: 'red',
-        //opacity: 1, // 0.5
-        fillOpacity: 0.5, // 1
-        color: '#c0c0c0',
-    }
-}).addTo(map);
+
+
+  var prediosData =  L.geoJSON(idCoord, {
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(`<b>Clave catastral: </b>`+ feature.properties.clave);
+        },
+        style: {
+            weight: 1,
+            fillColor: 'red',
+            //opacity: 1, // 0.5
+            fillOpacity: 0.5, // 1
+            color: '#c0c0c0',
+        }
+    }).addTo(map);
+
+
+
+
 
 var manzanasData = L.geoJSON(manzanasJson, {
     onEachFeature: function (feature, layer) {
@@ -489,7 +594,7 @@ var drawnItems = new L.FeatureGroup();
         }
     });
 
-    //var distancia = L.drawLocal.draw.toolbar.buttons.polygon = 'Dibuja un sexy polygon!';
+    //var distancia = L.drawLocal.draw.toolbar.buttons.polygon = 'Dibuja un polygon!';
 
     var options = {
         position: 'topright',
@@ -963,12 +1068,7 @@ var drawnItems = new L.FeatureGroup();
                 if (theMarker != undefined) {   //(theMarker != undefined)
                     map.removeLayer(theMarker);                  
                 }
-
-                //var marker = L.marker ([28.3949, 84.1240], { icon: icon, draggable: true });
-                //var popup = marker.bindPopup('This is Nepal, ' + marker.getLatLng()).openPopup()
-                //popup.addTo(map);
-
-                
+                               
                 //theMarker = L.geoJSON(center).addTo(map)
                 
                 //var centroMarker = {}

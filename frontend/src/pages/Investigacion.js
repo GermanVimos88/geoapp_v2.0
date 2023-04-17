@@ -7,7 +7,7 @@ import axios from 'axios';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClipboardList, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faClipboardList, faEdit, faTrashAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
 //import { render } from '@testing-library/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -40,8 +40,8 @@ const InvestigacionPredial = () => {
         }
     }
 
-        
-    const baseUrl='http://apicatastro/investigacion/?id='+id;
+    
+    const baseUrl= 'http://localhost/apicatastro/index.php/investigacion/?id='+clave; //'https://cheerful-marzipan-12e313.netlify.app/investigacion/?id='+clave; //'http://f0783168.xsph.ru/index.php/investigacion/?id='+clave;
     //const urlInsertar = 'http://apicatastro/investigacion/nuevo?id=';
     const [data, setData]=useState([]);       
 
@@ -106,24 +106,44 @@ const abrirCerrarModalEliminar=()=>{
    setModalEliminar(!modalEliminar);
 }
 
-const soporte=(id)=>{
-    
-    window.location.href='./soporte/:'+id;//+predioSeleccionado.idpredio;
-}
-
 const peticionGet=async()=>{
-    const response = await axios.get(baseUrl) 
-
+    const response = await axios.get(baseUrl)
     setData(response.data);
     cambiarClavePredio({campo: response.data[0].clave_predio});
-    
-    
 }
 
 
 const postInvestigacion=async()=>{
+    const inv = {
+        clave_predio:clave,//clave_predio.campo,
+        tipo_informante:tipo_informante.campo,
+        apellidos_informante:apellidos_informante.campo,
+        nombre_informante:nombre_informante.campo,
+        telefono_informante:telefono_informante.campo,
+        email_informante:email_informante.campo,
+        propietario_desconocido: propietario_desconocido.campo,
+        otra_fuente_informacion:otra_fuente_informacion.campo,
+        dimensiones_terreno_irregular:dimensiones_terreno_irregular.campo,
+        linderos_definidos:linderos_definidos.campo,
+        nuevo_bloque_numero:nuevo_bloque_numero.campo,
+        ampliacion_bloque_numero:ampliacion_bloque_numero.campo,
+        nombre_actualizador:nombre_actualizador.campo,
+        apellido_actualizador:apellido_actualizador.campo,
+        anio_actualizacion:anio_actualizacion.campo,
+        mes_actualizacion:mes_actualizacion.campo,
+        dia_actualizacion:dia_actualizacion.campo,
+        cedula_actualizador:cedula_actualizador.campo,
+        firma_actualizador:firma_actualizador.campo,
+        nombre_supervisor:nombre_supervisor.campo,
+        apellido_supervisor:apellido_supervisor.campo,
+        cedula_supervisor:cedula_supervisor.campo,
+        anio_supervision:anio_supervision.campo,
+        mes_supervision:mes_supervision.campo,
+        dia_supervision:dia_supervision.campo,
+        firma_supervisor:firma_supervisor.campo
+    }
        
-    await axios.post(baseUrl,investigacionSeleccionada)
+    await axios.post(baseUrl,inv)
     .then(response=>{
         setData(data.concat(response.data));
         abrirCerrarModalInsertar();
@@ -134,14 +154,63 @@ const postInvestigacion=async()=>{
 }
 
 const putInvestigacion=async()=>{
+    const inv = {
+        clave_predio:clave_predio.campo,
+        tipo_informante:tipo_informante.campo,
+        apellidos_informante:apellidos_informante.campo,
+        nombre_informante:nombre_informante.campo,
+        telefono_informante:telefono_informante.campo,
+        email_informante:email_informante.campo,
+        propietario_desconocido: propietario_desconocido.campo,
+        otra_fuente_informacion:otra_fuente_informacion.campo,
+        dimensiones_terreno_irregular:dimensiones_terreno_irregular.campo,
+        linderos_definidos:linderos_definidos.campo,
+        nuevo_bloque_numero:nuevo_bloque_numero.campo,
+        ampliacion_bloque_numero:ampliacion_bloque_numero.campo,
+        nombre_actualizador:nombre_actualizador.campo,
+        apellido_actualizador:apellido_actualizador.campo,
+        anio_actualizacion:anio_actualizacion.campo,
+        mes_actualizacion:mes_actualizacion.campo,
+        dia_actualizacion:dia_actualizacion.campo,
+        cedula_actualizador:cedula_actualizador.campo,
+        firma_actualizador:firma_actualizador.campo,
+        nombre_supervisor:nombre_supervisor.campo,
+        apellido_supervisor:apellido_supervisor.campo,
+        cedula_supervisor:cedula_supervisor.campo,
+        anio_supervision:anio_supervision.campo,
+        mes_supervision:mes_supervision.campo,
+        dia_supervision:dia_supervision.campo,
+        firma_supervisor:firma_supervisor.campo
+    }
     
-    await axios.put('http://apicatastro/investigacion/actualizar?id='+investigacionSeleccionada.id, investigacionSeleccionada)    //f, {params:{id: predioSeleccionado.id}})
-    .then(response=>{
-        var dataNueva=data;
-        dataNueva.map(predio=>{
-        
-        })
-        setData(dataNueva); 
+    await axios.put('http://localhost/apicatastro/index.php/investigacion/actualizar?id='+idinvestigacion_predial.campo, inv)    //f, {params:{id: predioSeleccionado.id}})
+    .then(response=>{        
+        cambiarClavePredio({campo:inv.clave_predio, valido: true});
+        cambiarTipoInformante({campo:inv.tipo_informante, valido: true}); 
+        cambiarApellidosInformante({campo:inv.apellidos_informante, valido: true});
+        cambiarNombreInformante({campo:inv.nombre_informante, valido: true});
+        cambiarTelefonoInformante({campo:inv.telefono_informante, valido: true});
+        cambiarEmailInformante({campo:inv.email_informante, valido: true});
+        cambiarPropietarioDesconocido({campo:inv.propietario_desconocido, valido: true});
+        cambiarOtraFuenteInformacion({campo:inv.otra_fuente_informacion, valido: true});
+        cambiarDimensionesTerrenoIrregular({campo:inv.dimensiones_terreno_irregular, valido: true});
+        cambiarLinderosDefinidos({campo:inv.linderos_definidos, valido: true});
+        cambiarNuevoBloqueNumero({campo:inv.nuevo_bloque_numero, valido: true});
+        cambiarAmpliacionBloqueNumero({campo:inv.ampliacion_bloque_numero, valido: true});
+        cambiarNombreActualizador({campo:inv.nombre_actualizador, valido: true});
+        cambiarApellidoActualizador({campo:inv.apellido_actualizador, valido: true});
+        cambiarAnioActualizacion({campo:inv.anio_actualizacion, valido: true});
+        cambiarMesActualizacion({campo:inv.mes_actualizacion, valido: true});
+        cambiarDiaActualizacion({campo:inv.dia_actualizacion, valido: true});
+        cambiarCedulaActualizador({campo:inv.cedula_actualizador, valido: true});
+        cambiarFirmaActualizador({campo:inv.firma_actualizador, valido: true});
+        cambiarNombreSupervisor({campo:inv.nombre_supervisor, valido: true});
+        cambiarApellidoSupervisor({campo:inv.apellido_supervisor, valido: true});
+        cambiarCedulaSupervisor({campo:inv.cedula_supervisor, valido: true});
+        cambiarAnioSupervision({campo:inv.anio_supervision, valido: true});
+        cambiarMesSupervision({campo:inv.mes_supervision, valido: true});
+        cambiarDiaSupervision({campo:inv.dia_supervision, valido: true});
+        cambiarFirmaSupervisor({campo:inv.firma_supervisor, valido: true});
 
         abrirCerrarModalEditar();
         peticionGet();
@@ -151,9 +220,9 @@ const putInvestigacion=async()=>{
 }
 
 const deleteInvestigacion=async()=>{
-    await axios.delete('http://apicatastro/investigacion/eliminar?id='+investigacionSeleccionada.id)
+    await axios.delete('http://localhost/apicatastro/index.php/investigacion/eliminar?id='+idinvestigacion_predial.campo)
     .then(response=>{
-        setData(data.filter(predio=>predio.idpredio!==investigacionSeleccionada.id))
+        setData(data.filter(predio=>predio.idpredio!==idinvestigacion_predial.campo))
         abrirCerrarModalEliminar();
         peticionGet();
     })
@@ -167,7 +236,8 @@ const deleteInvestigacion=async()=>{
 
 const seleccionarInvestigacion=(investigacion, caso)=>{
     //setInvestigacionSeleccionada(investigacion);
-    cambiarIdInvestigacionPredial({campo:investigacion.idinvestigacion, valido: true}); 
+    cambiarIdInvestigacionPredial({campo:investigacion.idinvestigacion, valido: true});
+    cambiarClavePredio({campo:investigacion.clave_predio, valido: true});
     cambiarTipoInformante({campo:investigacion.tipo_informante, valido: true}); 
     cambiarApellidosInformante({campo:investigacion.apellidos_informante, valido: true});
     cambiarNombreInformante({campo:investigacion.nombre_informante, valido: true});
@@ -236,17 +306,18 @@ const nuevoFormulario=()=>{
 }
 
 const onSubmit = (e) => {
-    e.preventDefault();
-
-    if(
-        
+    e.preventDefault(); 
+    if(        
         terminos
      ){         
-         // CONEXION CRUD (PETICIONES AJAX/HTTP)
+         // CONEXION CRUD (PETICIONES AJAX/HTTP)         
+         cambiarFormularioValido(true);
+         //alert('Datos actualizados correctamente');
+
          
      } else {
         cambiarFormularioValido(false);         
-     }
+     }   
 
 }
 
@@ -264,19 +335,19 @@ useEffect(()=>{
 
     return (
         <main>
-               <h1><b>Investigación predial 🕵</b></h1> 
+               <h1><b>Investigación predial <FontAwesomeIcon icon={faBook}/></b></h1> 
               <br/>
               <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>                
               <br/>
               <center>
-                <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva Investigación 📤</button> 
+                <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva Investigación <FontAwesomeIcon icon={faUpload}/></button> 
               </center>     
           
               <Formulario action="" onSubmit={onSubmit}>
 
-              <div class="center-block fix-width scroll-inner" style={{textAlign: 'center'}}>                  
+              <div class="center-block fix-width scroll-inner" style={{textAlign: 'center', scale: "88%", marginLeft: '-6rem'}}>                  
                 <table className="table table-striped table-hover" >
-                    <thead>
+                    <thead id="cabecera">
                         <tr>
                             <th style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><b>ID investigación</b></th>
                             
@@ -331,8 +402,8 @@ useEffect(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                       {   
-                            data.map(inv=>(
+                       { Array.isArray(data)
+                            ?data.map(inv=>(
                                 
                                         <tr key={inv.idinvestigacion}>
                                         <td style={{position: 'sticky', top: 130, left: 0, padding: '60px', paddingLeft:'70px', verticalAlign:'middle', background: '#eee'}} >{inv.idinvestigacion}</td>                                        
@@ -372,7 +443,7 @@ useEffect(()=>{
                                                                                 
                                     </td>
                                 </tr>                            
-                            ))
+                            )):null
                         }
                         
                     </tbody>                    
@@ -386,13 +457,7 @@ useEffect(()=>{
                 <Modal isOpen={modalInsertar}>
                         <ModalHeader>Insertar nueva investigación</ModalHeader>
                             <ModalBody>
-                                <div className="form-group">
-                                    <label htmlFor="id">ID Investigación: </label>
-                                    <br/>
-                                    <input type="text" className="form-control" name="id" id="id" readOnly /> 
-                                    
-                                    <br/>
-                                    <br/>
+                                <div className="form-group" style={{ textAlign: 'center' }}>                                    
                                     <center>
                                         <h5><b>Informante</b></h5>
                                         <hr/>
@@ -403,10 +468,10 @@ useEffect(()=>{
                                                 className="custom-select" 
                                                 id="tipo_informante" 
                                                 name="tipo_informante" 
-                                                value = {tipo_informante}
+                                                value = {tipo_informante.campo}
                                                 onChange = {(e) => {
                                                     const tipoSeleccionado = e.target.value;
-                                                    cambiarTipoInformante(tipoSeleccionado);
+                                                    cambiarTipoInformante({campo: tipoSeleccionado});
                                                 }}                                            
                                             >
                                                 
@@ -477,10 +542,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="propietario_desconocido" 
                                                     name="propietario_desconocido" 
-                                                    value = {propietario_desconocido}
+                                                    value = {propietario_desconocido.campo}
                                                     onChange = {(e) => {
                                                         const propietarioSeleccionado = e.target.value;
-                                                        cambiarPropietarioDesconocido(propietarioSeleccionado);
+                                                        cambiarPropietarioDesconocido({campo: propietarioSeleccionado});
                                                     }}                                            
                                                 >
                                                     
@@ -499,10 +564,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="otra_fuente_informacion" 
                                                     name="otra_fuente_informacion" 
-                                                    value = {otra_fuente_informacion}
+                                                    value = {otra_fuente_informacion.campo}
                                                     onChange = {(e) => {
                                                         const fuenteSeleccionada = e.target.value;
-                                                        cambiarOtraFuenteInformacion(fuenteSeleccionada);
+                                                        cambiarOtraFuenteInformacion({campo: fuenteSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -519,10 +584,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="dimensiones_terreno_irregular" 
                                                     name="dimensiones_terreno_irregular" 
-                                                    value = {dimensiones_terreno_irregular}
+                                                    value = {dimensiones_terreno_irregular.campo}
                                                     onChange = {(e) => {
                                                         const dimensionesSeleccionada = e.target.value;
-                                                        cambiarDimensionesTerrenoIrregular(dimensionesSeleccionada);
+                                                        cambiarDimensionesTerrenoIrregular({campo: dimensionesSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -539,10 +604,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="linderos_definidos" 
                                                     name="linderos_definidos" 
-                                                    value = {linderos_definidos}
+                                                    value = {linderos_definidos.campo}
                                                     onChange = {(e) => {
                                                         const linderosSeleccionado = e.target.value;
-                                                        cambiarLinderosDefinidos(linderosSeleccionado);
+                                                        cambiarLinderosDefinidos({campo: linderosSeleccionado});
                                                     }}                                            
                                                 >
                                                     
@@ -625,10 +690,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="firma_actualizador" 
                                                     name="firma_actualizador" 
-                                                    value = {firma_actualizador}
+                                                    value = {firma_actualizador.campo}
                                                     onChange = {(e) => {
                                                         const firmaActualizadorSeleccionada = e.target.value;
-                                                        cambiarFirmaActualizador(firmaActualizadorSeleccionada);
+                                                        cambiarFirmaActualizador({campo: firmaActualizadorSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -661,10 +726,10 @@ useEffect(()=>{
                                             <select className="custom-select" 
                                             id="mes_actualizacion" 
                                             name="mes_actualizacion" 
-                                            value = {mes_actualizacion}
+                                            value = {mes_actualizacion.campo}
                                             onChange = {(e) => {
                                                 const mesSeleccionado = e.target.value;
-                                                cambiarMesActualizacion(mesSeleccionado);
+                                                cambiarMesActualizacion({campo: mesSeleccionado});
                                             }}                                                             
                                             
                                             >                
@@ -689,10 +754,10 @@ useEffect(()=>{
                                             <select className="custom-select" 
                                             id="dia_actualizacion" 
                                             name="dia_actualizacion" 
-                                            value = {dia_actualizacion}
+                                            value = {dia_actualizacion.campo}
                                             onChange = {(e) => {
                                                 const diaSeleccionado = e.target.value;
-                                                cambiarMesActualizacion(diaSeleccionado);
+                                                cambiarMesActualizacion({campo: diaSeleccionado});
                                             }}                                                             
                                             
                                             >                
@@ -782,10 +847,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="firma_supervisor" 
                                                     name="firma_supervisor" 
-                                                    value = {firma_supervisor}
+                                                    value = {firma_supervisor.campo}
                                                     onChange = {(e) => {
                                                         const firmaSupervisorSeleccionada = e.target.value;
-                                                        cambiarFirmaSupervisor(firmaSupervisorSeleccionada);
+                                                        cambiarFirmaSupervisor({campo: firmaSupervisorSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -818,10 +883,10 @@ useEffect(()=>{
                                           <select className="custom-select" 
                                           id="mes_supervision" 
                                           name="mes_supervision" 
-                                          value = {mes_supervision}
+                                          value = {mes_supervision.campo}
                                           onChange = {(e) => {
                                               const mesSupervisionSeleccionado = e.target.value;
-                                              cambiarMesSupervision(mesSupervisionSeleccionado);
+                                              cambiarMesSupervision({campo: mesSupervisionSeleccionado});
                                           }}                                                             
                                           
                                           >                
@@ -846,10 +911,10 @@ useEffect(()=>{
                                           <select className="custom-select" 
                                           id="dia_supervision" 
                                           name="dia_supervision" 
-                                          value = {dia_supervision}
+                                          value = {dia_supervision.campo}
                                           onChange = {(e) => {
                                               const diaSupervisionSeleccionado = e.target.value;
-                                              cambiarDiaSupervision(diaSupervisionSeleccionado);
+                                              cambiarDiaSupervision({campo: diaSupervisionSeleccionado});
                                           }}                                                             
                                           
                                           >                
@@ -911,35 +976,26 @@ useEffect(()=>{
     
             <Modal isOpen={modalEditar}>
                 <ModalHeader><b>Editar Investigación</b></ModalHeader>
-                <ModalBody>
-                    {
-                        //cambiarTipoInformante({campo: , valido: null}),         
-                        //cambiarApellidosInformante({campo: '', valido: null})
-                    }
-
-                    <div className="form-group">
-                                 
-                                    <div className="form-group">
-                                    <label htmlFor="id">ID Investigación: {idinvestigacion_predial.campo} </label>
-                                    
-                                    <input type="text" className="form-control" name="id" id="id" value={idinvestigacion_predial.campo} readOnly /> 
-                                    
-                                        <br/>
-                                        <br/>
+                <ModalBody>                    
+                    <div className="form-group">                                 
+                                    <div className="form-group" style={{ textAlign: 'center' }}>
+                                    <label htmlFor="id" style={{ float: 'left' }} >ID Investigación: {idinvestigacion_predial.campo} </label>
+                                    <br/>
+                                    <br/>
                                         <center>
                                         <h5><b>Informante</b></h5>
                                         <hr/>
-                                        <br/>
+                                        
                                         <td><b>Tipo :   </b>&nbsp;</td>
                                         <td>   
                                             <select 
                                                 className="custom-select" 
                                                 id="tipo_informante" 
                                                 name="tipo_informante" 
-                                                value = {tipo_informante}
+                                                value = {tipo_informante.campo}
                                                 onChange = {(e) => {
                                                     const tipoSeleccionado = e.target.value;
-                                                    cambiarTipoInformante(tipoSeleccionado);
+                                                    cambiarTipoInformante({campo: tipoSeleccionado});
                                                 }}                                            
                                             >
                                                 <option value={tipo_informante.campo}>{tipo_informante.campo}</option>
@@ -1006,10 +1062,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="propietario_desconocido" 
                                                     name="propietario_desconocido" 
-                                                    value = {propietario_desconocido}
+                                                    value = {propietario_desconocido.campo}
                                                     onChange = {(e) => {
                                                         const propietarioSeleccionado = e.target.value;
-                                                        cambiarPropietarioDesconocido(propietarioSeleccionado);
+                                                        cambiarPropietarioDesconocido({campo: propietarioSeleccionado});
                                                     }}                                            
                                                 >
                                                     
@@ -1028,10 +1084,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="otra_fuente_informacion" 
                                                     name="otra_fuente_informacion" 
-                                                    value = {otra_fuente_informacion}
+                                                    value = {otra_fuente_informacion.campo}
                                                     onChange = {(e) => {
                                                         const fuenteSeleccionada = e.target.value;
-                                                        cambiarOtraFuenteInformacion(fuenteSeleccionada);
+                                                        cambiarOtraFuenteInformacion({campo: fuenteSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -1049,10 +1105,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="dimensiones_terreno_irregular" 
                                                     name="dimensiones_terreno_irregular" 
-                                                    value = {dimensiones_terreno_irregular}
+                                                    value = {dimensiones_terreno_irregular.campo}
                                                     onChange = {(e) => {
                                                         const dimensionesSeleccionada = e.target.value;
-                                                        cambiarDimensionesTerrenoIrregular(dimensionesSeleccionada);
+                                                        cambiarDimensionesTerrenoIrregular({campo: dimensionesSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -1070,10 +1126,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="linderos_definidos" 
                                                     name="linderos_definidos" 
-                                                    value = {linderos_definidos}
+                                                    value = {linderos_definidos.campo}
                                                     onChange = {(e) => {
                                                         const linderosSeleccionado = e.target.value;
-                                                        cambiarLinderosDefinidos(linderosSeleccionado);
+                                                        cambiarLinderosDefinidos({campo: linderosSeleccionado});
                                                     }}                                            
                                                 >
                                                     
@@ -1156,10 +1212,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="firma_actualizador" 
                                                     name="firma_actualizador" 
-                                                    value = {firma_actualizador}
+                                                    value = {firma_actualizador.campo}
                                                     onChange = {(e) => {
                                                         const firmaActualizadorSeleccionada = e.target.value;
-                                                        cambiarFirmaActualizador(firmaActualizadorSeleccionada);
+                                                        cambiarFirmaActualizador({campo: firmaActualizadorSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -1192,10 +1248,10 @@ useEffect(()=>{
                                             <select className="custom-select" 
                                             id="mes_actualizacion" 
                                             name="mes_actualizacion" 
-                                            value = {mes_actualizacion}
+                                            value = {mes_actualizacion.campo}
                                             onChange = {(e) => {
                                                 const mesSeleccionado = e.target.value;
-                                                cambiarMesActualizacion(mesSeleccionado);
+                                                cambiarMesActualizacion({campo: mesSeleccionado});
                                             }}                                                             
                                             
                                             >                
@@ -1220,10 +1276,10 @@ useEffect(()=>{
                                             <select className="custom-select" 
                                             id="dia_actualizacion" 
                                             name="dia_actualizacion" 
-                                            value = {dia_actualizacion}
+                                            value = {dia_actualizacion.campo}
                                             onChange = {(e) => {
                                                 const diaSeleccionado = e.target.value;
-                                                cambiarMesActualizacion(diaSeleccionado);
+                                                cambiarMesActualizacion({campo: diaSeleccionado});
                                             }}                                                             
                                             
                                             >                
@@ -1312,10 +1368,10 @@ useEffect(()=>{
                                                     className="custom-select" 
                                                     id="firma_supervisor" 
                                                     name="firma_supervisor" 
-                                                    value = {firma_supervisor}
+                                                    value = {firma_supervisor.campo}
                                                     onChange = {(e) => {
                                                         const firmaSupervisorSeleccionada = e.target.value;
-                                                        cambiarFirmaSupervisor(firmaSupervisorSeleccionada);
+                                                        cambiarFirmaSupervisor({campo: firmaSupervisorSeleccionada});
                                                     }}                                            
                                                 >
                                                     
@@ -1348,10 +1404,10 @@ useEffect(()=>{
                                           <select className="custom-select" 
                                           id="mes_supervision" 
                                           name="mes_supervision" 
-                                          value = {mes_supervision}
+                                          value = {mes_supervision.campo}
                                           onChange = {(e) => {
                                               const mesSupervisionSeleccionado = e.target.value;
-                                              cambiarMesSupervision(mesSupervisionSeleccionado);
+                                              cambiarMesSupervision({campo: mesSupervisionSeleccionado});
                                           }}                                                             
                                           
                                           >                
@@ -1376,10 +1432,10 @@ useEffect(()=>{
                                           <select className="custom-select" 
                                           id="dia_supervision" 
                                           name="dia_supervision" 
-                                          value = {dia_supervision}
+                                          value = {dia_supervision.campo}
                                           onChange = {(e) => {
                                               const diaSupervisionSeleccionado = e.target.value;
-                                              cambiarDiaSupervision(diaSupervisionSeleccionado);
+                                              cambiarDiaSupervision({campo: diaSupervisionSeleccionado});
                                           }}                                                             
                                           
                                           >                
@@ -1430,21 +1486,7 @@ useEffect(()=>{
                 </ModalBody>
                 <ModalFooter>
                     
-                    {/* <button className="btn btn-primary" onClick={()=>putInvestigacion()}>Editar</button>{"  "} */}
-
-                    {/*
-                        formularioValido === false && <MensajeError>
-                        <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                        </p>                    
-                        </MensajeError>
-                    */}
-                
-                    <Boton type="submit" onClick={()=>putInvestigacion()}><b>Enviar</b></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                
-
+                    <button className="btn btn-primary" onClick={()=>putInvestigacion()}>Editar</button>                   
                     <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><b>Cancelar</b></button>
                 </ModalFooter>
             </Modal>
