@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "c5c1d1d4-4a6a-4016-b862-72b3ebd0ac3a",
+		"name": "Pruebas de funcionalidad API catastro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reportes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/reportes/?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"reportes",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get predios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/predios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"predios",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get estatus legal",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/legal/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"legal",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get construccion",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/construccion/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"construccion",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get propietario",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/propietario/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"propietario",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get obras",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/grafico/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"grafico",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get grafico",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/grafico/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"grafico",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get obras",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/obras/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"obras",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get uso predio",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/uso/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"uso",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get investigacion predial",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/investigacion/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"investigacion",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get predio geojson",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/prediogeo/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"prediogeo",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"shape\":{\n    \"type\": \"Feature\", \n    \"geometry\": \n    {\"type\": \"polygon\", \"coordinates\": \n    [[-0.4147789346017945, -78.02630041147242], \n    [-0.41535259978002464, -78.02645053712376], \n    [-0.415599222180308, -78.02550689017255], \n    [-0.4151006160152765, -78.02536748778205]]\n    }}\n}\n    "
+				},
+				"url": {
+					"raw": "http://localhost/apicatastro/index.php/usuarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"apicatastro",
+						"index.php",
+						"usuarios",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
