@@ -6,7 +6,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faIdCard } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faIdCard, faReply, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -23,8 +23,9 @@ const Propietarios = () => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
-    for (var i=0 ; i < path.length ; i++) {
+    /* for (var i=0 ; i < path.length ; i++) {
         if(path.substring(i, i+1)==':' )
         {
         for (var j=i+2; j < path.length ; j++) {
@@ -34,12 +35,28 @@ const Propietarios = () => {
             }
         }
         }
-    }
+    } */
+    for (var i=0 ; i < path.length ; i++) {
+        if(path.substring(i, i+1)===':' )
+        {
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
+            }
+          }
+        }
+      }
 
     //console.log(id)
     //console.log(clave)
     
-    const baseUrl='http://localhost/apicatastro/index.php/propietarios/?id='+id; //'http://f0783168.xsph.ru/index.php/propietarios/?id='+id;
+    const baseUrl='http://localhost/apicatastro/index.php/propietarios/?id='+idPropietario;//+id; //'http://f0783168.xsph.ru/index.php/propietarios/?id='+id;
        
     const [predio, cambiarPredio] = useState({campo: '', valido: null});
     const [catastro, cambiarCatastro] = useState({campo: '', valido: null});
@@ -195,7 +212,7 @@ const Propietarios = () => {
 
     } 
     
-    await axios.put('http://localhost/apicatastro/index.php/propietarios/actualizar?id='+id, propietario)
+    await axios.put('http://localhost/apicatastro/index.php/propietarios/actualizar?id='+idPropietario, propietario)
     .then(response=>{
         
             cambiarCedula({campo: propietario.identificacion});
@@ -251,24 +268,28 @@ const onChangeTerminos = (e) => {
 
 const onSubmit = (e) => {
     e.preventDefault();
-
-    if(        
-        //password.valido === 'true' &&
-        //password2.valido === 'true' &&
-        //correo.valido === 'true' &&
-        terminos
-     ){         
+      
         // CONEXION CRUD (PETICIONES AJAX/HTTP)
         putUsoPropietarios();
         peticionGet();        
-        cambiarFormularioValido(true);
-        //alert('Datos actualizados correctamente');         
-         
-     } else {
-        cambiarFormularioValido(false);         
-     }
+        //cambiarFormularioValido(true);
+        alert('Datos actualizados correctamente');         
+     
 }
 
+const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+}
 
 useEffect(()=>{    
     if(!cookies.get('username')){
@@ -282,8 +303,11 @@ useEffect(()=>{
 
 
     return (
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
         <main>              
-            <h1><b>Propietario <FontAwesomeIcon icon={faIdCard}/></b></h1> 
+        <label style={{ fontWeight:'900', fontSize:'32px' }}>Propietario <FontAwesomeIcon icon={faIdCard}/></label> 
             <br/>
             
             <Formulario action="" onSubmit={onSubmit}> 
@@ -291,9 +315,7 @@ useEffect(()=>{
             <ContenedorBotonCentrado>
             <p>
                 <hr/>
-                <tr>                    
-                <td><b>Personería:</b></td>
-                    <td>
+                <label for="tipo" style={{ fontWeight:'900' }} >Personería:</label>
                     <select 
                         className="custom-select"
                         id="tipo" 
@@ -312,8 +334,8 @@ useEffect(()=>{
                     <option value="Jurídica">Jurídica </option>
                     <option value="Posesionario">Posesionario </option>
                             
-                </select> </td>
-                </tr>
+                </select> 
+                
                 <hr/>
             </p>
             </ContenedorBotonCentrado> 
@@ -386,15 +408,12 @@ useEffect(()=>{
             
                 
                 <div>  
-                    <br/>          
-                
-              
-                    <td><b>Fecha de Nacimiento:</b></td>
-
+                    <br/>              
+                    <label style={{ fontWeight:'900' }} >Fecha de Nacimiento:</label>
                     <p >
-                    
-                    <td>Dia:</td>
-                    <td>
+                    <tr>
+                    <label for="dia_nacimiento">Dia:</label> 
+                    <td>                    
                     <select 
                         className="custom-select"
                         id="dia_nacimiento" 
@@ -441,12 +460,13 @@ useEffect(()=>{
                         <option value="30">30</option>
                         <option value="31">31</option>
                             
-                        </select> </td>
+                        </select> </td> 
+                        </tr>      
                 
                         <center>                
                         
                         <tr>
-                        <td>Mes:</td>
+                        <label for="mes_nacimiento">Mes:</label>
                         <td>
                         <select 
                             className="custom-select"
@@ -480,7 +500,7 @@ useEffect(()=>{
 
                         
                         <tr>
-                        <td>Año:</td>
+                        <label for="anio_nacimiento">Año:</label>
                         <td>
                         <select 
                             className="custom-select"
@@ -591,16 +611,12 @@ useEffect(()=>{
                         </select> </td>
                         </tr>
 
-                    </p>  
-                    <br/>                    
-                    <br/> 
+                    </p>                      
                     </div>
                     
                     <div>              
-                    <p>
-
-                    <label><b>Porcentaje de participación (%)</b></label> <td> 
-
+                    <p>                                        
+                    <label style={{ fontWeight:'900' }}>Porcentaje de participación (%)</label> <td> 
                     <NumericInput 
                         className="form-control" 
                         value={ porcentaje_prt } 
@@ -608,7 +624,7 @@ useEffect(()=>{
                         max={ 100 } 
                         step={ 1 } 
                         precision={ 0 } 
-                        size={ 6 }                         
+                        size={ 4 }                         
                         strict
                         style={{
                             wrap: {
@@ -616,7 +632,7 @@ useEffect(()=>{
                                 boxShadow: '0 0 1px 1px #fff inset, 1px 1px 5px -1px #000',
                                 
                                 borderRadius: '6px 3px 3px 6px',
-                                fontSize: 30
+                                fontSize: 18
                             },
                             input: {
                                 borderRadius: '4px 2px 2px 4px',
@@ -642,7 +658,7 @@ useEffect(()=>{
                     />
                     </td>
                     </p>
-                    <br/>
+                    
 		    </div> 
         </center>      
 
@@ -651,7 +667,7 @@ useEffect(()=>{
             <br/>             
             <p>          
                 <tr>                          
-                <td>Representante:</td>
+                <label for="representante" style={{ fontWeight:'900' }}>Representante:</label>
                     <td>
                     <select 
                         className="custom-select"
@@ -676,7 +692,7 @@ useEffect(()=>{
 
             <tr>    
           
-            <td>Tipo de documento:</td>
+            <label for="tipo_documento" style={{ fontWeight:'900' }} >Tipo de documento:</label>
             <td>
               <select 
                 className="custom-select"
@@ -700,7 +716,7 @@ useEffect(()=>{
                 
           <tr>    
           
-           <td>Estado civil:</td>
+           <label for="estado_civil" style={{ fontWeight:'900' }} >Estado civil:</label>
             <td>
               <select 
                 className="custom-select"
@@ -759,7 +775,7 @@ useEffect(()=>{
                /> 
                
                </p>   
-                 <br/>
+                 
                <p>
                
                <ComponenteInput
@@ -788,9 +804,8 @@ useEffect(()=>{
                    <br/>
                              
                    <p> 
-                   <tr> 
-                   <br/>
-                     <td>¿Es jefe de hogar?:</td>
+                   <tr>                    
+                     <label for="jefe_hogar" style={{ fontWeight:'900' }} >¿Es jefe de hogar?:</label>
                        <td>
                          <select 
                            className="custom-select"
@@ -816,12 +831,10 @@ useEffect(()=>{
       </center>
 
       <ContenedorBotonCentrado>
-            <p>
-                <br/>
+            <p>                
                 <hr/>
-                <tr>    
-                <br/>
-                <td><b>Personería jurídica:</b></td>
+                <tr>                    
+                <label for="personeria" style={{ fontWeight:'900' }}>Personería jurídica:</label>
                     <td>
                     <select 
                         className="custom-select"
@@ -870,11 +883,10 @@ useEffect(()=>{
                     expresionRegular = {expresiones.nombre}                
                 />
 
-                <p>
-                    <br/>                    
-                    <tr>    
+                <p>                                    
                     <br/>
-                    <td>Inscrito en :</td>
+                    <tr>                        
+                    <label for="inscrito" style={{ fontWeight:'900' }}>Inscrito en :</label>
                         <td>
                         <select 
                             className="custom-select"
@@ -1004,7 +1016,7 @@ useEffect(()=>{
                 />
 
                 <br/>
-                <label><b>Porcentaje de participación (%)</b></label> <td> 
+                <label style={{ fontWeight:'900' }}>Porcentaje de participación (%)</label> <td> 
 
                 <NumericInput 
                     className="form-control" 
@@ -1013,7 +1025,7 @@ useEffect(()=>{
                     max={ 100 } 
                     step={ 1 } 
                     precision={ 0 } 
-                    size={ 6 }                    
+                    size={ 4 }                    
                     strict
                     style={{
                         wrap: {
@@ -1021,7 +1033,7 @@ useEffect(()=>{
                             boxShadow: '0 0 1px 1px #fff inset, 1px 1px 5px -1px #000',
                             
                             borderRadius: '6px 3px 3px 6px',
-                            fontSize: 30
+                            fontSize: 18
                         },
                         input: {
                             borderRadius: '4px 2px 2px 4px',
@@ -1048,34 +1060,16 @@ useEffect(()=>{
                 </td> 
           </div>
       </center>
-
-                <ContenedorTerminos>
-                    <Label>
-                        <input 
-                            type="checkbox" 
-                            name="terminos" 
-                            id="terminos" 
-                            checked={terminos}
-                            onChange={onChangeTerminos}
-                            
-                            />
-                        Acepto los Términos y Condiciones
-                    </Label>                    
-                </ContenedorTerminos>
-                {formularioValido === false && <MensajeError>
-                    <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                    </p>                    
-                </MensajeError>}
+            <br/>                 
                 <ContenedorBotonCentrado>
                     <Boton type="submit">Enviar</Boton>
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
+                    
                 </ContenedorBotonCentrado>                
                 
             </Formulario>
 
         </main>
+        </div>
     )
 
 }

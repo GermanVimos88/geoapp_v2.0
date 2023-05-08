@@ -65,64 +65,75 @@ const Registro = () => {
         
         <div className="containerPrincipal">
             
-            <center>
-            <label style={{color:'blue'}}><b>Registro</b></label>
+            <center>            
+            <br/>   
+            <label style={{color:'blue', fontWeight:'900'}}>Registro</label>
             </center>   
             <br/>            
             <div className="containerSecundario">
                 <div className="form-group">
-                    <label> Apellido: </label>
+                    <label for="primer_apellido" >Primer Apellido: </label>
                     <br/>
                     <input 
+                        style={{ marginBottom:'0.8rem' }}
                         type="text"
                         className="form-control"
+                        id="primer_apellido"
                         name="primer_apellido"
                         onChange={(e) => {
                             const primerApellido = e.target.value;
                             setPrimerApellido({campo: primerApellido});
                             }}
                     />                    
-                    <br />
-                    <label> Segundo apellido: </label>
+                    
+                    <label for="segundo_apellido" >Segundo apellido: </label>
                     <br/>
                     <input 
+                        style={{ marginBottom:'0.8rem' }}
                         type="text"
                         className="form-control"
+                        id="segundo_apellido"
                         name="segundo_apellido"
                         onChange={(e) =>{
                             const segundoApellido = e.target.value;
                             setSegundoApellido({campo: segundoApellido});
                             }}
                     />
-                    <br/>
-                    <label> Nombre: </label>
+                    
+                    <label for="nombre"> Nombre: </label>
                     <br/>
                     <input 
+                        style={{ marginBottom:'0.8rem' }}
                         type="text"
                         className="form-control"
+                        id="nombre"
                         name="nombre"
                         onChange={(e) =>{
                             const nmobreUsr = e.target.value;
                             setNombre({campo: nmobreUsr});
                             }}
                     />                    
-                    <br />                    
-                    <label> Username: </label>
+                                     
+                    <label for="username"> Username: </label>
                     <br/>
                     <input 
+                        style={{ marginBottom:'0.8rem' }}
                         type="text"
                         className="form-control"
+                        id="username"
                         name="username"
                         onChange={(e) =>{
                             const usr = e.target.value;
                             setUsername({campo: usr});
                             }}
                     />
-                    <label> Contraseña: </label>
+                    <label for="password"> Contraseña: </label>
                     <br/>
                     <input 
+                        style={{ marginBottom:'1rem' }}
                         type="password"
                         className="form-control"
+                        id="password"
                         name="password"
                         onChange={(e)=>{
                             const psw = e.target.value
@@ -130,8 +141,7 @@ const Registro = () => {
                         }
                             
                     />
-                    <br/>
-                    
+                                        
                     <button className="btn btn-primary" onClick={()=> registrarUsuario()}>Registrarse</button>                    
                     <br/>
                     <p>

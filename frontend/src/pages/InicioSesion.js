@@ -78,27 +78,29 @@ const InicioSesion =() => {
         return (            
         <div className="containerPrincipal">
             <div>
-            <label style={{color:'blue'}}><b>Sistema de catastro y cartografía</b></label>
+            <label style={{color:'blue'}}><strong>Sistema de catastro y cartografía</strong></label>
                 <br/>
                 <br/>
             </div> 
             
             <div className="containerSecundario">
                 <div className="form-group">
-                    <label> Usuario: </label>    
+                    <label for="username"> Usuario: </label>    
                     <br/>
                     <input
                         type="text"
                         className="form-control"
+                        id="username"
                         name="username"
                         onChange={handleChange}
                     />
                     <br />
-                    <label> Contraseña: </label>
+                    <label for="password"> Contraseña: </label>
                     <br/>
                     <input 
                         type="password"
                         className="form-control"
+                        id="password"
                         name="password"
                         onChange={handleChange}
                     />

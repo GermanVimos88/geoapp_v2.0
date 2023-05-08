@@ -7,7 +7,7 @@ import axios from 'axios';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook, faClipboardList, faEdit, faTrashAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faClipboardList, faEdit, faReply, faTrashAlt, faUpload, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 //import { render } from '@testing-library/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -27,18 +27,24 @@ const InvestigacionPredial = () => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }
+      }
 
     
     const baseUrl= 'http://localhost/apicatastro/index.php/investigacion/?id='+clave; //'https://cheerful-marzipan-12e313.netlify.app/investigacion/?id='+clave; //'http://f0783168.xsph.ru/index.php/investigacion/?id='+clave;
@@ -321,6 +327,20 @@ const onSubmit = (e) => {
 
 }
 
+/* const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+} */
+
 useEffect(()=>{
     
     if(!cookies.get('username')){
@@ -334,11 +354,13 @@ useEffect(()=>{
 
 
     return (
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
         <main>
-               <h1><b>Investigación predial <FontAwesomeIcon icon={faBook}/></b></h1> 
+               <label style={{ fontWeight:'900', fontSize:'32px' }}>Investigación predial <FontAwesomeIcon icon={faBook}/></label> 
               <br/>
-              <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>                
-              <br/>
+              <label>Clave Catastral: {clave_predio.campo}</label> <td> </td>              
               <center>
                 <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva Investigación <FontAwesomeIcon icon={faUpload}/></button> 
               </center>     
@@ -349,55 +371,55 @@ useEffect(()=>{
                 <table className="table table-striped table-hover" >
                     <thead id="cabecera">
                         <tr>
-                            <th style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><b>ID investigación</b></th>
+                            <th id="idinv" style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}>ID investigación</th>
                             
                             
-                            <th colspan="5"><h5><b>Informante</b></h5>
+                            <th id="informante" colspan="5"><h5>Informante</h5>
                             <center>
                             <tr>     
                                 
-                            <th style={{paddingLeft: '90px', width: '200px'}}>Tipo</th>
-                            <th style={{paddingLeft: '120px', width: '150px'}}>Apellidos</th>
-                            <th style={{paddingLeft: '100px', width: '150px'}}>Nombres</th>
-                            <th style={{paddingLeft: '90px', width: '150px'}}>Teléfono</th>
-                            <th style={{paddingLeft: '70px', width: '180px'}}>Email</th>                            
+                            <th id="tipo" style={{paddingLeft: '90px', width: '200px'}}>Tipo</th>
+                            <th id="apellidos" style={{paddingLeft: '120px', width: '150px'}}>Apellidos</th>
+                            <th id="nombres" style={{paddingLeft: '100px', width: '150px'}}>Nombres</th>
+                            <th id="telefono" style={{paddingLeft: '90px', width: '150px'}}>Teléfono</th>
+                            <th id="email" style={{paddingLeft: '70px', width: '180px'}}>Email</th>                            
                                 
                             </tr>
                             </center>
                             </th>
                             
                             
-                            <th>Propietario desconocido</th>
-                            <th>Otra fuente de información</th>
-                            <th>Dimensiones terreno irregular</th>
-                            <th>Linderos definidos</th>
-                            <th>Nuevo Bloque</th>
-                            <th>Ampliación bloque</th>
+                            <th id="propietario_desc">Propietario desconocido</th>
+                            <th id="otra_fuente">Otra fuente de información</th>
+                            <th id="dimensiones_terreno_irregular">Dimensiones terreno irregular</th>
+                            <th id="linderos_definidos">Linderos definidos</th>
+                            <th id="nuevo_bloque">Nuevo Bloque</th>
+                            <th id="ampliacion_bloque">Ampliación bloque</th>
                             
                             
-                            <th colspan="4"><h5><b>Actualizador</b></h5>
+                            <th id="actualizador" colspan="4"><h5>Actualizador</h5>
                             
                             <tr>
-                            <th style={{paddingLeft: '0px', width: '200px'}}>Nombre</th>
-                            <th style={{paddingLeft: '20px', width: '100px'}}>Apellidos</th>                            
-                            <th style={{paddingLeft: '130px', width: '200px'}}>Cédula</th>
-                            <th style={{paddingLeft: '90px', width: '200px'}}>Firma</th>                            
+                            <th id="nombre" style={{paddingLeft: '0px', width: '200px'}}>Nombre</th>
+                            <th id="apellidos_actualizador" style={{paddingLeft: '20px', width: '100px'}}>Apellidos</th>                            
+                            <th id="cedula_actualizador" style={{paddingLeft: '130px', width: '200px'}}>Cédula</th>
+                            <th id="firma_actualizador" style={{paddingLeft: '90px', width: '200px'}}>Firma</th>                            
                             </tr>
                             </th>
-                            <th>Fecha de actualización</th>
+                            <th id="fecha_actualizacion">Fecha de actualización</th>
 
-                            <th colspan="4"><h5><b>Supervisor</b></h5>
+                            <th id="supervisor" colspan="4"><h5>Supervisor</h5>
                             <tr>
-                            <th style={{paddingLeft: '0px', width: '200px'}}>Nombre</th>
-                            <th style={{paddingLeft: '40px', width: '100px'}}>Apellidos</th>
-                            <th style={{paddingLeft: '130px', width: '200px'}}>Cédula</th>                            
-                            <th style={{paddingLeft: '90px', width: '200px'}}>Firma</th>
+                            <th id="nombre_supervisor" style={{paddingLeft: '0px', width: '200px'}}>Nombre</th>
+                            <th id="apellidos_supervisor" style={{paddingLeft: '40px', width: '100px'}}>Apellidos</th>
+                            <th id="cedula_supervisor" style={{paddingLeft: '130px', width: '200px'}}>Cédula</th>                            
+                            <th id="firma_supervisor" style={{paddingLeft: '90px', width: '200px'}}>Firma</th>
                             </tr>
                             
                             </th>
 
-                            <th>Fecha de supervisión</th>
-                            <th>ACCIONES</th>                                                   
+                            <th id="fecha_supervision">Fecha de supervisión</th>
+                            <th id="acciones">ACCIONES</th>                                                   
 
                         </tr>
                     </thead>
@@ -406,40 +428,40 @@ useEffect(()=>{
                             ?data.map(inv=>(
                                 
                                         <tr key={inv.idinvestigacion}>
-                                        <td style={{position: 'sticky', top: 130, left: 0, padding: '60px', paddingLeft:'70px', verticalAlign:'middle', background: '#eee'}} >{inv.idinvestigacion}</td>                                        
+                                        <td headers='id investigacion' style={{position: 'sticky', top: 130, left: 0, padding: '60px', paddingLeft:'70px', verticalAlign:'middle', background: '#eee'}} >{inv.idinvestigacion}</td>                                        
                                         
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'100px'}}>{inv.tipo_informante}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.apellidos_informante}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.nombre_informante}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.telefono_informante}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.email_informante}</td>
-                                        
-                                        
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.propietario_desconocido}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.otra_fuente_informacion}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dimensiones_terreno_irregular}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.linderos_definidos}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.nuevo_bloque_numero}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.ampliacion_bloque_numero}</td>
+                                        <td headers='tipo informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'100px'}}>{inv.tipo_informante}</td>
+                                        <td headers='apellidos informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.apellidos_informante}</td>
+                                        <td headers='nombre informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.nombre_informante}</td>
+                                        <td headers='telefono informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.telefono_informante}</td>
+                                        <td headers='email informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.email_informante}</td>
                                         
                                         
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'80px'}}>{inv.nombre_actualizador}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.apellido_actualizador}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.cedula_actualizador}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.firma_actualizador}</td>
+                                        <td headers='propietario desconocido' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.propietario_desconocido}</td>
+                                        <td headers='otre fuente informacion' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.otra_fuente_informacion}</td>
+                                        <td headers='dimensiones terreno irregular' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dimensiones_terreno_irregular}</td>
+                                        <td headers='linderos definidos' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.linderos_definidos}</td>
+                                        <td headers='nuevo bloque numero' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.nuevo_bloque_numero}</td>
+                                        <td headers='ampliacion bloque numero' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.ampliacion_bloque_numero}</td>
+                                        
+                                        
+                                        <td headers='nombre actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'80px'}}>{inv.nombre_actualizador}</td>
+                                        <td headers='apellido actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.apellido_actualizador}</td>
+                                        <td headers='cedula actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.cedula_actualizador}</td>
+                                        <td headers='firma actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.firma_actualizador}</td>
 
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dia_actualizacion + "/" + inv.mes_actualizacion + "/" + inv.anio_actualizacion}</td>
+                                        <td headers='fecha actualizacion' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dia_actualizacion + "/" + inv.mes_actualizacion + "/" + inv.anio_actualizacion}</td>
                                         
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'75px'}}>{inv.nombre_supervisor}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.apellido_supervisor}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.cedula_supervisor}</td>
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.firma_supervisor}</td>
+                                        <td headers='nombre supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'75px'}}>{inv.nombre_supervisor}</td>
+                                        <td headers='apellido supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.apellido_supervisor}</td>
+                                        <td headers='cedila supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.cedula_supervisor}</td>
+                                        <td headers='firma supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.firma_supervisor}</td>
                                         
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dia_supervision + "/" + inv.mes_supervision + "/" + inv.anio_supervision}</td>
+                                        <td headers='fecha supervision' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dia_supervision + "/" + inv.mes_supervision + "/" + inv.anio_supervision}</td>
 
-                                        <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>
-                                        <button className="btn btn-primary btn-md" onClick={()=>seleccionarInvestigacion(inv,"Editar")}><b>Editar</b><FontAwesomeIcon icon={faEdit}/></button>
-                                        <button className="btn btn-danger btn-md" onClick={()=>seleccionarInvestigacion(inv,"Eliminar")}><b>Eliminar</b><FontAwesomeIcon icon={faTrashAlt}/></button>  
+                                        <td headers='botones acciones' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>
+                                        <button className="btn btn-primary btn-md" onClick={()=>seleccionarInvestigacion(inv,"Editar")}>Editar<FontAwesomeIcon icon={faEdit}/></button>
+                                        <button className="btn btn-danger btn-md" onClick={()=>seleccionarInvestigacion(inv,"Eliminar")}>Eliminar<FontAwesomeIcon icon={faTrashAlt}/></button>  
                                                                                 
                                     </td>
                                 </tr>                            
@@ -459,10 +481,10 @@ useEffect(()=>{
                             <ModalBody>
                                 <div className="form-group" style={{ textAlign: 'center' }}>                                    
                                     <center>
-                                        <h5><b>Informante</b></h5>
+                                        <h5>Informante</h5>
                                         <hr/>
                                         <br/>
-                                        <td><b>Tipo :   </b>&nbsp;</td>
+                                        <label for="tipo_informante" style={{ fontWeight:'900' }}>Tipo: </label>
                                         <td>   
                                             <select 
                                                 className="custom-select" 
@@ -536,7 +558,7 @@ useEffect(()=>{
                                     
                                             <center>
                                             <br/>                                                                                    
-                                            <td><b>Propietario desconocido :   </b>&nbsp;</td>
+                                            <label for="propietario_desconocido" style={{ fontWeight:'900' }}>Propietario desconocido: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -558,7 +580,7 @@ useEffect(()=>{
                                                     </td>
 
                                             <br/>                                                                                    
-                                            <td><b>Otra fuente de información :  </b>&nbsp;</td>
+                                            <label for="otra_fuente_informacion" style={{ fontWeight:'900' }}>Otra fuente de información: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -578,7 +600,7 @@ useEffect(()=>{
                                                                                                             
                                                     </td>
                                             <br/>                                                                                    
-                                            <td><b>Dimensiones de terreno irregular :  </b>&nbsp;</td>
+                                            <label for="dimensiones_terreno_irregular" style={{ fontWeight:'900' }}>Dimensiones de terreno irregular: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -598,7 +620,7 @@ useEffect(()=>{
                                                                                                             
                                                     </td>
                                             <br/>                                                                                    
-                                            <td><b>Linderos definidos :  </b>&nbsp;</td>
+                                            <label for="linderos_definidos" style={{ fontWeight:'900' }}>Linderos definidos: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -609,9 +631,7 @@ useEffect(()=>{
                                                         const linderosSeleccionado = e.target.value;
                                                         cambiarLinderosDefinidos({campo: linderosSeleccionado});
                                                     }}                                            
-                                                >
-                                                    
-                                                    
+                                                >   
                                                     <option value="" >----------</option>
                                                     <option value="Si">Si</option>
                                                     <option value="No">No</option>                                                    
@@ -646,7 +666,7 @@ useEffect(()=>{
                                         <br/>
                                         <br/>
                                         <center>
-                                        <h5><b>Actualizador</b></h5>                                        
+                                        <h5>Actualizador</h5>                                        
                                         <hr/>
                                         </center>
                                     
@@ -684,7 +704,7 @@ useEffect(()=>{
                                         
                                         <center>
                                         <br/>                                                                                    
-                                        <td><b>Firma :  </b>&nbsp;</td>
+                                        <label for="firma_actualizador" style={{ fontWeight:'900' }}>Firma: </label>
                                         <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -695,9 +715,7 @@ useEffect(()=>{
                                                         const firmaActualizadorSeleccionada = e.target.value;
                                                         cambiarFirmaActualizador({campo: firmaActualizadorSeleccionada});
                                                     }}                                            
-                                                >
-                                                    
-                                                    
+                                                >                                                                                                        
                                                     <option value="" >----------</option>
                                                     <option value="Si">Si</option>
                                                     <option value="No">No</option>                                                    
@@ -721,7 +739,7 @@ useEffect(()=>{
                                           
                                         
                                             <tr>
-                                            <td>Mes: &nbsp;</td>&nbsp;
+                                            <label for="mes_actualizacion" style={{ fontWeight:'900' }}>Mes: </label>
                                             <td>
                                             <select className="custom-select" 
                                             id="mes_actualizacion" 
@@ -749,7 +767,7 @@ useEffect(()=>{
                                             <option value="Diciembre">Diciembre</option>
                                             </select> </td>
 
-                                            &nbsp;&nbsp;&nbsp;<td>Día: &nbsp;&nbsp;</td>
+                                            &nbsp;&nbsp;&nbsp;<label for="dia_actualizacion" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
                                             <td>
                                             <select className="custom-select" 
                                             id="dia_actualizacion" 
@@ -802,7 +820,7 @@ useEffect(()=>{
                                     <br/>
                                     <br/>
                                     <center>
-                                    <h5><b>Supervisor</b></h5>
+                                    <h5>Supervisor</h5>
                                     </center>
                                     <hr/>
                                     
@@ -841,7 +859,7 @@ useEffect(()=>{
                                         
                                         <center>
                                         <br/>                                                                                    
-                                        <td><b>Firma :  </b>&nbsp;</td>
+                                        <label for="firma_supervisor" style={{ fontWeight:'900' }}>Firma: </label>
                                         <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -878,7 +896,7 @@ useEffect(()=>{
                                         <center>
                                         
                                           <tr>
-                                          <td>Mes: &nbsp;</td>&nbsp;
+                                          <label for="mes_supervision" style={{ fontWeight:'900' }}>Mes: &nbsp;</label>&nbsp;
                                           <td>
                                           <select className="custom-select" 
                                           id="mes_supervision" 
@@ -906,7 +924,7 @@ useEffect(()=>{
                                           <option value="Diciembre">Diciembre</option>
                                           </select> </td>
 
-                                          &nbsp;&nbsp;&nbsp;<td>Día: &nbsp;&nbsp;</td>
+                                          &nbsp;&nbsp;&nbsp;<label for="dia_supervision" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
                                           <td>
                                           <select className="custom-select" 
                                           id="dia_supervision" 
@@ -956,8 +974,8 @@ useEffect(()=>{
                                       
                                     </center>
                                     <br/>
-                                     <label><b>Fecha de Supervisión:</b>&nbsp;&nbsp;</label>     
-                                    <input type="date" name="fecha" min="1970-01-01" max="2018-05-25" step="1" value="2017-04-28"/>
+                                     <label for="fecha_supervision" style={{ fontWeight:'900' }}>Fecha de Supervisión:&nbsp;&nbsp;</label>     
+                                    <input type="date" id="fecha_supervision" name="fecha" min="1970-01-01" max="2018-05-25" step="1" value="2017-04-28"/>
                                     <br/>                                  
 
                                 
@@ -965,8 +983,7 @@ useEffect(()=>{
                 </ModalBody>
                 <ModalFooter>
                     
-                    <button className="btn btn-primary" onClick={()=>postInvestigacion()} >Insertar</button>{"  "}                  
-                    
+                    <button className="btn btn-primary" onClick={()=>postInvestigacion()} >Insertar</button>{"  "}
                     <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>                   
                     
                 </ModalFooter>
@@ -975,7 +992,7 @@ useEffect(()=>{
 
     
             <Modal isOpen={modalEditar}>
-                <ModalHeader><b>Editar Investigación</b></ModalHeader>
+                <ModalHeader>Editar Investigación</ModalHeader>
                 <ModalBody>                    
                     <div className="form-group">                                 
                                     <div className="form-group" style={{ textAlign: 'center' }}>
@@ -983,10 +1000,10 @@ useEffect(()=>{
                                     <br/>
                                     <br/>
                                         <center>
-                                        <h5><b>Informante</b></h5>
+                                        <h5>Informante</h5>
                                         <hr/>
                                         
-                                        <td><b>Tipo :   </b>&nbsp;</td>
+                                        <label for="tipo_informante" style={{ fontWeight:'900' }}>Tipo: </label>
                                         <td>   
                                             <select 
                                                 className="custom-select" 
@@ -1056,7 +1073,7 @@ useEffect(()=>{
                                     
                                             <center>
                                             <br/>                                                                                    
-                                            <td><b>Propietario desconocido :   </b>&nbsp;</td>
+                                            <label for="propietario_desconocido" style={{ fontWeight:'900' }}>Propietario desconocido: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -1078,7 +1095,7 @@ useEffect(()=>{
                                                     </td>
 
                                             <br/>                                                                                    
-                                            <td><b>Otra fuente de información :  </b>&nbsp;</td>
+                                            <label for="otra_fuente_informacion" style={{ fontWeight:'900' }}>Otra fuente de información: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -1099,7 +1116,7 @@ useEffect(()=>{
                                                                                                             
                                                     </td>
                                             <br/>                                                                                    
-                                            <td><b>Dimensiones de terreno irregular :  </b>&nbsp;</td>
+                                            <label for="dimensiones_terreno_irregular" style={{ fontWeight:'900' }}>Dimensiones de terreno irregular: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -1120,7 +1137,7 @@ useEffect(()=>{
                                                                                                             
                                                     </td>
                                             <br/>                                                                                    
-                                            <td><b>Linderos definidos :  </b>&nbsp;</td>
+                                            <label for="linderos_definidos" style={{ fontWeight:'900' }}>Linderos definidos: </label>
                                             <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -1168,7 +1185,7 @@ useEffect(()=>{
                                         <br/>
                                         <br/>
                                         <center>
-                                        <h5><b>Actualizador</b></h5>                                        
+                                        <h5>Actualizador</h5>                                        
                                         <hr/>
                                         </center>
                                     
@@ -1206,7 +1223,7 @@ useEffect(()=>{
 
                                         <center>
                                         <br/>                                                                                    
-                                        <td><b>Firma :  </b>&nbsp;</td>
+                                        <label for="firma_actualizador" style={{ fontWeight:'900' }}>Firma: </label>
                                         <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -1243,7 +1260,7 @@ useEffect(()=>{
                                           
                                         
                                             <tr>
-                                            <td>Mes: &nbsp;</td>&nbsp;
+                                            <label for="mes_actualizacion" style={{ fontWeight:'900' }}>Mes: </label>
                                             <td>
                                             <select className="custom-select" 
                                             id="mes_actualizacion" 
@@ -1271,7 +1288,7 @@ useEffect(()=>{
                                             <option value="Diciembre">Diciembre</option>
                                             </select> </td>
 
-                                            &nbsp;&nbsp;&nbsp;<td>Día: &nbsp;&nbsp;</td>
+                                            &nbsp;&nbsp;&nbsp;<label for="dia_actualizacion" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
                                             <td>
                                             <select className="custom-select" 
                                             id="dia_actualizacion" 
@@ -1323,7 +1340,7 @@ useEffect(()=>{
                                     <br/>
                                     <br/>
                                     <center>
-                                    <h5><b>Supervisor</b></h5>
+                                    <h5>Supervisor</h5>
                                     </center>
                                     <hr/>
                                     
@@ -1362,7 +1379,7 @@ useEffect(()=>{
 
                                         <center>
                                         <br/>                                                                                    
-                                        <td><b>Firma :  </b>&nbsp;</td>
+                                        <label for="firma_supervisor" style={{ fontWeight:'900' }}>Firma: </label>
                                         <td>   
                                                 <select 
                                                     className="custom-select" 
@@ -1399,7 +1416,7 @@ useEffect(()=>{
                                         <center>
                                         
                                           <tr>
-                                          <td>Mes: &nbsp;</td>&nbsp;
+                                          <label for="mes_supervision" style={{ fontWeight:'900' }}>Mes: </label>
                                           <td>
                                           <select className="custom-select" 
                                           id="mes_supervision" 
@@ -1427,7 +1444,7 @@ useEffect(()=>{
                                           <option value="Diciembre">Diciembre</option>
                                           </select> </td>
 
-                                          &nbsp;&nbsp;&nbsp;<td>Día: &nbsp;&nbsp;</td>
+                                          &nbsp;&nbsp;&nbsp;<label for="dia_supervision" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
                                           <td>
                                           <select className="custom-select" 
                                           id="dia_supervision" 
@@ -1477,8 +1494,8 @@ useEffect(()=>{
                                       
                                     </center>
                                     <br/>
-                                     <label><b>Fecha de Supervisión:</b>&nbsp;&nbsp;</label>     
-                                    <input type="date" name="fecha" min="1970-01-01" max="2018-05-25" step="1" value="2017-04-28"/>
+                                     <label for="fecha_supervision" style={{ fontWeight:'900' }}>Fecha de Supervisión:&nbsp;&nbsp;</label>     
+                                    <input type="date" id="fecha_supervision" name="fecha" min="1970-01-01" max="2018-05-25" step="1" value="2017-04-28"/>
                                     <br/>                                          
                                 </div>
 
@@ -1487,7 +1504,7 @@ useEffect(()=>{
                 <ModalFooter>
                     
                     <button className="btn btn-primary" onClick={()=>putInvestigacion()}>Editar</button>                   
-                    <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><b>Cancelar</b></button>
+                    <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}>Cancelar</button>
                 </ModalFooter>
             </Modal>
 
@@ -1504,9 +1521,8 @@ useEffect(()=>{
                     </button>
                 </ModalFooter>            
             </Modal>
-        
-
         </main>
+        </div>
     )
 
 }

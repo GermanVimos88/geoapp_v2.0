@@ -35,25 +35,28 @@ input {
   
 }
 
-#leyenda b {
-    margin-left: 30px;
-    
-    
+#leyenda {
+    margin-left: 3rem;    
 }
+
+#leyenda2 {
+    margin-left: 0rem;    
+}
+
 
 #contenedor {
   width: 390px;
   padding: 10px;
-  background: #c9c3c3;  
-  border: 5px solid gray;
+  background: #cfe8f3;  
+  border: 1.5px solid gray;
   margin: 0;
 }
 
 #contenedor2 {
-    width: 400px;
+    width: 390px;
     padding: 10px;
-    background: #c9c3c3;  
-    border: 5px solid gray;
+    background: #cfe8f3;  
+    border: 1.5px solid gray;
     margin: 0;
   }
 

@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faFaucet } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faFaucet, faReply, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -23,18 +23,24 @@ const Infraestructura = () => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }
+      }
            
     const baseUrl= 'http://localhost/apicatastro/index.php/infraestructura/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/infraestructura/?id='+id; //'http://f0783168.xsph.ru/index.php/infraestructura/?id='+id;
     const [data, setData]=useState([]);    
@@ -197,19 +203,12 @@ const onChangeTerminos = (e) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        if(            
-            terminos
-        ){            
+                   
             // CONEXION CRUD (PETICIONES AJAX/HTTP)
             putInfraestructura();
             peticionGet();
-            cambiarFormularioValido(true);
-            //alert('Datos actualizados correctamente');
-            
-        } else {
-            cambiarFormularioValido(false);         
-        }
+            //cambiarFormularioValido(true);
+            alert('Datos actualizados correctamente');       
 
     }
 
@@ -338,7 +337,19 @@ const onChangeTerminos = (e) => {
             console.error(error);
         });
     }
-
+    /* const menu=()=>{
+        
+        //Retorno al menú principal        
+        window.location.href='/menu';
+    }
+    const cerrarSesion=()=>{
+        cookies.remove('id', {path: "/"});
+        cookies.remove('primer_apellido', {path: "/"});
+        cookies.remove('segundo_apellido', {path: "/"});
+        cookies.remove('nombre', {path: "/"});
+        cookies.remove('username', {path: "/"});
+        window.location.href='./';
+    } */
     
     useEffect(()=>{
 
@@ -352,35 +363,29 @@ const onChangeTerminos = (e) => {
     },[])
 
 
-    return (
-        
-        <div>                    
+    return (        
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
         <main>
-            <h1><b>Infraestructura <FontAwesomeIcon icon={faFaucet}/></b></h1> 
+            <label style={{ fontWeight:'900', fontSize:'32px' }}>Infraestructura <FontAwesomeIcon icon={faFaucet}/></label> 
             <br/>                
             <div class="form-group col-md-6"> 
                      
-                <label>Clave Catastral: <b>{clave}</b></label> <td> </td>
+                <label>Clave Catastral: {clave}</label> <td> </td>
             </div>              
 
-            <Formulario action="" onSubmit={onSubmit}>
-            
-            <div>               
-                <br/>
-                <h5><b>Vías de acceso:</b></h5> 
-                
-                                
-                <center>
-                
+            <Formulario action="" onSubmit={onSubmit}>            
+            <div>                
+                <legend id="leyenda2">Vías de acceso:</legend>  
+                <center>                
                 <div id="contenedor">
                     <br/>
                     <p>
-                        <tr> 
-                        <br/>
-                        <td id="etiqueta"><b>Tipo Vía de acceso:</b></td>&nbsp;&nbsp;
+                        <tr>                         
+                        <label for="tipo_via" id="etiqueta" style={{ fontWeight:'900' }}>Tipo Vía de acceso:</label>&nbsp;&nbsp;
                         
-                            <td>
-                            
+                            <td>                            
                             <select 
                                 className="custom-select"
                                 id="tipo_via" 
@@ -408,13 +413,11 @@ const onChangeTerminos = (e) => {
                                     
                         </select> </td> 
                         </tr>
-
                     </p>
                 
                     <p>
-                        <tr>    
-                        
-                        <td id="etiqueta"><b>Rodadura:</b></td>&nbsp;&nbsp;
+                        <tr>
+                        <label id="etiqueta" for="rodadura" style={{ fontWeight:'900' }}>Rodadura:</label>&nbsp;&nbsp;
                             <td>
                             
                             <select 
@@ -447,7 +450,7 @@ const onChangeTerminos = (e) => {
                     <p>
                         <tr>    
                         
-                        <td id="etiqueta"><b>Otras vías de acceso:</b></td>&nbsp;&nbsp;
+                        <label id="etiqueta" for="vias_adicionales" style={{ fontWeight:'900' }}>Otras vías de acceso:</label>&nbsp;&nbsp;
                             <td>
                             
                             <select 
@@ -478,7 +481,7 @@ const onChangeTerminos = (e) => {
             <br/>
             <br/>
 
-            <h5><b>Agua potable:</b></h5> 
+            <legend id="leyenda2">Agua potable:</legend> 
             <center>
                     <div id="contenedor">
                     <br/>
@@ -486,7 +489,7 @@ const onChangeTerminos = (e) => {
 
                         <tr>    
                         
-                        <td id="etiqueta"><b>Fuente de agua:</b></td>&nbsp;&nbsp;
+                        <label id="etiqueta" for="agua_procedencia" style={{ fontWeight:'900' }}>Fuente de agua:</label>&nbsp;&nbsp;
                             <td>
                             
                             <select 
@@ -515,7 +518,7 @@ const onChangeTerminos = (e) => {
                                         
                     <p>
                         <tr>    
-                        <td id="etiqueta"><b>Captación:</b></td>&nbsp;
+                        <label id="etiqueta" for="agua_recepcion" style={{ fontWeight:'900' }}>Captación:</label>&nbsp;
                             <td>
                             
                             <select 
@@ -546,7 +549,7 @@ const onChangeTerminos = (e) => {
 
                     <p>
                         <tr>    
-                        <td id="etiqueta"><b>Alcantarillado:</b></td>&nbsp;&nbsp;
+                        <label id="etiqueta" for="alcantarillado" style={{ fontWeight:'900' }}>Alcantarillado:</label>&nbsp;&nbsp;
                             <td>
                             <select 
                                 className="custom-select"
@@ -572,7 +575,7 @@ const onChangeTerminos = (e) => {
                     
                     <p>
                         <tr> 
-                        <td id="etiqueta"><b>Método de riego:</b></td>&nbsp;
+                        <label id="etiqueta" for="metodo_riego" style={{ fontWeight:'900' }}>Método de riego:</label>&nbsp;
                             <td>
                             
                             <select 
@@ -602,7 +605,7 @@ const onChangeTerminos = (e) => {
                     
                     <p>
                         <tr>    
-                        <td id="etiqueta"><b>Disponibilidad de riego:</b></td>&nbsp;
+                        <label id="etiqueta" for="disponibilidad_riego" style={{ fontWeight:'900' }}>Disponibilidad de riego:</label>&nbsp;
                             <td>
                             
                             <select 
@@ -625,8 +628,6 @@ const onChangeTerminos = (e) => {
                         </select> </td>
                         </tr>
                     </p>
-                    
-                    
                 </center> 
 
                 </div>
@@ -635,13 +636,13 @@ const onChangeTerminos = (e) => {
                     <br/>
                     <br/>
 
-            <h5><b>Energía eléctrica:</b></h5> 
+            <legend id="leyenda2">Energía eléctrica:</legend> 
             <center>
                 <div id="contenedor">
                     <br/>
                     <p>
                         <tr>    
-                        <td id="etiqueta"><b>Fuente de energía eléctrica:</b></td>&nbsp;
+                        <label id="etiqueta" for="energia_procedencia" style={{ fontWeight:'900' }}>Fuente de energía eléctrica:</label>&nbsp;
                         <td>
                             
                         <select 
@@ -670,7 +671,7 @@ const onChangeTerminos = (e) => {
                     <p>
                         <tr>
                        
-                        <td id="etiqueta">Medidor:</td> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label id="etiqueta" for="medidor" style={{ fontWeight:'900' }}>Medidor:</label> &nbsp;&nbsp;&nbsp;&nbsp;
                         <td>
                         <select 
                             className="custom-select"
@@ -689,34 +690,30 @@ const onChangeTerminos = (e) => {
                             
                         </select> </td>
                         </tr>
-
                     </p>
                 </div>
-            </center>   
+                </center>   
 
-            </div>        
-            <div>
-                <br/>
-                <br/>
-                            <p>
-                                
+                </div>        
+                <div>                                      
+                            <p> 
                                 <fieldset id="checkboxes">  
-                                <legend id="leyenda"><b>Comunicaciones:</b></legend>                            
+                                <legend id="leyenda">Comunicaciones:</legend>                            
                                 
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="convencional" id="convencional" checked={telefono_convencional.campo=="1"} onChange={onChangeTelefono}/> Teléfono convencional
+                                <label for="convencional">
+                                    <input class="form-check-input" type="checkbox" name="convencional" id="convencional" value={telefono_convencional.campo} onChange={onChangeTelefono}/> Teléfono convencional
                                 </label>
                                 <br/>
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="celular" id="celular" defaultChecked={()=>{if (celular.campo=="1") {return true} }} onChange={onChangeCelular}/> Celular
+                                <label for="celular">
+                                    <input class="form-check-input" type="checkbox" name="celular" id="celular" value={celular.campo} onChange={onChangeCelular}/> Celular
                                 </label>
                                 <br/>
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="tv_cable" id="tv_cable" defaultChecked={()=>{if (tv_cable.campo=="0") {return true} }} onChange={onChangeTvCable}/> Tv por cable
+                                <label for="tv_cable">
+                                    <input class="form-check-input" type="checkbox" name="tv_cable" id="tv_cable" value={tv_cable.campo} onChange={onChangeTvCable}/> Tv por cable
                                 </label>
                                 <br/>
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="internet" id="internet" checked={internet.campo=="1"} onChange={onChangeInternet}/> Internet
+                                <label for="internet">
+                                    <input class="form-check-input" type="checkbox" name="internet" id="internet" value={internet.campo} onChange={onChangeInternet}/> Internet
                                 </label>                                
                                 <br/>
                                 </fieldset>
@@ -727,49 +724,47 @@ const onChangeTerminos = (e) => {
 
                                 <tr>
                                 <fieldset id="checkboxes">     
-                                <center> <legend id="leyenda"><b>Instalaciones especiales:</b></legend></center>
-
-                                
-                                <label>
-                                <input class="form-check-input" type="checkbox" name="instalaciones_especiales" id="instalaciones_especiales" checked={instalaciones_especiales.campo!="No tiene"} onChange={onChangeInstalaciones} /> Instalaciones especiales
+                                <legend id="leyenda">Instalaciones especiales:</legend>
+                                <label for="instalaciones_especiales">
+                                <input class="form-check-input" type="checkbox" name="instalaciones_especiales" id="instalaciones_especiales" value={instalaciones_especiales.campo} onChange={onChangeInstalaciones} /> Instalaciones especiales
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="ascensor" id="ascensor" value={ascensor} onChange={onChangeAscensor}/> Ascensor
+                                <label for="ascensor">
+                                        <input class="form-check-input" type="checkbox" name="ascensor" id="ascensor" value={ascensor.campo} onChange={onChangeAscensor}/> Ascensor
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="circuito_cerrado_tv" id="circuito_cerrado_tv" checked={circuito_cerrado_tv.campo=="1"} onChange={onChangeCCTV}/> Circuito Cerrado de TV 
+                                <label for="circuito_cerrado_tv">
+                                        <input class="form-check-input" type="checkbox" name="circuito_cerrado_tv" id="circuito_cerrado_tv" value={circuito_cerrado_tv.campo} onChange={onChangeCCTV}/> Circuito Cerrado de TV 
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="montacarga" id="montacarga" checked={montacarga.campo=="1"} onChange={onChangeMontacarga}/> Montacarga
+                                <label for="montacarga">
+                                        <input class="form-check-input" type="checkbox" name="montacarga" id="montacarga" value={montacarga.campo} onChange={onChangeMontacarga}/> Montacarga
                                 </label>
                                 <br/> 
                                 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="sistema_alterno_electricidad" id="sistema_alterno_electricidad" checked={sistema_alterno_electricidad.campo=="1"} onChange={onChangeSistemaAlterno}/> Sistema alterno de electricidad
+                                <label for="sistema_alterno_electricidad">
+                                        <input class="form-check-input" type="checkbox" name="sistema_alterno_electricidad" id="sistema_alterno_electricidad" value={sistema_alterno_electricidad.campo} onChange={onChangeSistemaAlterno}/> Sistema alterno de electricidad
                                 </label>
                                 
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="aire_acondicionado" id="aire_acondicionado" checked={aire_acondicionado.campo=="1"} onChange={onChangeAireAcondicionado}/> Aire acondicionado
+                                <label for="aire_acondicionado">
+                                        <input class="form-check-input" type="checkbox" name="aire_acondicionado" id="aire_acondicionado" value={aire_acondicionado.campo} onChange={onChangeAireAcondicionado}/> Aire acondicionado
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="sistema_contra_incendios" id="sistema_contra_incendios" checked={sistema_contra_incendios.campo=="1"} onChange={onChangeSistemaIncendios}/> Sistema contra incendios
+                                <label for="sistema_contra_incendios">
+                                        <input class="form-check-input" type="checkbox" name="sistema_contra_incendios" id="sistema_contra_incendios" value={sistema_contra_incendios.campo} onChange={onChangeSistemaIncendios}/> Sistema contra incendios
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="gas_centralizado" id="gas_centralizado" checked={gas_centralizado.campo=="1"} onChange={onChangeGasCentralizado}/> Gas centralizado
+                                <label for="gas_centralizado">
+                                        <input class="form-check-input" type="checkbox" name="gas_centralizado" id="gas_centralizado" value={gas_centralizado.campo} onChange={onChangeGasCentralizado}/> Gas centralizado
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="ventilacion" id="ventilacion" checked={ventilacion.campo=="1"} onChange={onChangeVentilacion}/> Ventilación
+                                <label for="ventilacion">
+                                        <input class="form-check-input" type="checkbox" name="ventilacion" id="ventilacion" value={ventilacion.campo} onChange={onChangeVentilacion}/> Ventilación
                                 </label>
                                 <br/> 
-                                <label>
-                                        <input class="form-check-input" type="checkbox" name="sistema_voz_datos" id="sistema_voz_datos" checked={sistema_voz_datos.campo=="1"} onChange={onChangeSistemaVozDatos}/> Sistema de voz y datos
+                                <label for="sistema_voz_datos">
+                                        <input class="form-check-input" type="checkbox" name="sistema_voz_datos" id="sistema_voz_datos" value={sistema_voz_datos.campo} onChange={onChangeSistemaVozDatos}/> Sistema de voz y datos
                                 </label>
                                 <br/>
                                 </fieldset>
@@ -781,22 +776,22 @@ const onChangeTerminos = (e) => {
                                 <tr>
                                 <fieldset id="checkboxes">
                                     
-                                <legend id="leyenda"><b>Otros servicios:</b></legend>                        
+                                <legend id="leyenda">Otros servicios:</legend>                        
 
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="alumbrado_publico" id="alumbrado_publico" checked={alumbrado_publico.campo==="1"} onChange={onChangeAlumbradoPublico}/> Alumbrado público
+                                <label for="alumbrado_publico">
+                                    <input class="form-check-input" type="checkbox" name="alumbrado_publico" id="alumbrado_publico" value={alumbrado_publico.campo} onChange={onChangeAlumbradoPublico}/> Alumbrado público
                                 </label>
                                 <br/> 
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="recoleccion_basura" id="recoleccion_basura" checked={recoleccion_basura.campo=="1"} onChange={onChangeRecoleccionBasura}/> Recoleccion de basura
+                                <label for="recoleccion_basura">
+                                    <input class="form-check-input" type="checkbox" name="recoleccion_basura" id="recoleccion_basura" value={recoleccion_basura.campo} onChange={onChangeRecoleccionBasura}/> Recoleccion de basura
                                 </label>
                                 <br/> 
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="transporte_urbano" id="transporte_urbano" checked={transporte_urbano.campo=="1"} onChange={onChangeTransporteUrbano}/> Transporte urbano
+                                <label for="transporte_urbano">
+                                    <input class="form-check-input" type="checkbox" name="transporte_urbano" id="transporte_urbano" value={transporte_urbano.campo} onChange={onChangeTransporteUrbano}/> Transporte urbano
                                 </label>
                                 <br/> 
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="aseo_calles" id="aseo_calles" checked={aseo_calles.campo=="1"} onChange={onChangeAseocalles}/> Aseo de calles
+                                <label for="aseo_calles">
+                                    <input class="form-check-input" type="checkbox" name="aseo_calles" id="aseo_calles" value={aseo_calles.campo} onChange={onChangeAseocalles}/> Aseo de calles
                                 </label>
                                 <br/> 
                                 <br/>                                
@@ -807,14 +802,14 @@ const onChangeTerminos = (e) => {
                             <p>
                                 <tr>
                                 <fieldset id="checkboxes">                                
-                                <legend id="leyenda"><b>Aceras y Bordillos:</b></legend>
+                                <legend id="leyenda">Aceras y Bordillos:</legend>
                                           
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="aceras" id="aceras" checked={aceras.campo=="1"} onChange={onChangeAceras}/> Aceras
+                                <label for="aceras">
+                                    <input class="form-check-input" type="checkbox" name="aceras" id="aceras" value={aceras.campo} onChange={onChangeAceras}/> Aceras
                                 </label>
                                 <br/> 
-                                <label>
-                                    <input class="form-check-input" type="checkbox" name="bordillos" id="bordillos" checked={bordillos.campo=="1"} onChange={onChangeBordillos}/> Bordillos
+                                <label for="bordillos">
+                                    <input class="form-check-input" type="checkbox" name="bordillos" id="bordillos" value={bordillos.campo} onChange={onChangeBordillos}/> Bordillos
                                 </label>
                                 <br/> 
                                 <br/>
@@ -822,10 +817,10 @@ const onChangeTerminos = (e) => {
                                 </tr>
                             </p>
                             <br/>
-                            <p>                                        
-                                <tr>    
-                                <td><b>Eliminación de basura:</b></td> &nbsp;&nbsp;
-                                <td>
+                            <p style={{ marginLeft:'3rem' }}>                                        
+                                   
+                                <label for="basura" style={{ fontWeight:'900' }}>Eliminación de basura:</label> 
+                                <br/>
                                 <select 
                                     className="custom-select"
                                     id="basura" 
@@ -847,16 +842,10 @@ const onChangeTerminos = (e) => {
                                 <option value="Arrojan al río">Arrojan al río </option>
                                 <option value="Otra forma">Otra forma </option>
 
-                                </select> </td>
-                                </tr>
-                            </p>
-
-                            <p>                                                        
-                                <tr>    
-            
-                                <td><b>Eliminación excretas:</b></td>
-                                <td>
-                                    
+                                </select> 
+                                
+                                <label for="eliminacion_excretas" style={{ fontWeight:'900' }}>Eliminación excretas:</label>
+                                <br/>
                                 <select 
                                     className="custom-select"
                                     id="eliminacion_excretas" 
@@ -874,49 +863,20 @@ const onChangeTerminos = (e) => {
                                 <option value="Red pública de alcantarillado">Red pública de alcantarillado </option>
                                 <option value="Pozo séptico">Pozo séptico </option>
                                 <option value="Pozo ciego">Pozo ciego </option>
-                                <option value="Descarga directa al mar, río o lago">Descarga directa al mar,río o lago </option>
+                                <option value="Descarga directa al mar, río o lago">Descarga directa al mar, río o lago </option>
                                 <option value="Letrina">Letrina </option>
                                         
-                                </select> </td>
-                                </tr>
+                                </select> 
                             </p>
-            </div>       
-
-        <br/>
-
-                <ContenedorTerminos>
-                    <Label>
-                        <input 
-                            type="checkbox" 
-                            name="terminos" 
-                            id="terminos" 
-                            checked={terminos}
-                            onChange={onChangeTerminos}
-                            class="form-check-input"
-                            
-                            />&nbsp;
-                        Acepto los Términos y Condiciones
-                    </Label>                    
-                </ContenedorTerminos>
-                {formularioValido === false && <MensajeError>
-                    <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                    </p>                    
-                </MensajeError>}
+            </div>
+        <br/>              
                 <ContenedorBotonCentrado>
-                    <Boton type="submit">Enviar</Boton>
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                </ContenedorBotonCentrado>                
-                
+                    <Boton type="submit">Enviar</Boton>                    
+                </ContenedorBotonCentrado>
             </Formulario>
-
         </main>
-    </div>
-         
+    </div>         
     )
-
 }
-
 
 export default Infraestructura;

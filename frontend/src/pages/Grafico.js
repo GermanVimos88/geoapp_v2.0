@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faGlobeAmericas, faReply, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 
@@ -23,18 +23,24 @@ const Grafico = () => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }    
+      }
     
     const baseUrl= 'http://localhost/apicatastro/index.php/grafico/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/grafico/?id='+id; //'http://f0783168.xsph.ru/index.php/grafico/?id='+id;
     const [data, setData]=useState();        
@@ -77,20 +83,13 @@ const onChangeTerminos = (e) => {
 
 const onSubmit = (e) => {
     e.preventDefault();
-
-    if(        
-        terminos
-     ){
+    
         // CONEXION CRUD (PETICIONES AJAX/HTTP)
         putGrafico();
         peticionGet();
-        cambiarFormularioValido(true);
-        //alert('Datos actualizados correctamente');
-         
-     } else {
-        cambiarFormularioValido(false);         
-     }
-
+        //cambiarFormularioValido(true);
+        alert('Datos actualizados correctamente');
+    
 }
 
 
@@ -168,6 +167,20 @@ const putGrafico=async()=>{
     });
 }
 
+/* const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+} */
+
 useEffect(()=>{
     
     if(!cookies.get('username')){
@@ -183,10 +196,13 @@ useEffect(()=>{
 
 
     return (
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
         <main>
-               <h1><b>Gráfico  <FontAwesomeIcon icon={faGlobeAmericas}/></b></h1> 
+               <label style={{ fontWeight:'900', fontSize:'32px' }}>Gráfico  <FontAwesomeIcon icon={faGlobeAmericas}/></label> 
               <br/>
-              <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>               
+              <label>Clave Catastral: {clave_predio.campo}</label> 
               
               
             <Formulario action="" onSubmit={onSubmit}>
@@ -197,15 +213,13 @@ useEffect(()=>{
                 </div>
                 </ContenedorBotonCentrado> 
             
-            <div>    
-                                               
+            <div>                              
                 <center>
                 <div id="contenedor2"> 
 
-                <h3>Colindantes del predio</h3>
+                <h4>Colindantes del predio</h4>
                 <hr/>
-                    <p>
-                        
+                                            
                                 <ComponenteInput
                                 estado={calle_norte}
                                 cambiarEstado={cambiarCalleNorte}
@@ -216,10 +230,7 @@ useEffect(()=>{
                                 leyendaError = "Letras y espacios. Puede llevar acentos"
                                 expresionRegular = {expresiones.nombre}                
                                 /> 
-
-                        <br/>  
-                        <br/>
-                        
+                                                
                                 <ComponenteInput
                                 estado={calle_sur}
                                 cambiarEstado={cambiarCalleSur}
@@ -230,12 +241,7 @@ useEffect(()=>{
                                 leyendaError = "Letras y espacios. Puede llevar acentos"
                                 expresionRegular = {expresiones.nombre}                
                                 /> 
-
-                    </p>       
-                    <br/>   
-                                        
-                        <p>
-                        
+                                               
                                 <ComponenteInput
                                 estado={calle_este}
                                 cambiarEstado={cambiarCalleEste}
@@ -246,9 +252,7 @@ useEffect(()=>{
                                 leyendaError = "Letras y espacios. Puede llevar acentos"
                                 expresionRegular = {expresiones.nombre}                
                                 /> 
-                        <br/> 
-                        <br/> 
-                        
+                                                
                                 <ComponenteInput
                                 estado={calle_oeste}
                                 cambiarEstado={cambiarCalleOeste}
@@ -259,24 +263,18 @@ useEffect(()=>{
                                 leyendaError = "Letras y espacios. Puede llevar acentos"
                                 expresionRegular = {expresiones.nombre}                
                                 /> 
-
-                    </p> 
-                                
+                            <br/>    
                             </div>
                         </center>
-                        <br/>
-                               
+                        <br/>                               
                 </div>
                 
-
                 <div>
                     <center>
                                 
                     <div id="contenedor2">
-                    <h3>Dimensiones del gráfico</h3>
+                    <h4>Dimensiones del gráfico</h4>
                     <hr/>
-                    <p style={{ margin:'1rem', padding:'1rem', marginLeft :'2rem', marginBottom:'2rem' , width:'15rem', height:'21rem'}}>
-                       
                         
                                    <ComponenteInput
                                     estado={area_grafica_lote}
@@ -300,8 +298,7 @@ useEffect(()=>{
                                     leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
                                     expresionRegular = {expresiones.dimension}                
                                 /> 
-                        
-                        
+                                                
                                     <ComponenteInput
                                     estado={fondo_relativo}
                                     cambiarEstado={cambiarFondoRelativo}
@@ -312,11 +309,8 @@ useEffect(()=>{
                                     leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
                                     expresionRegular = {expresiones.dimension}                
                                 /> 
-                                
-                        </p>
-                        <hr/> 
-                                
-                        <p style={{ margin:'0.8rem', padding:'1rem', paddingBottom:'3rem' ,marginLeft :'0.5rem', marginBottom:'2rem', width:'18rem', height:'15rem'}}>
+                                                        
+                                <hr/>                         
                                                 
                                     <ComponenteInput
                                     estado={coordenada_x}
@@ -328,8 +322,7 @@ useEffect(()=>{
                                     leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
                                     expresionRegular = {expresiones.dimension}                
                                 /> 
-                             
-                        
+                                                     
                                     <ComponenteInput
                                     estado={coordenada_y}
                                     cambiarEstado={cambiarCoordenada_y}
@@ -339,20 +332,18 @@ useEffect(()=>{
                                     name = "coordenada_y"
                                     leyendaError = "Valores enteros y decimales hasta 5 dígitos de precisión"
                                     expresionRegular = {expresiones.dimension}                
-                                /> 
-
-                            </p>
-                                       
-                                    </div>                           
+                                />                            
+                        <br/>               
+                        </div>                           
                                 
-                            </center>                            
+                        </center>                            
                         </div>                                
 
                 <ContenedorTerminos>
-                    <br/>
+                    
                     <br/>                
                     <div id="contenedor3">
-                    <center><h3>Avalúo Municipal</h3></center>
+                    <center><h4>Avalúo Municipal</h4></center>
                     <hr/>
                             <p>
                                 
@@ -393,38 +384,20 @@ useEffect(()=>{
                             </p>
                     </div>
                     <br/>
-                    <br/>
-                    
-                    <Label>
-                        <input 
-                            type="checkbox" 
-                            name="terminos" 
-                            id="terminos" 
-                            checked={terminos}
-                            onChange={onChangeTerminos}
-                            
-                            />
-                        Acepto los Términos y Condiciones
-                    </Label>                    
+                    <br/>                    
+                                      
                 </ContenedorTerminos>
-                {formularioValido === false && <MensajeError>
-                    <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                    </p>                    
-                </MensajeError>}
-                <ContenedorBotonCentrado>
-                    <Boton type="submit">Enviar</Boton>
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                </ContenedorBotonCentrado>                
                 
+                <ContenedorBotonCentrado>
+                <br/>                
+                    <Boton type="submit">Enviar</Boton>                
+                </ContenedorBotonCentrado>
             </Formulario>
 
         </main>
+        </div>
     )
-
 }
-
 
 export default Grafico;
 

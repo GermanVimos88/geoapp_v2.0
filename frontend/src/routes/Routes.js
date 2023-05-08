@@ -8,6 +8,8 @@ import App from '../pages/App';
 import RoutesCategorias from './CategoriasRoutes';
 import Cookies from 'universal-cookie';
 import Registro from '../pages/Registro';
+import Reportes from '../pages/Reportes';
+import Propietario from '../pages/Propietario';
 
 
 const cookies = new Cookies();
@@ -27,7 +29,9 @@ export default function Routes() {
            
            <Route exact path="/menu" component={Menu} />
            <Route exact path="/registro" component={Registro} />
+           <Route exact path="/propietario" component={Propietario} />
            <Route exact path="/app" component={App} />        
+           <Route exact path="/reportes" component={Reportes} />
            <Route exact path="/" component={Login} />
            
            <Route exact path="/404">

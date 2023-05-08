@@ -42,18 +42,24 @@ const MapView = (props) => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
-        {
+      if(path.substring(i, i+1)===':' )
+      {
         for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
-            }
+          if(path.substring(j, j+1)===':' ) {
+            for (var k=j+2; k < path.length; k++){
+              if(path.substring(k, k+1)===':'){
+                  id= path.substring(i+1, j)
+                  clave=path.substring(j+1, k)              
+                  idPropietario=path.substring(k+1, path.length)                
+              }
+            }          
+          }
         }
-        }
-    }    
+      }
+    }
     
     /* const [state, setState] = useState({        
         //Coordenadas de la parroquia Cuyuja
@@ -232,8 +238,8 @@ const MapView = (props) => {
           //console.log(idCoord);          
           //console.log(datos.shape.geometry.type); 
           const coord = idCoord[0][0];//[0][0];
-            console.log(coord);
-            console.log(tipo);         
+            //console.log(coord);
+            //console.log(tipo);         
           
           if(tipo==='MultiPolygon' && coord!==0){
             
@@ -248,7 +254,10 @@ const MapView = (props) => {
                 })
               }else{
                 poligono=idCoord;
-              }            
+              }  
+              
+              
+              
 
           /* if(coord.length===1){
             poligono=[[0,0]];
@@ -461,6 +470,7 @@ const MapView = (props) => {
 
       var x = ''
       var y = ''
+      //console.log(poligono); 
       
             getPredio();            
             x=parseFloat(predios[1]);
@@ -482,7 +492,7 @@ const MapView = (props) => {
     return (
       <>
 
-    <MapContainer center={[x, y]} zoom={26} scrollWheelZoom={false}>
+    <MapContainer center={[x, y]} zoom={16} scrollWheelZoom={false}>
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -494,8 +504,8 @@ const MapView = (props) => {
     <EditControl
       position='topright'
       onCreated={_onCreate}
-      onEdited={_onEdited}
-      onDeleted={_onDeleted}
+      //onEdited={_onEdited}
+      //onDeleted={_onDeleted}
       draw={{
         rectangle: false,
         polyline: false,
@@ -520,7 +530,7 @@ const MapView = (props) => {
 
 
 
-      <LayersControl.Overlay checked name="Coordenadas">
+      {/* <LayersControl.Overlay checked name="Coordenadas">
         <LayerGroup>          
           <Circle
             center={predios}
@@ -536,7 +546,7 @@ const MapView = (props) => {
             />            
           </LayerGroup>          
         </LayerGroup>        
-      </LayersControl.Overlay>
+      </LayersControl.Overlay> */}
 
       {/* <LayersControl.Overlay name="Edificaciones">
         <FeatureGroup pathOptions={{ color: 'purple' }}>
@@ -554,7 +564,7 @@ const MapView = (props) => {
           
           <Polygon pathOptions={{ weight: 1.8, fillOpacity: 0.15 }} positions={poligono} />
           <Popup>
-            <b>Predio</b><br /> área: {areaPredio} m² <br/> perímetro: {perimetroPredio} m <br/> latitud: {latitud} <br/> longitud: {longitud}
+            <b>Coordenadas Predio</b><br /> {poligono}
           </Popup>
 
         </FeatureGroup>

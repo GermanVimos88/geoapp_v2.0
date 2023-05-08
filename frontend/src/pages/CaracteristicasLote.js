@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBorderStyle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faBorderStyle, faExclamationTriangle, faReply, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -18,8 +18,9 @@ const CaracteristicasLote = () => {
     const path = location.pathname    
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
-    for (var i=0 ; i < path.length ; i++) {
+    /* for (var i=0 ; i < path.length ; i++) {
         if(path.substring(i, i+1)==':' )
         {
         for (var j=i+2; j < path.length ; j++) {
@@ -29,7 +30,23 @@ const CaracteristicasLote = () => {
             }
         }
         }
-    }
+    } */
+    for (var i=0 ; i < path.length ; i++) {
+        if(path.substring(i, i+1)===':' )
+        {
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
+            }
+          }
+        }
+      }
 
     //console.log(clave);
     //console.log(id);
@@ -125,22 +142,28 @@ const onChangeTerminos = (e) => {
 
 const onSubmit = (e) => {
     e.preventDefault();
-
-    if(
-        //predio.valido === 'true' &&        
-        terminos
-     ){         
+            
         // CONEXION CRUD (PETICIONES AJAX/HTTP)
         putCaracteristicasLote();
         peticionGet();
-        cambiarFormularioValido(true);
-        //alert('Datos actualizados correctamente');
-         
-     } else {
-        cambiarFormularioValido(false);         
-     }
-
+        //cambiarFormularioValido(true);
+        alert('Datos actualizados correctamente');
+     
 }
+
+/* const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+} */
 
 useEffect(()=>{
     
@@ -156,10 +179,13 @@ useEffect(()=>{
 //if (!data) return null;
 
     return (
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
         <main>
-               <h1><b>Características del Lote <FontAwesomeIcon icon={faBorderStyle} /></b></h1> 
+               <label style={{ fontWeight:'900', fontSize:'32px' }}>Características del Lote <FontAwesomeIcon icon={faBorderStyle} /></label> 
               <br/> 
-              <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>
+              <label>Clave Catastral: {clave_predio.campo}</label> <td> </td>
               
 
             <Formulario action="" onSubmit={onSubmit}>
@@ -170,7 +196,7 @@ useEffect(()=>{
                 <br/>
                 <p>
                     <tr>
-                    <td>Ocupación:</td>
+                    <label for="ocupacion" style={{ fontWeight:'900' }}>Ocupación:</label>
                     <td>
                     <select 
                         className='custom-select'
@@ -196,7 +222,7 @@ useEffect(()=>{
                 
                 <p>
                 <tr>    
-                    <td>Localización en la manzana:</td>
+                    <label for="localizacion_manzana" style={{ fontWeight:'900' }}>Localización en la manzana:</label>
                         <td>
                         <select 
                             className='custom-select'
@@ -230,7 +256,7 @@ useEffect(()=>{
                 
                 <p>
                     <tr>   
-                    <td>Forma:</td>
+                    <label for="forma" style={{ fontWeight:'900' }}>Forma:</label>
                         <td>
                         <select 
                             className='custom-select'
@@ -261,7 +287,7 @@ useEffect(()=>{
         <div id="contenedor">              
                 <p>
                     <tr>        
-                        <td>Topografía:</td> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label for="topografia" style={{ fontWeight:'900' }}>Topografía:</label>
                         <td>
                         <select 
                             className='custom-select'
@@ -289,9 +315,8 @@ useEffect(()=>{
                 </p>
                 
                 <p>
-                <tr>    
-                    <br/>
-                    <td>Cobertura nativa predominante (Rural):</td>
+                <tr>                   
+                    <label for="cobertura_nativa_predominante" style={{ fontWeight:'900', marginLeft:'-0.8rem' }}>Cobertura nativa <br/> predominante:</label>
                         <td>
                         <select 
                             className='custom-select'
@@ -319,8 +344,8 @@ useEffect(()=>{
                 
                 <p>
                 <tr>    
-                    <br/>
-                    &nbsp;&nbsp;&nbsp;<td>Ecosistema relevante (Rural):</td>
+                    
+                    <label for="ecosistema_relevante" style={{ fontWeight:'900' }}>Ecosistema relevante (Rural):</label>
                         <td>
                         <select 
                             className='custom-select'
@@ -355,7 +380,7 @@ useEffect(()=>{
             <div id="contenedor">
                 <p>
                     <tr>        
-                    <td>Afectaciones:</td> &nbsp;&nbsp;&nbsp;
+                    <label for="afectaciones" style={{ fontWeight:'900' }}>Afectaciones:</label> 
                     <td>
                     <select 
                         className='custom-select'
@@ -387,7 +412,7 @@ useEffect(()=>{
                 
                 <p>
                 <tr>      
-                        <td>Riesgos:</td> &nbsp;&nbsp;&nbsp;
+                        <label for="riesgos" style={{ fontWeight:'900' }}>Riesgos:</label> 
                         <td>
                         <select 
                             className='custom-select'
@@ -416,7 +441,7 @@ useEffect(()=>{
                 
                 <p>
                 <tr>          
-                        <td>Calidad de suelo:</td> &nbsp;&nbsp;&nbsp;
+                        <label for="calidad_suelo" style={{ fontWeight:'900' }}>Calidad de suelo:</label>
                         <td>
                         <select 
                             className='custom-select'
@@ -443,32 +468,16 @@ useEffect(()=>{
             </div>  
         </center>      
         <br/>
-        <br/>          
-                <ContenedorTerminos>
-                    <Label>
-                        <input 
-                            type="checkbox" 
-                            name="terminos" 
-                            id="terminos" 
-                            checked={terminos}
-                            onChange={onChangeTerminos}
-                            
-                            />
-                        Acepto los Términos y Condiciones
-                    </Label>                    
-                </ContenedorTerminos>
-                {formularioValido === false && <MensajeError>
-                    <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                    </p>                    
-                </MensajeError>}
+        <br/>                                        
                 <ContenedorBotonCentrado>
+                <br/> 
+                <br/> 
                     <Boton type="submit">Enviar</Boton>
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
+                
                 </ContenedorBotonCentrado> 
             </Formulario>
         </main>
+        </div>
     )
 }
 

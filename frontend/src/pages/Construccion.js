@@ -6,9 +6,10 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import { faCity, faClipboardList, faEdit, faTrashAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faCity, faClipboardList, faEdit, faReply, faTrashAlt, faUpload, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import logo from '../img/logocuyuja.png';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -22,18 +23,25 @@ const Construccion = () => {
     const path = location.pathname    
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
+    
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }
+      }
     
     const baseUrl= 'http://localhost/apicatastro/index.php/construccion/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/construccion/?id='+id;// http://f0783168.xsph.ru/index.php/construccion/?id='+id
     //const urlInsertar = 'http://apicatastro/obras/nuevo?id=';
@@ -419,6 +427,20 @@ const onSubmit = (e) => {
      }
 }
 
+/* const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+} */
+
 useEffect(()=>{
     
     if(!cookies.get('username')){
@@ -432,13 +454,19 @@ useEffect(()=>{
 
 
     return (
-        <main>
-            <h1><b>Características de Construcción <FontAwesomeIcon icon={faCity}/></b></h1> 
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
+                     
+            {/* <button className="btn btn-outline-secondary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '1rem', marginRight: '-6rem', marginTop:'5rem'}} onClick={()=>menu()}><FontAwesomeIcon icon={faReply}/>  Menú <br/> Principal </button>*/}
+        <main>            
+            <label style={{ fontWeight:'900', fontSize:'32px' }}>Características de Construcción <FontAwesomeIcon icon={faCity}/></label>
+            
             <br/>
-            <label>Clave Catastral: <b>{clave}</b></label> <td> </td>            
-            <br/>            
+            <label>Clave Catastral: {clave}</label> <td> </td>            
+                        
             <center>
-                <button class="left" className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva construcción <FontAwesomeIcon icon={faUpload}/></button> 
+                <button class="left" className="btn btn-success btn-md" onClick={()=>abrirCerrarModalInsertar()} >Nueva construcción <FontAwesomeIcon icon={faUpload}/></button> 
             </center>
             
             <Formulario action="" onSubmit={onSubmit}>
@@ -449,97 +477,95 @@ useEffect(()=>{
 	            
                     <thead id="cabecera">
                         <tr>
-                            <th style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><b>ID Construcción</b></th>                            
-                                                        
+                            <th id="idconstruccion" style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><strong>ID Construcción</strong></th>                                                        
                 
-                            <th colspan="3"><h6><b>Clave Bloque</b></h6>
-                                                         
-                            <th>No.Bloque</th>
-                        	<th>No.Piso</th>
-                        	<th>No.Unidad</th>                                         
+                            <th id="clave_bloque" colspan="3"><h6><strong>Clave Bloque</strong></h6>                                                         
+                            <th id="bloque">No.Bloque</th>
+                        	<th id="piso">No.Piso</th>
+                        	<th id="unidad">No.Unidad</th>                                         
                             
                             </th>
 
                             
-                            <th colspan="8"><h6><b>Datos Descriptivos del Bloque</b></h6>
+                            <th id="descripcion_bloque" colspan="8"><h6><strong>Datos Descriptivos del Bloque</strong></h6>
                             
 
 
-                            <th style={{paddingLeft: '0px', width: '200px'}}>Nivel del piso</th>
-                            <th style={{paddingLeft: '0px', width: '100px'}}>Condición física</th>
-						    <th style={{paddingLeft: '0px', width: '180px'}}>Uso constructivo</th>
-                        	<th>Valor cultural</th>
-                        	<th style={{paddingLeft: '30px', width: '130px'}}>Área de construcción(m²)</th>
-                            <th style={{paddingLeft: '25px', width: '120px'}}>Año de construcción</th>
-                            <th style={{paddingLeft: '25px', width: '120px'}}>Año de restauración</th>
-                            <th style={{paddingLeft: '25px', width: '120px'}}>Estado de conservación</th>                                          
+                            <th id="nivel_piso" style={{paddingLeft: '0px', width: '200px'}}>Nivel del piso</th>
+                            <th id="condicion_fisica" style={{paddingLeft: '0px', width: '100px'}}>Condición física</th>
+						    <th id="uso" style={{paddingLeft: '0px', width: '180px'}}>Uso constructivo</th>
+                        	<th id="valor_cultural" >Valor cultural</th>
+                        	<th id="area_construccion" style={{paddingLeft: '30px', width: '130px'}}>Área de construcción(m²)</th>
+                            <th id="año_construccion" style={{paddingLeft: '25px', width: '120px'}}>Año de construcción</th>
+                            <th id="año_restauracion" style={{paddingLeft: '25px', width: '120px'}}>Año de restauración</th>
+                            <th id="estado_conservacion" style={{paddingLeft: '25px', width: '120px'}}>Estado de conservación</th>                                          
 
 
                             </th>
 
                             
 
-                            <th colspan="6"><h6><b>Estructura</b></h6>
+                            <th id="estructura" colspan="6"><h6><strong>Estructura</strong></h6>
                                                         
-                            <th style={{width: '200px'}}>Mampostería soportante</th>
-                            <th style={{paddingLeft: '20px', width: '150px'}}>Columnas</th>                        			
-                            <th style={{paddingLeft: '20px', width: '150px'}}>Vigas</th>
-                            <th style={{paddingLeft: '20px', width: '150px'}}>Entrepiso</th>
-                            <th style={{paddingLeft: '20px', width: '160px'}}>Cubierta-entrepiso</th>
-                            <th style={{paddingLeft: '20px', width: '130px'}}>Gradas</th>                                           
+                            <th id="mamposteria" style={{width: '200px'}}>Mampostería soportante</th>
+                            <th id="columnas" style={{paddingLeft: '20px', width: '150px'}}>Columnas</th>                        			
+                            <th id="vigas" style={{paddingLeft: '20px', width: '150px'}}>Vigas</th>
+                            <th id="entrepiso" style={{paddingLeft: '20px', width: '150px'}}>Entrepiso</th>
+                            <th id="cubierta_entrepiso" style={{paddingLeft: '20px', width: '160px'}}>Cubierta-entrepiso</th>
+                            <th id="gradas" style={{paddingLeft: '20px', width: '130px'}}>Gradas</th>                                           
                            
                             </th>
 
-                            <th colspan="4"><h6><b>Rellenos</b></h6>
+                            <th id="rellenos" colspan="4"><h6><strong>Rellenos</strong></h6>
                                                         
-                            <th style={{width: '200px'}}>Contrapiso</th>
-                            <th style={{paddingLeft: '55px', width: '100px'}}>Paredes</th>
-                            <th style={{paddingLeft: '85px', width: '130px'}}>Enlucido paredes</th>
-                            <th style={{paddingLeft: '55px', width: '130px'}}>Enlucido tumbados</th>                                    
+                            <th id="contrapiso" style={{width: '200px'}}>Contrapiso</th>
+                            <th id="paredes" style={{paddingLeft: '55px', width: '100px'}}>Paredes</th>
+                            <th id="enlucido_paredes" style={{paddingLeft: '85px', width: '130px'}}>Enlucido paredes</th>
+                            <th id="enlucido_tumbados" style={{paddingLeft: '55px', width: '130px'}}>Enlucido tumbados</th>                                    
                            
                             </th>
 
-                            <th colspan="11"><h6><b>Acabados</b></h6>
+                            <th id="acabados" colspan="11"><h6><strong>Acabados</strong></h6>
                                                         
-                            <th style={{paddingLeft: '55px', width: '150px'}}>Revestimiento pared interior</th>
-                            <th style={{paddingLeft: '80px', width: '150px'}}>Revestimiento pared exterior</th>
-                            <th style={{paddingLeft: '80px', width: '130px'}}>Revestimiento cubierta</th>
-                            <th style={{paddingLeft: '80px', width: '100px'}}>Tumbados</th>
-                            <th style={{paddingLeft: '95px', width: '100px'}}>Ventanas</th>
-                            <th style={{paddingLeft: '100px', width: '100px'}}>Vidrios</th>
-                            <th style={{paddingLeft: '100px', width: '100px'}}>Puertas</th>
-                            <th style={{paddingLeft: '90px', width: '100px'}}>Closets</th>
-                            <th style={{paddingLeft: '90px', width: '100px'}}>Pisos</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Protección ventanas</th>
-                            <th style={{paddingLeft: '65px', width: '100px'}}>Gradas</th>                                          
+                            <th id="revestimiento_interior" style={{paddingLeft: '55px', width: '150px'}}>Revestimiento pared interior</th>
+                            <th id="revestimiento_exterior" style={{paddingLeft: '80px', width: '150px'}}>Revestimiento pared exterior</th>
+                            <th id="revestimiento_cubierta" style={{paddingLeft: '80px', width: '130px'}}>Revestimiento cubierta</th>
+                            <th id="tumbados" style={{paddingLeft: '80px', width: '100px'}}>Tumbados</th>
+                            <th id="ventanas" style={{paddingLeft: '95px', width: '100px'}}>Ventanas</th>
+                            <th id="vidrios" style={{paddingLeft: '100px', width: '100px'}}>Vidrios</th>
+                            <th id="puertas" style={{paddingLeft: '100px', width: '100px'}}>Puertas</th>
+                            <th id="closets" style={{paddingLeft: '90px', width: '100px'}}>Closets</th>
+                            <th id="pisos" style={{paddingLeft: '90px', width: '100px'}}>Pisos</th>
+                            <th id="proteccion_ventanas" style={{paddingLeft: '95px', width: '150px'}}>Protección ventanas</th>
+                            <th id="gradas_acabados" style={{paddingLeft: '65px', width: '100px'}}>Gradas</th>                                          
                            
                             </th>
 
-                            <th colspan="14"><h6><b>Unidad de Vivienda</b></h6>
+                            <th id="unidad_vivienda" colspan="14"><h6><strong>Unidad de Vivienda</strong></h6>
                                                         
-                            <th style={{paddingLeft: '40px', width: '200px'}}>Clasificación vivienda</th>
-                            <th style={{paddingLeft: '75px', width: '150px'}}>Tipo de vivienda</th>
-                            <th style={{paddingLeft: '115px', width: '150px'}}>Condición de ocupación</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Acabado de piso</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Estado de piso</th>
-                            <th style={{paddingLeft: '115px', width: '150px'}}>No. hogares</th>
-                            <th style={{paddingLeft: '35px', width: '100px'}}>No. de habitantes</th>
-                            <th style={{paddingLeft: '35px', width: '100px'}}>No. de habitaciones</th>
-                            <th style={{paddingLeft: '35px', width: '100px'}}>No. de dormitorios</th>
-                            <th style={{paddingLeft: '40px', width: '100px'}}>Duchas</th>
-                            <th style={{paddingLeft: '105px', width: '150px'}}>Tenencia de la vivienda</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Telefono convencional</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>No. Celulares</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Internet</th>                                          
+                            <th id="clasificacion_vivienda" style={{paddingLeft: '40px', width: '200px'}}>Clasificación vivienda</th>
+                            <th id="tipo_vivienda" style={{paddingLeft: '75px', width: '150px'}}>Tipo de vivienda</th>
+                            <th id="ocupacion" style={{paddingLeft: '115px', width: '150px'}}>Condición de ocupación</th>
+                            <th id="acabado_piso" style={{paddingLeft: '95px', width: '150px'}}>Acabado de piso</th>
+                            <th id="estado_piso" style={{paddingLeft: '95px', width: '150px'}}>Estado de piso</th>
+                            <th id="hogares" style={{paddingLeft: '115px', width: '150px'}}>No. hogares</th>
+                            <th id="habitantes" style={{paddingLeft: '35px', width: '100px'}}>No. de habitantes</th>
+                            <th id="habitaciones" style={{paddingLeft: '35px', width: '100px'}}>No. de habitaciones</th>
+                            <th id="dormitorios" style={{paddingLeft: '35px', width: '100px'}}>No. de dormitorios</th>
+                            <th id="duchas" style={{paddingLeft: '40px', width: '100px'}}>Duchas</th>
+                            <th id="tenencia_vivienda" style={{paddingLeft: '105px', width: '150px'}}>Tenencia de la vivienda</th>
+                            <th id="telefono_convencional" style={{paddingLeft: '95px', width: '150px'}}>Telefono convencional</th>
+                            <th id="celulares" style={{paddingLeft: '95px', width: '150px'}}>No. Celulares</th>
+                            <th id="internet" style={{paddingLeft: '95px', width: '150px'}}>Internet</th>                                          
                            
                             </th>
 
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Total Propiedad Exclusiva</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Total Propiedad Comunal</th>
-                            <th style={{paddingLeft: '95px', width: '150px'}}>Alicuota %</th>
+                            <th id="total_propiedad" style={{paddingLeft: '95px', width: '150px'}}>Total Propiedad Exclusiva</th>
+                            <th id="total_comunal" style={{paddingLeft: '95px', width: '150px'}}>Total Propiedad Comunal</th>
+                            <th id="alicuota" style={{paddingLeft: '95px', width: '150px'}}>Alicuota %</th>
                             
 
-                            <th >ACCIONES</th>                                                   
+                            <th id="acciones">ACCIONES</th>                                                   
 
                         </tr>
                     </thead>
@@ -550,80 +576,70 @@ useEffect(()=>{
                                 <tr key={construccion.idconstruccion}>
                                     
                                     
-                                    <td style={{position: 'sticky', top: 130, left: 0, padding: '45px', verticalAlign:'middle', background: '#eee'}}>{construccion.idconstruccion}</td>
+                                    <td headers='id construccion' style={{position: 'sticky', top: 130, left: 0, padding: '45px', verticalAlign:'middle', background: '#eee'}}>{construccion.idconstruccion}</td>
                                     
-                                    <td style={{verticalAlign:'middle'}}>{construccion.numero_bloque}</td>
-                                    <td style={{verticalAlign:'middle'}}>{construccion.numero_piso}</td>
-                                    <td style={{verticalAlign:'middle'}}>{construccion.numero_unidad}</td>
+                                    <td headers='numero bloque' style={{verticalAlign:'middle'}}>{construccion.numero_bloque}</td>
+                                    <td headers='numero piso' style={{verticalAlign:'middle'}}>{construccion.numero_piso}</td>
+                                    <td headers='numero unidad' style={{verticalAlign:'middle'}}>{construccion.numero_unidad}</td>                                    
                                     
-
+                                    <td headers='nivel piso' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{construccion.nivel_piso}</td>
+                                    <td headers='condicion fisica' style={{padding: '55px',verticalAlign:'middle', paddingLeft:'25px'}}>{construccion.condicion_fisica}</td>
+                                    <td headers='uso construccion' style={{padding: '45px',verticalAlign:'middle', paddingLeft:'30px'}}>{construccion.uso_constructivo}</td>
+                                    <td headers='valor cultural' style={{padding: '70px',verticalAlign:'middle', paddingLeft:'30px' }}>{construccion.valor_cultural}</td>
+                                    <td headers='area construccion' style={{padding: '40px',verticalAlign:'middle'}}>{construccion.area_construccion}</td>
+                                    <td headers='año construccion' style={{padding: '40px',verticalAlign:'middle', paddingLeft:'75px'}}>{construccion.anio_construccion}</td>
+                                    <td headers='año restauracion' style={{padding: '45px',verticalAlign:'middle'}}>{construccion.anio_restauracion}</td>
+                                    <td headers='estado conservacion' style={{padding: '45px',verticalAlign:'middle'}}>{construccion.estado_conservacion}</td>                                    
                                     
-                                    
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{construccion.nivel_piso}</td>
-                                    <td style={{padding: '55px',verticalAlign:'middle', paddingLeft:'25px'}}>{construccion.condicion_fisica}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle', paddingLeft:'30px'}}>{construccion.uso_constructivo}</td>
-                                    <td style={{padding: '70px',verticalAlign:'middle', paddingLeft:'30px' }}>{construccion.valor_cultural}</td>
-                                    <td style={{padding: '40px',verticalAlign:'middle'}}>{construccion.area_construccion}</td>
-                                    <td style={{padding: '40px',verticalAlign:'middle', paddingLeft:'75px'}}>{construccion.anio_construccion}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle'}}>{construccion.anio_restauracion}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle'}}>{construccion.estado_conservacion}</td>
-                                    
-                                    
-                                    
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'85px' }}>{construccion.mamposteria_soportante}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle', paddingLeft:'70px' }}>{construccion.columnas}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle', paddingLeft:'40px'}}>{construccion.vigas}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle'}}>{construccion.entrepiso}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle'}}>{construccion.cubierta_entrepiso}</td>
-                                    <td style={{padding: '45px',verticalAlign:'middle'}}>{construccion.gradas}</td>
+                                    <td headers='mamposteria soportante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'85px' }}>{construccion.mamposteria_soportante}</td>
+                                    <td headers='columnas' style={{padding: '45px',verticalAlign:'middle', paddingLeft:'70px' }}>{construccion.columnas}</td>
+                                    <td headers='vigas' style={{padding: '45px',verticalAlign:'middle', paddingLeft:'40px'}}>{construccion.vigas}</td>
+                                    <td headers='entrepiso' style={{padding: '45px',verticalAlign:'middle'}}>{construccion.entrepiso}</td>
+                                    <td headers='cubierta entrepiso' style={{padding: '45px',verticalAlign:'middle'}}>{construccion.cubierta_entrepiso}</td>
+                                    <td headers='gradas' style={{padding: '45px',verticalAlign:'middle'}}>{construccion.gradas}</td>
                                     
                                     
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'75px' }}>{construccion.contrapiso}</td>
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px' }}>{construccion.paredes}</td>
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.enlucido_paredes}</td>
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.enlucido_tumbados}</td>
+                                    <td headers='contrapiso' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'75px' }}>{construccion.contrapiso}</td>
+                                    <td headers='paredes' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px' }}>{construccion.paredes}</td>
+                                    <td headers='enlucido paredes' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.enlucido_paredes}</td>
+                                    <td headers='enlucido tumbados' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.enlucido_tumbados}</td>
+                                                                        
+                                    
+                                    <td headers='revestimiento pared interior' style={{padding: '70px',verticalAlign:'middle', paddingLeft:'80px' }}>{construccion.revestimiento_pared_interior}</td>
+                                    <td headers='revestimiento pared exterior' style={{padding: '70px',verticalAlign:'middle', paddingLeft:'80px' }}>{construccion.revestimiento_pared_exterior}</td>
+                                    <td headers='revestimiento cubierta' style={{padding: '70px',verticalAlign:'middle', paddingLeft:'80px' }}>{construccion.revestimiento_cubierta}</td>
+                                    <td headers='tumbados' style={{padding: '65px',verticalAlign:'middle', paddingLeft:'65px'}}>{construccion.tumbados}</td>
+                                    <td headers='ventanas' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.ventanas}</td>
+                                    <td headers='vidrios' style={{padding: '55px',verticalAlign:'middle', paddingLeft:'65px'}}>{construccion.vidrios}</td>
+                                    <td headers='puertas' style={{padding: '55px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.puertas}</td>
+                                    <td headers='closets' style={{padding: '55px',verticalAlign:'middle'}}>{construccion.closets}</td>
+                                    <td headers='pisos' style={{padding: '55px',verticalAlign:'middle', paddingLeft:'50px'}}>{construccion.pisos}</td>
+                                    <td headers='proteccion ventanas' style={{padding: '50px',verticalAlign:'middle'}}>{construccion.proteccion_ventanas}</td>
+                                    <td headers='gradas acabados' style={{padding: '50px',verticalAlign:'middle'}}>{construccion.gradas_acabados}</td>
+                                                                        
+                                    <td headers='clasificacion vivienda' style={{padding: '90px',verticalAlign:'middle', paddingLeft:'105px' }}>{construccion.clasificacion_vivienda}</td>
+                                    <td headers='tipo vivienda' style={{padding: '75px',verticalAlign:'middle', paddingLeft:'65px' }}>{construccion.tipo_vivienda}</td>
+                                    <td headers='condicion ocupacion' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'40px' }}>{construccion.condicion_ocupacion}</td>
+                                    <td headers='acabado piso' style={{padding: '35px',verticalAlign:'middle', paddingLeft:'35px' }}>{construccion.acabado_piso}</td>
+                                    <td headers='estado piso' style={{padding: '85px',verticalAlign:'middle', paddingLeft:'35px' }}>{construccion.estado_piso}</td>
+                                    <td headers='numero hogares' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'60px' }}>{construccion.numero_hogares}</td>
+                                    <td headers='numero habitantes' style={{padding: '30px',verticalAlign:'middle', paddingLeft:'20px' }}>{construccion.numero_habitantes}</td>
+                                    <td headers='numero habitaciones' style={{padding: '90px',verticalAlign:'middle', paddingLeft:'25px' }}>{construccion.numero_habitaciones}</td>
+                                    <td headers='numero dormitorios' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'25px' }}>{construccion.numero_dormitorios}</td>
+                                    <td headers='espacios duchas' style={{padding: '25px',verticalAlign:'middle', paddingLeft:'25px' }}>{construccion.espacios_aseo_duchas}</td>
+                                    <td headers='tenencia vivienda' style={{padding: '100px',verticalAlign:'middle', paddingLeft:'45px' }}>{construccion.tenencia_vivienda}</td>
+                                    <td headers='telefono convencional' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.telefono_convencional}</td>
+                                    <td headers='cantidad celulares' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'70px'}}>{construccion.cantidad_celulares}</td>
+                                    <td headers='servicio internet' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'70px'}}>{construccion.servicio_internet}</td>
                                     
                                     
-                                    
-                                    <td style={{padding: '70px',verticalAlign:'middle', paddingLeft:'80px' }}>{construccion.revestimiento_pared_interior}</td>
-                                    <td style={{padding: '70px',verticalAlign:'middle', paddingLeft:'80px' }}>{construccion.revestimiento_pared_exterior}</td>
-                                    <td style={{padding: '70px',verticalAlign:'middle', paddingLeft:'80px' }}>{construccion.revestimiento_cubierta}</td>
-                                    <td style={{padding: '65px',verticalAlign:'middle', paddingLeft:'65px'}}>{construccion.tumbados}</td>
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.ventanas}</td>
-                                    <td style={{padding: '55px',verticalAlign:'middle', paddingLeft:'65px'}}>{construccion.vidrios}</td>
-                                    <td style={{padding: '55px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.puertas}</td>
-                                    <td style={{padding: '55px',verticalAlign:'middle'}}>{construccion.closets}</td>
-                                    <td style={{padding: '55px',verticalAlign:'middle', paddingLeft:'50px'}}>{construccion.pisos}</td>
-                                    <td style={{padding: '50px',verticalAlign:'middle'}}>{construccion.proteccion_ventanas}</td>
-                                    <td style={{padding: '50px',verticalAlign:'middle'}}>{construccion.gradas_acabados}</td>
-                                    
-                                    
-                                    
-                                    <td style={{padding: '90px',verticalAlign:'middle', paddingLeft:'105px' }}>{construccion.clasificacion_vivienda}</td>
-                                    <td style={{padding: '75px',verticalAlign:'middle', paddingLeft:'65px' }}>{construccion.tipo_vivienda}</td>
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'40px' }}>{construccion.condicion_ocupacion}</td>
-                                    <td style={{padding: '35px',verticalAlign:'middle', paddingLeft:'35px' }}>{construccion.acabado_piso}</td>
-                                    <td style={{padding: '85px',verticalAlign:'middle', paddingLeft:'35px' }}>{construccion.estado_piso}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'60px' }}>{construccion.numero_hogares}</td>
-                                    <td style={{padding: '30px',verticalAlign:'middle', paddingLeft:'20px' }}>{construccion.numero_habitantes}</td>
-                                    <td style={{padding: '90px',verticalAlign:'middle', paddingLeft:'25px' }}>{construccion.numero_habitaciones}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'25px' }}>{construccion.numero_dormitorios}</td>
-                                    <td style={{padding: '25px',verticalAlign:'middle', paddingLeft:'25px' }}>{construccion.espacios_aseo_duchas}</td>
-                                    <td style={{padding: '100px',verticalAlign:'middle', paddingLeft:'45px' }}>{construccion.tenencia_vivienda}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'55px'}}>{construccion.telefono_convencional}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'70px'}}>{construccion.cantidad_celulares}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'70px'}}>{construccion.servicio_internet}</td>
-                                    
-                                    
-                                    
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'150px'}}>{construccion.total_propiedad_exclusiva}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'150px'}}>{construccion.total_propiedad_comunal}</td>
-                                    <td style={{padding: '80px',verticalAlign:'middle', paddingLeft:'145px'}}>{construccion.alicuota_porcentaje}</td>
+                                    <td headers='total propiedad exclusiva' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'150px'}}>{construccion.total_propiedad_exclusiva}</td>
+                                    <td headers='total propiedad comunal' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'150px'}}>{construccion.total_propiedad_comunal}</td>
+                                    <td headers='alicuota porcentaje' style={{padding: '80px',verticalAlign:'middle', paddingLeft:'145px'}}>{construccion.alicuota_porcentaje}</td>
                                         
-
-                                    <td style={{padding: '60px',verticalAlign:'middle', paddingLeft:'140px'}}>
-                                        <button className="btn btn-primary btn-md" onClick={()=>seleccionarConstruccion(construccion,"Editar")}><b>Editar</b><FontAwesomeIcon icon={faEdit}/></button> 
-                                        <button className="btn btn-danger btn-md" onClick={()=>seleccionarConstruccion(construccion,"Eliminar")}><b>Eliminar</b><FontAwesomeIcon icon={faTrashAlt}/></button>  
+                                    <td headers='botones acciones' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'140px'}}>
+                                        <button className="btn btn-primary btn-md" onClick={()=>seleccionarConstruccion(construccion,"Editar")}><strong>Editar</strong><FontAwesomeIcon icon={faEdit}/></button> 
+                                        <button className="btn btn-danger btn-md" onClick={()=>seleccionarConstruccion(construccion,"Eliminar")}><strong>Eliminar</strong><FontAwesomeIcon icon={faTrashAlt}/></button>  
                                                                                 
                                     </td>
                                 </tr>
@@ -639,17 +655,17 @@ useEffect(()=>{
 
             <Modal isOpen={modalInsertar}>
                             
-                        <ModalHeader><b>Insertar nueva construcción y características</b></ModalHeader>
+                        <ModalHeader><strong>Insertar nueva construcción y características</strong></ModalHeader>
                             <ModalBody>
 
                             <div className="form-group">                                                                                 
                                 <center>
                                 <div id="contenedor">
-                                <h4><b>Clave Bloque:</b></h4>
+                                <h4><strong>Clave Bloque:</strong></h4>
                                 <hr/>                                    
                                         <p>
                                             <tr>                                                
-                                                <td>No. Bloque:</td>
+                                                <label for="bloque" style={{ fontWeight:'900' }}>No. Bloque:</label>
                                                 <td>
                                                 <select 
                                                     className="custom-select"
@@ -680,7 +696,7 @@ useEffect(()=>{
                                         
                                             <tr>    
                                                 
-                                                    <td>No. Piso:</td>
+                                                    <label for="piso" style={{ fontWeight:'900' }}>No. Piso:</label>
                                                     <td>
                                                     <select 
                                                         className="custom-select"
@@ -712,7 +728,7 @@ useEffect(()=>{
                                         
                                                     <tr>    
                                                 
-                                                    <td>No. Unidad:</td>
+                                                    <label for="unidad" style={{ fontWeight:'900' }}>No. Unidad:</label>
                                                     <td>
                                                     <select 
                                                         className="custom-select"
@@ -744,14 +760,14 @@ useEffect(()=>{
                                                 <hr/>   
                                                 <br/>
 
-                                                <h4><b>Datos descriptivos del bloque:</b> </h4>
+                                                <h4><strong>Datos descriptivos del bloque:</strong></h4>
                                                 <br/>
                                                 <hr/>
                                                 <br/>
                                                 <p>
                                                 <tr>      
                                                     
-                                                        <td>Nivel del piso:</td>
+                                                        <label for="nivel_piso" style={{ fontWeight:'900' }}>Nivel del piso:</label>
                                                         <td>
                                                         <select 
                                                             className="custom-select"
@@ -774,7 +790,7 @@ useEffect(()=>{
                                                 
                                                 <tr>      
                                                     
-                                                        <td>Condición física:</td>
+                                                        <label for="condicion_fisica" style={{ fontWeight:'900' }}>Condición física:</label>
                                                         <td>
                                                         <select 
                                                             class="form-select form-select-md" 
@@ -804,7 +820,7 @@ useEffect(()=>{
                                                 
                                                 <tr>      
                                                     
-                                                        <td>Uso constructivo:</td>
+                                                        <label for="uso" style={{ fontWeight:'900' }}>Uso constructivo:</label>
                                                         <td>
                                                         <select 
                                                             class="form-select form-select-md" 
@@ -885,7 +901,7 @@ useEffect(()=>{
                                                 
                                                 <tr>      
                                                     
-                                                        <td>Valor cultural:</td>
+                                                        <label for="valor_cultural" style={{ fontWeight:'900' }}>Valor cultural:</label>
                                                         <td>
                                                         <select 
                                                             class="form-select form-select-md" 
@@ -928,7 +944,7 @@ useEffect(()=>{
                                                 <br/>
                                                 <p>    
                                                     <tr>
-                                                        <td>Año de construcción:</td>
+                                                        <label for="anio_construccion" style={{ fontWeight:'900' }}>Año de construcción:</label>
                                                         <td>
                                                         <select 
                                                             className="custom-select"
@@ -1035,7 +1051,7 @@ useEffect(()=>{
                                                     </tr>
                                                     
                                                     <tr>
-                                                        <td>Año de restauración:</td>
+                                                        <label for="anio_restauracion" style={{ fontWeight:'900' }}>Año de restauración:</label>
                                                         <td>
                                                         <select 
                                                             className="custom-select"
@@ -1144,7 +1160,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Estado de conservación:</td>
+                                                            <label for="conservacion" style={{ fontWeight:'900' }}>Estado de conservación:</label>
                                                             <td style={{padding: '0px', paddingLeft:'25px'}}>
                                                             <select 
                                                                 className="form-select form-select-md"
@@ -1177,13 +1193,13 @@ useEffect(()=>{
                                         <center>
                                             <div id="contenedor">
 
-                                                    <h4><b>Estructura: </b></h4>
+                                                    <h4><strong>Estructura: </strong></h4>
                                                     <hr/>
                                                     <br/>
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Mampostería soportante:</td>
+                                                            <label for="mamposteria" style={{ fontWeight:'900' }}>Mampostería soportante:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1212,7 +1228,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Columnas:</td>
+                                                            <label for="columnas" style={{ fontWeight:'900' }}>Columnas:</label>
                                                             <td>
                                                             <select 
                                                                 class="form-select form-select-sm" 
@@ -1241,12 +1257,11 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p> 
-                                                
-                                                        
+                                                                                                        
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Vigas:</td>
+                                                            <label for="vigas" style={{ fontWeight:'900' }}>Vigas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1276,7 +1291,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Entrepiso:</td>
+                                                            <label for="entrepiso" style={{ fontWeight:'900' }}>Entrepiso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1307,7 +1322,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Cubierta - Entrepiso:</td>
+                                                            <label for="cubierta_piso" style={{ fontWeight:'900' }}>Cubierta - Entrepiso:</label>
                                                             <td style={{padding: '0px', paddingLeft:'0px',paddingRight:'25px'}}>
                                                             <select 
                                                                 className="custom-select"
@@ -1338,7 +1353,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Gradas:</td>
+                                                            <label for="gradas" style={{ fontWeight:'900' }}>Gradas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1363,16 +1378,15 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
                                                     <br/>
-                                                
-                                                
+                                                                                                
                                                     <hr/>
-                                                    <h4><b>Rellenos: </b></h4>
+                                                    <h4><strong>Rellenos: </strong></h4>
                                                     <br/>
                                                     
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Contrapiso:</td>
+                                                            <label for="contrapiso" style={{ fontWeight:'900' }}>Contrapiso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1400,7 +1414,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Paredes:</td>
+                                                            <label for="paredes" style={{ fontWeight:'900' }}>Paredes:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1436,7 +1450,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Enlucido paredes:</td>
+                                                            <label for="enlucido_paredes" style={{ fontWeight:'900' }}>Enlucido paredes:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1461,7 +1475,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Enlucido tumbados:</td>
+                                                            <label for="enlucido_tumbados" style={{ fontWeight:'900' }}>Enlucido tumbados:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1488,14 +1502,14 @@ useEffect(()=>{
 
                                             <div id="contenedor">
                                             
-                                                    <h4><b>Acabados: </b></h4>
+                                                    <h4><strong>Acabados: </strong></h4>
                                                     <hr/>
                                                     <br/>
                                                     
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td >Revestimiento pared interior:</td>
+                                                            <label for="rev_interior" style={{ fontWeight:'900' }}>Revestimiento pared interior:</label>
                                                             <td >
                                                             <select 
                                                                 className="custom-select"
@@ -1529,7 +1543,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Revestimiento pared exterior:</td>
+                                                            <label for="rev_exterior" style={{ fontWeight:'900' }}>Revestimiento pared exterior:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1562,7 +1576,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Revestimiento cubierta:</td>
+                                                            <label for="rev_cubierta" style={{ fontWeight:'900' }}>Revestimiento cubierta:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1601,7 +1615,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Tumbados:</td>
+                                                            <label for="tumbados" style={{ fontWeight:'900' }}>Tumbados:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1635,7 +1649,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Ventanas:</td>
+                                                            <label for="ventanas" style={{ fontWeight:'900' }}>Ventanas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1665,7 +1679,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Vidrios:</td>
+                                                            <label for="vidrios" style={{ fontWeight:'900' }}>Vidrios:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1693,7 +1707,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Puertas:</td>
+                                                            <label for="puertas" style={{ fontWeight:'900' }}>Puertas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1732,7 +1746,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Closets:</td>
+                                                            <label for="closets" style={{ fontWeight:'900' }}>Closets:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1752,12 +1766,11 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Pisos:</td>
+                                                            <label for="pisos" style={{ fontWeight:'900' }}>Pisos:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1793,12 +1806,11 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Gradas:</td>
+                                                            <label for="gradas_acabados" style={{ fontWeight:'900' }}>Gradas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1838,7 +1850,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Protección ventanas:</td>
+                                                            <label for="ventanas_proteccion" style={{ fontWeight:'900' }}>Protección ventanas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1865,14 +1877,14 @@ useEffect(()=>{
                                             <div id="contenedor">
 
                                                     
-                                                    <h4><b>Unidad de vivienda: </b></h4>
+                                                    <h4><strong>Unidad de vivienda: </strong></h4>
                                                     <hr/>
                                                     <br/>
 
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Clasificación de vivienda:</td>
+                                                            <label for="clasificacion" style={{ fontWeight:'900' }}>Clasificación de vivienda:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1908,7 +1920,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Tipo de vivienda:</td>
+                                                            <label for="tipo_vivienda" style={{ fontWeight:'900' }}>Tipo de vivienda:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1933,7 +1945,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Condición de ocupación:</td>
+                                                            <label for="ocupacion" style={{ fontWeight:'900' }}>Condición de ocupación:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1958,7 +1970,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Acabado piso:</td>
+                                                            <label for="piso_acabado" style={{ fontWeight:'900' }}>Acabado piso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -1983,7 +1995,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Estado de piso:</td>
+                                                            <label for="piso_estado" style={{ fontWeight:'900' }}>Estado de piso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2008,7 +2020,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Número de hogares:</td>
+                                                            <label for="hogares" style={{ fontWeight:'900' }}>Número de hogares:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2054,7 +2066,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Número de habitantes:</td>
+                                                            <label for="habitantes" style={{ fontWeight:'900' }}>Número de habitantes:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2097,7 +2109,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Número de habitaciones:</td>
+                                                            <label for="habitaciones" style={{ fontWeight:'900' }}>Número de habitaciones:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2140,7 +2152,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Número de dormitorios:</td>
+                                                            <label for="dormitorios" style={{ fontWeight:'900' }}>Número de dormitorios:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2183,7 +2195,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Espacios para bañarse (duchas):</td>
+                                                            <label for="duchas" style={{ fontWeight:'900' }}>Espacios para bañarse (duchas):</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2227,7 +2239,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Tenencia de la vivienda:</td>
+                                                            <label for="tenencia_vivienda" style={{ fontWeight:'900' }}>Tenencia de la vivienda:</label>
                                                             <td>
                                                             <select 
                                                                 class="form-select form-select-sm" 
@@ -2258,7 +2270,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Posee teléfono convencional:</td>
+                                                            <label for="telf_convencional" style={{ fontWeight:'900' }}>Posee teléfono convencional:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2283,7 +2295,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>No. de teléfonos celulares:</td>
+                                                            <label for="celulares" style={{ fontWeight:'900' }}>No. de teléfonos celulares:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2323,11 +2335,10 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Servicio de internet:</td>
+                                                            <label for="internet" style={{ fontWeight:'900' }}>Servicio de internet:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2371,7 +2382,7 @@ useEffect(()=>{
             <br/>
 
             <Modal isOpen={modalEditar}>
-                <ModalHeader><b>Editar Obra</b></ModalHeader>
+                <ModalHeader><strong>Editar Obra</strong></ModalHeader>
                 <ModalBody>
                             
                                 <div className="form-group">
@@ -2380,13 +2391,13 @@ useEffect(()=>{
                                 <br/>                                                
                                 <center>
                                 <div id="contenedor">
-                                    <h4><b>Clave Bloque:</b></h4>
+                                    <h4><strong>Clave Bloque:</strong></h4>
                                     <hr/>
                                     <br/>
                                         <p>
                                             <tr>   
                                             
-                                                <td>No. Bloque:</td>
+                                                <label for="bloque" style={{ fontWeight:'900' }}>No. Bloque:</label>
                                                 <td>
                                                 <select 
                                                     className="custom-select" 
@@ -2420,7 +2431,7 @@ useEffect(()=>{
                                         <p>
                                             <tr>    
                                                 
-                                                    <td>No. Piso:</td>
+                                                    <label for="piso" style={{ fontWeight:'900' }}>No. Piso:</label>
                                                     <td>
                                                     <select 
                                                         className="custom-select" 
@@ -2453,7 +2464,7 @@ useEffect(()=>{
                                             <p>
                                                     <tr>    
                                                 
-                                                    <td>No. Unidad:</td>
+                                                    <label for="unidad" style={{ fontWeight:'900' }}>No. Unidad:</label>
                                                     <td>
                                                     <select 
                                                         className="custom-select" 
@@ -2486,14 +2497,14 @@ useEffect(()=>{
                                                 <hr/>   
                                                 <br/>
 
-                                                <h4><b>Datos descriptivos del bloque:</b> </h4>
+                                                <h4><strong>Datos descriptivos del bloque:</strong></h4>
                                                 <br/>
                                                 <hr/>
                                                 <br/>
                                                 <p>
                                                 <tr>      
                                                     
-                                                        <td>Nivel del piso:</td>
+                                                        <label for="nivel_piso" style={{ fontWeight:'900' }}>Nivel del piso:</label>
                                                         <td>
                                                         <select 
                                                             className="custom-select" 
@@ -2520,7 +2531,7 @@ useEffect(()=>{
                                                 <p>
                                                 <tr>      
                                                     
-                                                        <td>Condición física:</td>
+                                                        <label for="condicion_fisica" style={{ fontWeight:'900' }}>Condición física:</label>
                                                         <td>
                                                         <select 
                                                             class="form-select form-select-lg mb-3"
@@ -2553,7 +2564,7 @@ useEffect(()=>{
                                                 <p>
                                                 <tr>      
                                                     
-                                                        <td>Uso constructivo:</td>
+                                                        <label for="uso" style={{ fontWeight:'900' }}>Uso constructivo:</label>
                                                         <td>
                                                         <select 
                                                             class="form-select form-select-lg mb-3" 
@@ -2638,7 +2649,7 @@ useEffect(()=>{
                                                 <p>
                                                 <tr>      
                                                     
-                                                        <td>Valor cultural:</td>
+                                                        <label for="valor_cultural" style={{ fontWeight:'900' }}>Valor cultural:</label>
                                                         <td>
                                                         <select 
                                                             class="form-select form-select-lg mb-3" 
@@ -2685,7 +2696,7 @@ useEffect(()=>{
 
                                                 <p>    
                                                     <tr>
-                                                        <td>Año de construcción:</td>
+                                                        <label for="anio_construccion" style={{ fontWeight:'900' }}>Año de construcción:</label>
                                                         <td>
                                                         <select 
                                                             className="custom-select" 
@@ -2795,7 +2806,7 @@ useEffect(()=>{
 
                                                 <p>    
                                                     <tr>
-                                                        <td>Año de restauración:</td>
+                                                        <label for="anio_restauracion" style={{ fontWeight:'900' }}>Año de restauración:</label>
                                                         <td>
                                                         <select 
                                                             className="custom-select"
@@ -2906,7 +2917,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Estado de conservación:</td>
+                                                            <label for="conservacion" style={{ fontWeight:'900' }}>Estado de conservación:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2939,13 +2950,13 @@ useEffect(()=>{
                                         <center>
                                             <div id="contenedor">
 
-                                                    <h4><b>Estructura: </b></h4>
+                                                    <h4><strong>Estructura: </strong></h4>
                                                     <hr/>
                                                     <br/>
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Mampostería soportante:</td>
+                                                            <label for="mamposteria" style={{ fontWeight:'900' }}>Mampostería soportante:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -2970,12 +2981,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>         
-                                                
-                                                        
+                                                                                                        
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Columnas:</td>
+                                                    <tr>                                                        
+                                                            <label for="columnas" style={{ fontWeight:'900' }}>Columnas:</label>
                                                             <td>
                                                             <select 
                                                                 class="form-select form-select-sm" 
@@ -3005,12 +3014,11 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p> 
-                                                
-                                                        
+                                                                                                        
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Vigas:</td>
+                                                            <label for="vigas" style={{ fontWeight:'900' }}>Vigas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3039,9 +3047,8 @@ useEffect(()=>{
                                                     </p>     
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Entrepiso:</td>
+                                                    <tr>                                                        
+                                                            <label for="entrepiso" style={{ fontWeight:'900' }}>Entrepiso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3068,12 +3075,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>  
-                                                
-                                                    
+                                                                                                    
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Cubierta - Entrepiso:</td>
+                                                    <tr>                                                        
+                                                            <label for="cubierta_piso" style={{ fontWeight:'900' }}>Cubierta - Entrepiso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3100,12 +3105,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-                                                
-                                                    
+                                                                                                    
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Gradas:</td>
+                                                    <tr>                                                        
+                                                            <label for="gradas" style={{ fontWeight:'900' }}>Gradas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3133,13 +3136,13 @@ useEffect(()=>{
                                                                 
                                                     <br/>
                                                     <hr/>
-                                                    <h4><b>Rellenos: </b></h4>
+                                                    <h4><strong>Rellenos: </strong></h4>
                                                     <br/>
                                                     
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Contrapiso:</td>
+                                                            <label for="contrapiso" style={{ fontWeight:'900' }}>Contrapiso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3163,12 +3166,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-                                                
-                                                    
+                                                                                                    
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Paredes:</td>
+                                                    <tr>                                                        
+                                                            <label for="paredes" style={{ fontWeight:'900' }}>Paredes:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3200,12 +3201,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-                                                
-                                                    
+                                                                                                    
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Enlucido paredes:</td>
+                                                    <tr>                                                        
+                                                            <label for="enlucido_paredes" style={{ fontWeight:'900' }}>Enlucido paredes:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3226,12 +3225,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-                                                
-                                                    
+                                                                                                    
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Enlucido tumbados:</td>
+                                                    <tr>                                                        
+                                                            <label for="enlucido_tumbados" style={{ fontWeight:'900' }}>Enlucido tumbados:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3259,13 +3256,12 @@ useEffect(()=>{
 
                                             <div id="contenedor">
                                             
-                                                    <h4><b>Acabados: </b></h4>
+                                                    <h4><strong>Acabados: </strong></h4>
                                                     <hr/>
                                                     <br/>
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Revestimiento pared interior:</td>
+                                                    <tr>                                                        
+                                                            <label for="rev_interior" style={{ fontWeight:'900' }}>Revestimiento pared interior:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3295,12 +3291,11 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Revestimiento pared exterior:</td>
+                                                            <label for="rev_exterior" style={{ fontWeight:'900' }}>Revestimiento pared exterior:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3332,9 +3327,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Revestimiento cubierta:</td>
+                                                    <tr>                                                        
+                                                            <label for="rev_cubierta" style={{ fontWeight:'900' }}>Revestimiento cubierta:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3369,12 +3363,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Tumbados:</td>
+                                                    <tr>                                                        
+                                                            <label for="tumbados" style={{ fontWeight:'900' }}>Tumbados:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3404,12 +3396,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Ventanas:</td>
+                                                    <tr>                                                        
+                                                            <label for="ventanas" style={{ fontWeight:'900' }}>Ventanas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3438,9 +3428,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Vidrios:</td>
+                                                    <tr>                                                        
+                                                            <label for="vidrios" style={{ fontWeight:'900' }}>Vidrios:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3464,12 +3453,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Puertas:</td>
+                                                    <tr>                                                        
+                                                            <label for="puertas" style={{ fontWeight:'900' }}>Puertas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3504,12 +3491,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Closets:</td>
+                                                    <tr>                                                        
+                                                            <label for="closets" style={{ fontWeight:'900' }}>Closets:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3530,12 +3515,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Pisos:</td>
+                                                    <tr>                                                        
+                                                            <label for="pisos" style={{ fontWeight:'900' }}>Pisos:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3572,12 +3555,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Gradas:</td>
+                                                    <tr>                                                        
+                                                            <label for="gradas_acabados" style={{ fontWeight:'900' }}>Gradas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3618,7 +3599,7 @@ useEffect(()=>{
                                                     <p>
                                                     <tr>      
                                                         
-                                                            <td>Protección ventanas:</td>
+                                                            <label for="ventanas_proteccion" style={{ fontWeight:'900' }}>Protección ventanas:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3645,14 +3626,13 @@ useEffect(()=>{
                                         <center>
                                             <div id="contenedor">
                                                     
-                                                    <h4><b>Unidad de vivienda: </b></h4>
+                                                    <h4><strong>Unidad de vivienda: </strong></h4>
                                                     <hr/>
                                                     <br/>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Clasificación de vivienda:</td>
+                                                    <tr>                                                        
+                                                            <label for="clasificacion" style={{ fontWeight:'900' }}>Clasificación de vivienda:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3687,9 +3667,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Tipo de vivienda:</td>
+                                                    <tr>                                                        
+                                                            <label for="tipo_vivienda" style={{ fontWeight:'900' }}>Tipo de vivienda:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3711,11 +3690,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Condición de ocupación:</td>
+                                                    <tr>                                                        
+                                                            <label for="ocupacion" style={{ fontWeight:'900' }}>Condición de ocupación:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3737,11 +3714,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Acabado piso:</td>
+                                                    <tr>                                                        
+                                                            <label for="piso_acabado" style={{ fontWeight:'900' }}>Acabado piso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3764,9 +3739,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Estado de piso:</td>
+                                                    <tr>                                                        
+                                                            <label for="piso_estado" style={{ fontWeight:'900' }}>Estado de piso:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3788,11 +3762,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Número de hogares:</td>
+                                                    <tr>                                                        
+                                                            <label for="hogares" style={{ fontWeight:'900' }}>Número de hogares:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3804,10 +3776,8 @@ useEffect(()=>{
                                                                 cambiarNumeroHogares({campo: hogaresSeleccionados});
                                                                 }}
                                                             >
-
-                                                            
-                                                            {   
-                                                            
+                                                           
+                                                            {                                                               
                                                                 /*  EVALUAR FUNCIONAMIENTO
                                                             () => {for (let i = 0; i<20; i++){
                                                                 echo `<option value={i}>{i}</option>`;
@@ -3845,11 +3815,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Número de habitantes:</td>
+                                                    <tr>                                                        
+                                                            <label for="habitantes" style={{ fontWeight:'900' }}>Número de habitantes:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3891,9 +3859,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Número de habitaciones:</td>
+                                                    <tr>                                                        
+                                                            <label for="habitaciones" style={{ fontWeight:'900' }}>Número de habitaciones:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3935,9 +3902,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Número de dormitorios:</td>
+                                                    <tr>                                                        
+                                                            <label for="dormitorios" style={{ fontWeight:'900' }}>Número de dormitorios:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -3979,9 +3945,8 @@ useEffect(()=>{
                                                     </p>
 
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Espacios para bañarse (duchas):</td>
+                                                    <tr>                                                        
+                                                            <label for="duchas" style={{ fontWeight:'900' }}>Espacios para bañarse (duchas):</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -4022,11 +3987,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Tenencia de la vivienda:</td>
+                                                    <tr>                                                        
+                                                            <label for="tenencia_vivienda" style={{ fontWeight:'900' }}>Tenencia de la vivienda:</label>
                                                             <td>
                                                             <select 
                                                                 
@@ -4055,11 +4018,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Posee teléfono convencional:</td>
+                                                    <tr>                                                        
+                                                            <label for="telf_convencional" style={{ fontWeight:'900' }}>Posee teléfono convencional:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -4080,12 +4041,10 @@ useEffect(()=>{
                                                         </select> </td>
                                                         </tr>
                                                     </p>
-
                                                     
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>No. de teléfonos celulares:</td>
+                                                    <tr>                                                        
+                                                            <label for="celulares" style={{ fontWeight:'900' }}>No. de teléfonos celulares:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -4126,11 +4085,9 @@ useEffect(()=>{
                                                         </tr>
                                                     </p>
 
-
                                                     <p>
-                                                    <tr>      
-                                                        
-                                                            <td>Servicio de internet:</td>
+                                                    <tr>                                                        
+                                                            <label for="internet" style={{ fontWeight:'900' }}>Servicio de internet:</label>
                                                             <td>
                                                             <select 
                                                                 className="custom-select"
@@ -4157,7 +4114,6 @@ useEffect(()=>{
                                         </center>
                                 </div>
 
-
                 </ModalBody>
                 <ModalFooter>
                     
@@ -4167,15 +4123,15 @@ useEffect(()=>{
                         formularioValido === false && <MensajeError>
                         <p>
                         <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
+                        <strong>Error: </strong> Por favor rellena correctamente el formulario. 
                         </p>                    
                         </MensajeError>                  
                 
-                    <Boton type="submit" onClick={()=>putConstruccion()}><b>Enviar</b></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Boton type="submit" onClick={()=>putConstruccion()}><strong>Enviar</strong></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
                     */}
 
-                    <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><b>Cancelar</b></button>
+                    <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><strong>Cancelar</strong></button>
                 </ModalFooter>
             </Modal>
 
@@ -4192,12 +4148,10 @@ useEffect(()=>{
                     </button>
                 </ModalFooter>            
             </Modal>
-
         </main>
+        </div>
     )
-
 }
-
 
 export default Construccion;
 

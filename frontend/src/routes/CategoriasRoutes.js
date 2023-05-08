@@ -24,14 +24,36 @@ export default function RoutesCategorias() {
   const path = location.pathname  
   var idPredio = ''
   var idClave = ''
+  var idPropietario = ''
+
+  /* for (var i=0 ; i < path.length ; i++) {
+    if(path.substring(i, i+1)===':' )
+    {
+      for (var j=i+2; j < path.length ; j++) {
+        if(path.substring(j, j+1)===':' ) {
+          for (var k=j+2; k < path.length; k++){
+            
+            idPredio= path.substring(i+1, j)
+            idClave=path.substring(j+1, k)              
+            idPropietario=path.substring(k+1, path.length)
+          }          
+        }
+      }
+    }
+  } */
 
   for (var i=0 ; i < path.length ; i++) {
     if(path.substring(i, i+1)===':' )
     {
       for (var j=i+2; j < path.length ; j++) {
         if(path.substring(j, j+1)===':' ) {
-          idPredio= path.substring(i+1, j)
-          idClave=path.substring(j+1, path.length)
+          for (var k=j+2; k < path.length; k++){
+            if(path.substring(k, k+1)===':'){
+                idPredio= path.substring(i+1, j)
+                idClave=path.substring(j+1, k)              
+                idPropietario=path.substring(k+1, path.length)                
+            }
+          }          
         }
       }
     }
@@ -39,24 +61,26 @@ export default function RoutesCategorias() {
 
   //console.log(idPredio)
   //console.log(idClave)
+  //console.log(idPropietario)
+  //console.log(path)
 
-  const infraestructura = '/categorias/infraestructura/:'+idPredio+':'+idClave
-  const propietario = '/categorias/propietario/:'+idPredio+':'+idClave
-  const ubicacion = '/categorias/ubicacion/:'+idPredio+':'+idClave
-  const obras = '/categorias/obras/:'+idPredio+':'+idClave
-  const caracteristicas = '/categorias/caracteristicas/:'+idPredio+':'+idClave
-  const construccion = '/categorias/construccion/:'+idPredio+':'+idClave
-  const estatus = '/categorias/estatus/:'+idPredio+':'+idClave
-  const grafico = '/categorias/grafico/:'+idPredio+':'+idClave
-  const investigacion = '/categorias/investigacion/:'+idPredio+':'+idClave
-  const opciones = '/categorias/opciones/:'+idPredio+':'+idClave
-  const uso = '/categorias/uso/:'+idPredio+':'+idClave
-  const home='/categorias/homecategorias/:'+idPredio+':'+idClave
+  const infraestructura = '/categorias/infraestructura/:'+idPredio+':'+idClave+':'+idPropietario
+  const propietario = '/categorias/propietario/:'+idPredio+':'+idClave+':'+idPropietario
+  const ubicacion = '/categorias/ubicacion/:'+idPredio+':'+idClave+':'+idPropietario
+  const obras = '/categorias/obras/:'+idPredio+':'+idClave+':'+idPropietario
+  const caracteristicas = '/categorias/caracteristicas/:'+idPredio+':'+idClave+':'+idPropietario
+  const construccion = '/categorias/construccion/:'+idPredio+':'+idClave+':'+idPropietario
+  const estatus = '/categorias/estatus/:'+idPredio+':'+idClave+':'+idPropietario
+  const grafico = '/categorias/grafico/:'+idPredio+':'+idClave+':'+idPropietario
+  const investigacion = '/categorias/investigacion/:'+idPredio+':'+idClave+':'+idPropietario
+  const opciones = '/categorias/opciones/:'+idPredio+':'+idClave+':'+idPropietario
+  const uso = '/categorias/uso/:'+idPredio+':'+idClave+':'+idPropietario
+  const home='/categorias/homecategorias/:'+idPredio+':'+idClave+':'+idPropietario
 
     
     
     return(
-      <div>
+      <div >
       
       <Navbar/>
   

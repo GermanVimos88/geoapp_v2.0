@@ -4,10 +4,12 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClipboardList, faEdit, faTrashAlt, faSearch, faLaptopHouse, faReply, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faEdit, faTrashAlt, faSearch, faLaptopHouse, faReply, faPlus, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import logo from '../img/logocuyuja.png';
 //import Chart from "chart.js/auto";
 //import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from "react-chartjs-2";
+import 'chart.piecelabel.js';
 import Cookies from 'universal-cookie';
 
 //ChartJS.register(ArcElement, Tooltip, Legend);
@@ -94,14 +96,20 @@ function App() {
         setModalReporteDescriptivo(!modalReporteDescriptivo);
      }
 
-    const soporte=(id,clave)=>{
-        window.location.href='./categorias/:'+id+':'+clave;        
+    const soporte=(id,clave,clave_propietario)=>{
+        window.location.href='./categorias/:'+id+':'+clave+':'+clave_propietario;        
     }
 
     const menu=()=>{
         
         //Retorno al menú principal        
         window.location.href='./menu';
+    }
+
+    const nuevo_propietario=()=>{
+        
+        //Retorno al menú principal        
+        window.location.href='./propietario';
     }
     
     const nuevoFormulario=()=>{
@@ -224,7 +232,15 @@ function App() {
         };
         const opciones = await {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            pieceLabel:{
+                render: function(args){
+                    return args.label+': '+(args.value*100/12).toFixed(2)+'%';
+                },
+                fontSize: 10,
+                fontColor: '#fff',
+                fontFamily: 'Arial'
+            }
         }
         setDataGrafica(dt);
         setOpcionesGrafica(opciones);
@@ -244,7 +260,15 @@ function App() {
         };
         const opciones = await {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            pieceLabel:{
+                render: function(args){
+                    return args.label+': '+(args.value*100/10).toFixed(2)+'%';
+                },
+                fontSize: 10,
+                fontColor: '#fff',
+                fontFamily: 'Arial'
+            }
         }
         setDataAdquisicion(dt);
         setOpcionesAdquisicion(opciones);
@@ -264,7 +288,15 @@ function App() {
         };
         const opciones = await{
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            pieceLabel:{
+                render: function(args){
+                    return args.label+': '+(args.value*100/11).toFixed(2) +'%';
+                },
+                fontSize: 10,
+                fontColor: '#fff',
+                fontFamily: 'Arial'
+            }
         }
         setDataSuelo(dt);
         setOpcionesSuelo(opciones);
@@ -352,6 +384,9 @@ function App() {
 
     }
 
+    const reporte = () => {
+        window.location.href='./reportes';
+    }
 
     const seleccionarPredio=(predio, caso)=>{
         setPredioSeleccionado(predio);                
@@ -362,9 +397,18 @@ function App() {
                             break;  
             case "Eliminar":  abrirCerrarModalEliminar();
                             break; 
-            case "Configuracion": soporte(predio.idpredio,predio.clavecatastral);            
+            case "Configuracion": soporte(predio.idpredio,predio.clavecatastral,predio.idpropietario);            
                             break; 
         }            
+    }
+
+    const cerrarSesion=()=>{
+        cookies.remove('id', {path: "/"});
+        cookies.remove('primer_apellido', {path: "/"});
+        cookies.remove('segundo_apellido', {path: "/"});
+        cookies.remove('nombre', {path: "/"});
+        cookies.remove('username', {path: "/"});
+        window.location.href='./';
     }
     
     useEffect(()=>{
@@ -390,24 +434,41 @@ function App() {
                 
              <div style={{textAlign: 'center'}}> 
                 
-                <button className="btn btn-outline-secondary btn-lg" style={{ float: 'right', borderRadius:'22px', marginRight: '3rem' }} onClick={()=>menu()}>Menú Principal <FontAwesomeIcon icon={faReply}/> </button>                                
-                <br/>
-                <h6 style={{ float: 'left', marginLeft:'3rem'}}><b> Usuario:</b> {cookies.get('username')} </h6>                     
-                <h4 style={{color:'darkorange', marginLeft: '5rem'}} >Lista de predios registrados <FontAwesomeIcon icon={faLaptopHouse}/></h4> 
-                                
-                <hr/>
-                <button className="btn btn-success" style={{ float: 'left', borderRadius:'22px', marginLeft: '5rem'}} onClick={()=>abrirCerrarModalInsertar()} >Nuevo Predio <FontAwesomeIcon icon={faPlus}/></button>                
+                <img src={logo} alt="" style={{marginLeft:'4rem', marginTop:'-1rem', width:'70px', height:'90px', float: 'left'}} />
+                <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'1rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>                     
+                <h3 style={{color:'#20d757', marginLeft: '3rem', marginTop:'2rem' }} >Predios registrados <FontAwesomeIcon icon={faLaptopHouse}/></h3> 
+                <br/>                              
+                <hr/>                
+                <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '2rem'}} onClick={()=>abrirCerrarModalInsertar()} >Nuevo Predio <FontAwesomeIcon icon={faPlus}/></button>                
                 {/* <button className="btn btn-primary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '5rem'}} onClick={()=>abrirCerrarModalReporteDescriptivo()} >Reporte Descriptivo <FontAwesomeIcon icon={faClipboardList}/></button>  */}
-                <button className="btn btn-primary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '5rem'}} onClick={()=>abrirCerrarModalReporteEstadistico()} >Reporte Estadístico <FontAwesomeIcon icon={faClipboardList}/></button>                
-                
+                <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '2rem'}} onClick={()=> reporte()/* abrirCerrarModalReporteEstadistico() */} >Reportes <FontAwesomeIcon icon={faClipboardList}/></button>                
+                <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '2rem'}} onClick={()=>nuevo_propietario()} >Propietarios <FontAwesomeIcon icon={faPlus}/></button>                
+                <button className="btn btn-outline-secondary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '1rem', marginRight: '3rem'}} onClick={()=>menu()}>Menú Principal <FontAwesomeIcon icon={faReply}/> </button>
+                <div className='barraBusqueda' style={{ float:'left', marginLeft:'2rem' }}>
+                    <label for="busqueda">
+                    <input
+                        type='text'
+                        title="Ingrese clave catastral"
+                        placeholder='Buscar predio'
+                        className='textField'
+                        id='busqueda'
+                        name='busqueda'
+                        value={busqueda.campo}
+                        onChange={(e)=>setBusqueda({campo: e.target.value})}
+                    />
+                    <button type='button' className='btnBuscar'>
+                        <FontAwesomeIcon icon={faSearch} />
+                    </button>
+                    </label>
+                </div>
                 <br/>
-                <br/>                                
-                <div class="center-block fix-width scroll-inner" style={{float: 'right', scale: "100%", marginRight: '3rem'}}>
+                <br/>                
+                <div class="center-block fix-width scroll-inner" style={{ scale: "100%", marginLeft:'1rem', marginRight:'1rem', width:'97%', backgroundColor:'#d1e8e7'}}>
                 <table className="table table-striped table-hover">
                     <thead style={{ position: 'sticky', top: 0 }}>
                         <tr>
-                            <th><b>ID</b></th>
-                            <th><b>ID Propietario</b></th>
+                            <th><strong>ID</strong></th>
+                            <th><strong>ID Propietario</strong></th>
                             <th>Clave catastral</th>
                             <th>Cédula</th>
                             <th>Nombre y apellidos</th>                            
@@ -421,7 +482,7 @@ function App() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map(predio=>(
+                        {data.filter(searchingTerm(busqueda.campo)).map(predio=>( 
                             
                             <tr key={predio.idpredio}>
                             <td>{predio.idpredio} </td>
@@ -434,9 +495,9 @@ function App() {
                             <td>{predio.piso}</td>
                             <td>{predio.unidad}</td>
                             <td>
-                                        <button className="btn btn-primary btn-sm" onClick={()=>seleccionarPredio(predio,"Editar")} >Editar <FontAwesomeIcon icon={faEdit}/></button>{"   "}                                        
-                                        <button className="btn btn-danger btn-sm" onClick={()=>seleccionarPredio(predio,"Eliminar")}>Eliminar <FontAwesomeIcon icon={faTrashAlt}/></button>{"   "}                                        
-                                        <button className="btn btn-info btn-sm" onClick={()=>seleccionarPredio(predio,"Configuracion")}>Categorías  <FontAwesomeIcon icon={faClipboardList}/></button>
+                                        <button className="btn btn-primary btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPredio(predio,"Editar")} >Editar <FontAwesomeIcon icon={faEdit}/></button>{"   "}                                        
+                                        <button className="btn btn-danger btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPredio(predio,"Eliminar")}>Eliminar <FontAwesomeIcon icon={faTrashAlt}/></button>{"   "}                                        
+                                        <button className="btn btn-info btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPredio(predio,"Configuracion")}>Categorías  <FontAwesomeIcon icon={faClipboardList}/></button>
                                     </td>
                                 </tr>                            
                         ))}
@@ -444,14 +505,13 @@ function App() {
                     </tbody>                    
                 </table>  
                 </div>
-
+                
                 <Modal isOpen={modalInsertar}>
                         <ModalHeader>Insertar nuevo predio</ModalHeader>
                             <ModalBody>
-                                <div className="form-group">                                           
-                                    <tr>
-                                            <td><b>Propietario:</b></td>&nbsp;&nbsp;&nbsp;
-                                            <td>
+                                <div className="form-group">
+                                
+                                        <label for="idpropietario" >Propietario 
                                             <select 
                                                 class="form-select form-select-lg mb-3" 
                                                 className="custom-select" 
@@ -476,13 +536,14 @@ function App() {
                                             >
                                             {propietarios?.map(element => <option key={element.idpropietario} value={element.idpropietario}>{element.idpropietario+'-'+element.nombre}</option>)}
                                             
-                                            </select> </td>
-                                        </tr>                                                                        
-                                    <br/>                                    
-                                    <label>Tipo</label>
+                                            </select>
+                                    </label>
+                                                                                                               
                                     <br/>
-                                    <select 
-                                                class="form-select form-select-lg mb-3" 
+                                    <label for="tipo">Tipo
+                                    
+                                            <select 
+                                                class="form-select form-select-sm mb-1" 
                                                 className="custom-select" 
                                                 id="tipo" 
                                                 name="tipo"
@@ -492,29 +553,30 @@ function App() {
                                               <option value="Urbano">Urbano</option>
                                               <option value="Rural">Rural</option>                                          
                                             </select>
+                                    </label>
                                     
-                                    <br/> 
-                                    <label>Clave catastral (*)</label>
-                                    <br/>
+                                    <label for="clavecatastral" style={{float: 'right'}}>Clave catastral (*) 
                                     <input type="text" className="form-control" name="clavecatastral" id="clavecatastral" onChange={handleChange} />
-                                    <br/> 
-                                    <label>Régimen</label>
-                                    <br/>
+                                    </label>
+                                                                        
+                                    <br/>                                    
+                                    <label for="regimen" >Régimen                                    
                                     <input type="text" className="form-control" name="regimen" id="regimen" onChange={handleChange} />
-                                    <br/> 
-                                    <label>Bloque</label>
-                                    <br/>
+                                    </label>
+                                    
+                                    <label for="bloque" style={{float: 'right'}}>Bloque
                                     <input type="text" className="form-control" name="bloque" id="bloque" onChange={handleChange} />
+                                    </label>
+                                                                        
                                     <br/>  
-                                    <label>Unidad</label>
-                                    <br/>
+                                    <label for="unidad" >Unidad
                                     <input type="text" className="form-control" name="unidad" id="unidad" onChange={handleChange} />
-                                    <br/>  
-                                    <label>Piso</label>
-                                    <br/>
+                                    </label>
+                                    
+                                    <label for="piso" style={{float: 'right'}}>Piso
                                     <input type="text" className="form-control" name="piso" id="piso" onChange={handleChange} />
-                                    <br/>  
-                                
+                                    </label>
+                                    
                                 </div>
                 </ModalBody>
                 <ModalFooter>
@@ -534,10 +596,8 @@ function App() {
                     <div className="form-group">
                                     <center>
                                     <label htmlFor="id">ID predio: {predioSeleccionado && predioSeleccionado.idpredio} </label>                                    
-                                    </center>
-                                                                        
-                                    <label><b>Propietario:</b></label>
-                                            <td>
+                                    </center>                                                                        
+                                        <label for="idpropietario" >Propietario
                                             <select 
                                                 class="form-select form-select-lg mb-3" 
                                                 className="custom-select" 
@@ -565,10 +625,26 @@ function App() {
                                             <option value="" disabled>----------</option>
                                             {propietarios?.map(element => <option key={element.idpropietario} value={element.idpropietario}>{element.idpropietario+'-'+element.nombre}</option>)}
                                             
-                                            </select> </td>
+                                            </select>
+                                        </label>
 
-                                    <br/>  
-                                    <label>Identificación</label>
+                                    <br/> 
+                                    <label for="tipo">Tipo de predio
+                                    <br/>
+                                            <select 
+                                                class="form-select form-select-lg mb-3" 
+                                                className="custom-select" 
+                                                id="tipo" 
+                                                name="tipo"
+                                                value={predioSeleccionado && predioSeleccionado.tipo}
+                                                onChange = {handleChange}
+                                            >
+                                                <option value="Urbano">Urbano</option>
+                                                <option value="Rural">Rural</option>                                          
+                                            </select>
+                                    </label>
+                                    
+                                    <label for="identificacion" style={{float: 'right'}}>Identificación
                                     <br/>
                                     <input type="text" className="form-control" name="identificacion" id="identificacion" readOnly 
                                                         onChange={()=>{
@@ -584,48 +660,40 @@ function App() {
                                                         }
                                                             
                                                         value={predioSeleccionado && predioSeleccionado.identificacion}/>
+                                    </label>
                                     
                                     <br/>  
-                                    <label>Tipo de propietario</label>
+                                    <label for="tipo_propietario" >Tipo de propietario
                                     <br/>
                                     <input type="text" className="form-control" name="tipo_propietario" id="tipo_propietario" readOnly onChange={handleChange} value={predioSeleccionado && predioSeleccionado.tipo_propietario}/>
-                                    <br/> 
-                                    <label>Clave catastral</label>
+                                    </label>
+                                    
+                                    <label for="clave_catastral"  style={{float: 'right'}}>Clave catastral
                                     <br/>
                                     <input type="text" className="form-control" name="clave_catastral" id="clave_catastral" readOnly onChange={handleChange} value={predioSeleccionado && predioSeleccionado.clavecatastral}/>
+                                    </label>
                                     <br/>                                    
-                                    <label>Tipo de predio</label>
-                                    <br/>
-                                    <select 
-                                                class="form-select form-select-lg mb-3" 
-                                                className="custom-select" 
-                                                id="tipo" 
-                                                name="tipo"
-                                                value={predioSeleccionado && predioSeleccionado.tipo}
-                                                onChange = {handleChange}
-                                            >
-                                              <option value="Urbano">Urbano</option>
-                                              <option value="Rural">Rural</option>                                          
-                                            </select>
-                                            <br/>
-                                    <br/> 
-                                    <label>Régimen</label>
+                                                                        
+                                    <label for="regimen" >Régimen
                                     <br/>
                                     <input type="text" className="form-control" name="regimen" id="regimen" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.regimen}/>
-                                    <br/> 
-                                    <label>Bloque</label>
+                                    </label>
+                                    
+                                    <label for="bloque" style={{float: 'right'}}>Bloque
                                     <br/>
                                     <input type="text" className="form-control" name="bloque" id="bloque" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.bloque}/>
+                                    </label>
                                     <br/>  
-                                    <label>Unidad</label>
+                                    <label for="unidad" >Unidad
                                     <br/>
                                     <input type="text" className="form-control" name="unidad" id="unidad" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.unidad}/>
-                                    <br/>  
-                                    <label>Piso</label>
+                                    </label>
+                                     
+                                    <label for="piso" style={{float: 'right'}}>Piso
                                     <br/>
                                     <input type="text" className="form-control" name="piso" id="piso" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.piso}/>
-                                    <br/>  
-
+                                    </label>
+                                    
                     </div>
                 </ModalBody>
                 <ModalFooter>
@@ -646,157 +714,8 @@ function App() {
                         No
                     </button>
                 </ModalFooter>            
-            </Modal>
-
-            <Modal isOpen={modalReporteDescriptivo}>
-                <ModalBody>                    
-                    <h3>Reporte Descriptivo</h3>
-                    
-                    <hr></hr>
-
-                    <div className="form-group">                                                                
-                            
-                    {reporteDescriptivo?.map(predio=>(
-                        <tr key={predio.d_asfalto}>
-
-                            <label><b>Predios sobre asfalto:</b> {predio.d_asfalto.map((p, i)=> (  <li>{p.inf_clave_predio}</li>  )   )} </label>   
-                            <hr></hr>
-                            <br/>                            
-                            <label>Predios sobre lastrado: {predio.d_lastre.map((p, i)=> ( <li>{p.inf_clave_predio}</li>  )   )}  </label> 
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sobre adoquín: {predio.d_adoquin.map((p, i)=> ( <li>{p.inf_clave_predio}</li>  )   )}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios con medidor de agua: {predio.medidor_agua_si.map((p, i)=> ( <li>{p.inf_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sin medidor de agua: {predio.medidor_agua_no.map((p, i)=> ( <li>{p.inf_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios con servicio de alcantarillado: {predio.excretas.map((p, i)=> ( <li>{p.inf_clave_predio}</li>  ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sin medidor de luz eléctrica: {predio.medidor_luz_no.map((p, i)=> ( <li>{p.inf_clave_predio}</li>))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sin alumbrado público: {predio.alumbrado_publico_no.map((p, i)=> ( <li>{p.inf_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios con cerramiento: {predio.cerramiento.map((p, i)=> ( <li>{p.obc_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios desocupados: {predio.desocupada.map((p, i)=> ( <li>{p.cdc_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios ocupados: {predio.ocupada.map((p, i)=> ( <li>{p.cdc_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios esquineros: {predio.esquinero.map((p, i)=> ( <li>{p.clt_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios con edificaciones: {predio.edificado.map((p, i)=> ( <li>{p.clt_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sin edificaciones: {predio.no_edificado.map((p, i)=> ( <li>{p.clt_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sobre Vía Interoceánica: {predio.via_interoceanica.map((p, i)=> ( <li>{p.ubc_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios sin linderos: {predio.linderos_no.map((p, i)=> ( <li>{p.inv_clave_predio}</li> ))}</label>
-                            <hr></hr>
-                            <br/>
-                            <label>Predios con linderos: {predio.linderos_si.map((p, i)=> ( <li>{p.inv_clave_predio}</li> ))}</label>
-                                                        
-                            </tr>
-                            ))}      
-                        
-
-                    </div>
-
-                </ModalBody>
-                <ModalFooter>
-                    
-                    <button className="btn btn-secondary" onClick={()=>abrirCerrarModalReporteDescriptivo()}>
-                        Salir
-                    </button>
-                </ModalFooter>            
-            </Modal>
-
-            <Modal isOpen={modalReporteEstadistico}>
-                <ModalBody>
-                <h3>Reporte Estadístico</h3>
-                <hr></hr>
-
-                    <div className="form-group">
-                    <center>
-                    <div className="chart-container" style={{width:'80%', height:'300px'}}>
-                    <h5>Tipo de propietarios</h5>
-                    
-                        <Pie 
-                            data={dataGrafica}                        
-                            options={opcionesGrafica}  
-                            /> 
-                    
-                    <br/>
-                    <br/>
-                    </div>
-                    </center>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <center>
-                    <div className="chart-container" style={{width:'80%', height:'300px'}}>
-                    <h5>Forma de adquisición predial</h5>
-                    
-                        <Pie 
-                            data={dataAdquisicion}                        
-                            options={opcionesAdquisicion}  
-                            /> 
-                    
-                    <br/>
-                    <br/>
-                    </div>
-                    </center>
-                    <br/>
-                    <br/>
-                    <br/>
-                    
-                    <center>
-                    <div className="chart-container" style={{width:'80%', height:'300px'}}>
-                    <h5>Tipo de suelo</h5>
-                    
-                        <Pie 
-                            data={dataSuelo}                        
-                            options={opcionesSuelo}  
-                            /> 
-                    
-                    <br/>
-                    <br/>
-                    </div>
-                    </center>
-
-
-
-
-                    </div>
-
-
-                </ModalBody>
-                <ModalFooter>
-                    
-                    <button className="btn btn-secondary" onClick={()=>abrirCerrarModalReporteEstadistico()}>
-                        Salir
-                    </button>
-                </ModalFooter>            
-            </Modal>
-        
-        
-           
+            </Modal>                       
         </div>
-
-
     );
 
 }

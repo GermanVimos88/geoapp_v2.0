@@ -6,7 +6,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import { faClipboardList, faEdit, faHammer, faTrashAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faEdit, faHammer, faReply, faTrashAlt, faUpload, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,18 +26,24 @@ const ObrasComplementarias = () => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }
+      }
 
     
     const baseUrl='http://localhost/apicatastro/index.php/obras/?id='+id;//'http://f0783168.xsph.ru/index.php/obras/?id='+id;
@@ -227,6 +233,20 @@ const onSubmit = (e) => {
      }
 
 }
+/* const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+} */
+
 
     useEffect(()=>{
         
@@ -241,40 +261,42 @@ const onSubmit = (e) => {
 
 
     return (
+         <div>
+            {/*<h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
         <main>
-            <h1><b>Obras complementarias <FontAwesomeIcon icon={faHammer}/></b></h1> 
+            <label style={{ fontWeight:'900', fontSize:'32px' }}>Obras complementarias <FontAwesomeIcon icon={faHammer}/></label> 
             <br/>
-            <label>Clave Catastral: <b>{clave}</b></label> <td> </td>                                          
+            <label>Clave Catastral: {clave}</label> <td> </td>                                          
             <center>
-                <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva obra <FontAwesomeIcon icon={faUpload}/></button> 
+                <button className="btn btn-success btn-md" onClick={()=>abrirCerrarModalInsertar()} >Nueva obra <FontAwesomeIcon icon={faUpload}/></button> 
             </center>    
-            <br/>
-            
+                        
             <Formulario action="" onSubmit={onSubmit}>
 
             <div class="center-block fix-width scroll-inner" style={{textAlign: 'center', scale: "88%", marginLeft: '-8rem'}}>                                              
                 <table className="table table-striped table-hover">
                     <thead id="cabecera">
                         <tr>
-                            <th style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><b>ID Obra</b></th>                            
-                            <th>Tipo de obra</th>
-                            <th colspan="3"><h6><b>Dimensiones (m)</b></h6>
+                            <th id="idobra" style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}><strong>ID Obra</strong></th>                            
+                            <th id="tipo_obra">Tipo de obra</th>
+                            <th id="dimensiones" colspan="3"><h6><strong>Dimensiones (m)</strong></h6>
                             <center>
                             <tr>                                 
-                            <th style={{paddingLeft: '25px', width: '130px'}}>a</th>
-                            <th style={{paddingLeft: '30px', width: '130px'}}>b</th>
-                            <th style={{paddingLeft: '25px', width: '130px'}}>c</th>                                           
+                            <th id="a" style={{paddingLeft: '25px', width: '130px'}}>a</th>
+                            <th id="b" style={{paddingLeft: '30px', width: '130px'}}>b</th>
+                            <th id="c" style={{paddingLeft: '25px', width: '130px'}}>c</th>                                           
                             </tr>
                             </center>
                             </th>
 
-                            <th>Cantidad (m/m²/m³)</th>                            
+                            <th id="cantidad" >Cantidad (m/m²/m³)</th>                            
                             
-                            <th>Material</th>
-                            <th>Edad</th>
-                            <th>Estado</th>
+                            <th id="material">Material</th>
+                            <th id="edad">Edad</th>
+                            <th id="estado">Estado</th>
 
-                            <th>ACCIONES</th>                                                   
+                            <th id="acciones">ACCIONES</th>                                                   
 
                         </tr>
                     </thead>
@@ -284,20 +306,20 @@ const onSubmit = (e) => {
                             
                                 
                                     <tr key={obra.idobras}>
-                                        <td style={{position: 'sticky', top: 130, left: 0, padding: '45px', verticalAlign:'middle', background: '#eee'}}    >{obra.idobras}</td>                                        
-                                        <td style={{padding: '45px',verticalAlign:'middle'}}>{obra.tipo_obra}</td>
-                                        <td style={{padding: '40px',verticalAlign:'middle'}}>{obra.dimension_a}</td>
-                                        <td style={{padding: '20px',verticalAlign:'middle'}}>{obra.dimension_b}</td>
-                                        <td style={{padding: '30px',verticalAlign:'middle'}}>{obra.dimension_c}</td>
-                                        <td style={{padding: '45px',verticalAlign:'middle'}}>{obra.cantidad_metros}</td>
-                                        <td style={{padding: '45px',verticalAlign:'middle'}}>{obra.material}</td>
-                                        <td style={{padding: '45px',verticalAlign:'middle'}}>{obra.edad}</td>
-                                        <td style={{padding: '45px',verticalAlign:'middle'}}>{obra.estado}</td>
+                                        <td headers='id obra' style={{position: 'sticky', top: 130, left: 0, padding: '45px', verticalAlign:'middle', background: '#eee'}}    >{obra.idobras}</td>                                        
+                                        <td headers='tipo obra' style={{padding: '45px',verticalAlign:'middle'}}>{obra.tipo_obra}</td>
+                                        <td headers='dimension a' style={{padding: '40px',verticalAlign:'middle'}}>{obra.dimension_a}</td>
+                                        <td headers='dimension b' style={{padding: '20px',verticalAlign:'middle'}}>{obra.dimension_b}</td>
+                                        <td headers='dimension c' style={{padding: '30px',verticalAlign:'middle'}}>{obra.dimension_c}</td>
+                                        <td headers='cantidad metros' style={{padding: '45px',verticalAlign:'middle'}}>{obra.cantidad_metros}</td>
+                                        <td headers='material obra' style={{padding: '45px',verticalAlign:'middle'}}>{obra.material}</td>
+                                        <td headers='edad obra' style={{padding: '45px',verticalAlign:'middle'}}>{obra.edad}</td>
+                                        <td headers='estado obra' style={{padding: '45px',verticalAlign:'middle'}}>{obra.estado}</td>
                                         
 
-                                    <td>
-                                        <button className="btn btn-primary btn-md" onClick={()=>seleccionarObra(obra,"Editar")}><b>Editar</b><FontAwesomeIcon icon={faEdit}/></button>
-                                        <button className="btn btn-danger btn-md" onClick={()=>seleccionarObra(obra,"Eliminar")}><b>Eliminar</b><FontAwesomeIcon icon={faTrashAlt}/></button>  
+                                    <td headers='botones obra'>
+                                        <button className="btn btn-primary btn-md" onClick={()=>seleccionarObra(obra,"Editar")}><strong>Editar</strong><FontAwesomeIcon icon={faEdit}/></button>
+                                        <button className="btn btn-danger btn-md" onClick={()=>seleccionarObra(obra,"Eliminar")}><strong>Eliminar</strong><FontAwesomeIcon icon={faTrashAlt}/></button>  
                                                                                 
                                     </td>
                                 </tr>
@@ -311,18 +333,17 @@ const onSubmit = (e) => {
 
             <Modal isOpen={modalInsertar}>
                             
-                        <ModalHeader><b>Insertar nueva obra</b></ModalHeader>
+                        <ModalHeader><strong>Insertar nueva obra</strong></ModalHeader>
                             <ModalBody>
                                 <div className="form-group">                                     
-                                    <br/>
+                                    
                                     <center>                
                                     <div id="contenedor">
                                         <br/>
                                         <p>
                                         <tr>                                            
-                                        <br/>
-                                        <br/>
-                                            <td><b>Tipo de Obra:</b></td>&nbsp;&nbsp;
+                                        
+                                            <label for="tipo" style={{ fontWeight:'900' }}>Tipo de Obra:</label>&nbsp;&nbsp;
                                             <td>
                                             <select 
                                                 className="custom-select" 
@@ -370,7 +391,7 @@ const onSubmit = (e) => {
                                             </select> </td>
                                         </tr>
                                     </p>
-                                    <br/>
+                                    
                                     <p>                                    
                                     <ComponenteInput
                                         estado={dimension_a}
@@ -417,13 +438,11 @@ const onSubmit = (e) => {
                                 </div>
                                 <br/>
                                 <div id="contenedor2">
-                                    <br/>
-                                    <br/>  
-                                    <h5>Material:</h5>
-                                    <p>                                        
-                                    <tr>                                            
-                                            <td>
-                                            <br/>    
+                                    <br/>                                    
+                                    <label for="material" style={{ fontWeight:'900' }}>Material:</label>
+                                                                         
+                                                                               
+                                            <td>                                              
                                             <select 
                                                 class="form-select form-select-sm"                                                  
                                                 id="material" 
@@ -448,10 +467,10 @@ const onSubmit = (e) => {
                                             <option value="Muro bloque/ladrillo + verjas de hierro">Muro bloque/ladrillo + verjas de hierro</option>
                                             <option value="Verjas de hierro">Verjas de hierro</option>            
                                             </select> </td>
-                                        </tr>
-                                    </p>
-                                    <br/>
-                                    <p>
+                                        
+                                    
+                                    
+                                    
                                         <ComponenteInput
                                             estado={edad}
                                             cambiarEstado={cambiarEdad}
@@ -462,11 +481,11 @@ const onSubmit = (e) => {
                                             leyendaError = "Valores enteros hasta 5 dígitos numéricos "
                                             expresionRegular = {expresiones.edad}                
                                         />
-                                    </p>   
+                                     
                                     <br/>  
                                     <p>                                            
                                             <tr>
-                                            <td><b>Estado:</b></td>&nbsp;&nbsp;&nbsp;
+                                            <label for="estado" style={{ fontWeight:'900' }}>Estado:</label>&nbsp;&nbsp;&nbsp;
                                             <td>
                                             <select 
                                                 class="form-select form-select-lg mb-3" 
@@ -500,7 +519,7 @@ const onSubmit = (e) => {
             </Modal>
             <br/>
             <Modal isOpen={modalEditar}>
-                <ModalHeader><b>Editar Obra</b></ModalHeader>
+                <ModalHeader><strong>Editar Obra</strong></ModalHeader>
                 <ModalBody>
                     {
                         //cambiarTipoInformante({campo: , valido: null}),         
@@ -513,16 +532,13 @@ const onSubmit = (e) => {
                                     <center>
                                     <label htmlFor="id">ID Obra: {id_obra.campo} </label>
                                     </center>                                    
-                                        <br/>                                        
+                                        
                                     <center>                
                                     <div id="contenedor">
                                         <br/>
                                         <p>
-                                        <tr>    
-                                        
-                                        <br/>
-                                        <br/>
-                                            <td><b>Tipo de Obra:</b></td>&nbsp;&nbsp;
+                                        <tr>                                       
+                                            <label for="tipo" style={{ fontWeight:'900' }}>Tipo de Obra:</label>
                                             <td>
                                             <select 
                                                 className="custom-select" 
@@ -571,9 +587,7 @@ const onSubmit = (e) => {
                                             
                                             </select> </td>
                                         </tr>
-                                    </p>
-
-                                    <br/>
+                                    </p>                                  
 
                                     <p>
                                     
@@ -627,13 +641,9 @@ const onSubmit = (e) => {
 
                                 <div id="contenedor2">
                                     <br/>
-
-                                    <br/>  
-                                    <h5>Material:</h5>
-                                    <p>
-                                        
-                                    <tr>
-                                            
+                                    <label for="material" style={{ fontWeight:'900' }}>Material:</label>
+                                    <p>                                        
+                                    <tr>                                            
                                             <td>
                                             <br/>    
                                             <select 
@@ -664,7 +674,7 @@ const onSubmit = (e) => {
                                             </select> </td>
                                         </tr>
                                     </p>
-                                    <br/>
+                                    
                                     <p>
                                         <ComponenteInput
                                             estado={edad}
@@ -682,7 +692,7 @@ const onSubmit = (e) => {
                                     <p>
                                             
                                             <tr>
-                                            <td><b>Estado:</b></td>&nbsp;&nbsp;&nbsp;
+                                            <label for="estado" style={{ fontWeight:'900' }}>Estado:</label>&nbsp;&nbsp;&nbsp;
                                             <td>
                                             <select 
                                                 class="form-select form-select-lg mb-3" 
@@ -707,19 +717,11 @@ const onSubmit = (e) => {
                                                     
                                             </select> </td>
                                         </tr>
-                                    </p>                    
-                                        
-                                </div>                
-                              
-
+                                    </p>                                        
+                                </div> 
                             </center>
                             <br/>
-
-
-
-
                         </div>
-
                     </div>
                 </ModalBody>
                 <ModalFooter>
@@ -730,16 +732,16 @@ const onSubmit = (e) => {
                         formularioValido === false && <MensajeError>
                         <p>
                         <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
+                        <strong>Error: </strong> Por favor rellena correctamente el formulario. 
                         </p>                    
                         </MensajeError>
                     
                 
-                    <Boton type="submit" onClick={()=>putObra()}><b>Enviar</b></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Boton type="submit" onClick={()=>putObra()}><strong>Enviar</strong></Boton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
                     */}
 
-                    <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><b>Cancelar</b></button>
+                    <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}><strong>Cancelar</strong></button>
                     
                 </ModalFooter>
             </Modal>
@@ -757,9 +759,8 @@ const onSubmit = (e) => {
                     </button>
                 </ModalFooter>            
             </Modal>
-
-
         </main>
+        </div>
     )
 }
 

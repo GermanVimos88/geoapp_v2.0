@@ -6,7 +6,7 @@ import axios from 'axios';
 import '../css/estilos.css';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faFileSignature } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faFileSignature, faReply, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -22,19 +22,24 @@ const EstatusLegal = () => {
     
     var id = ''
     var clave = ''
+    var idPropietario = ''
 
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }
-
+      }
         
     const baseUrl= 'http://localhost/apicatastro/index.php/legal/?id='+id; //'https://cheerful-marzipan-12e313.netlify.app/legal/?id='+id; //'http://f0783168.xsph.ru/index.php/legal/?id='+id;
     const [data, setData]=useState();
@@ -99,24 +104,12 @@ const onChangeTerminos = (e) => {
 
 const onSubmit = (e) => {
     e.preventDefault();
-
-    if(
-        
-        terminos
-     ){
          
         // CONEXION CRUD (PETICIONES AJAX/HTTP)
         putEstatusLegal();
         peticionGet();
-        cambiarFormularioValido(true);
-        //alert('Datos actualizados correctamente');
-
-
-
-         
-     } else {
-        cambiarFormularioValido(false);         
-     }
+        //cambiarFormularioValido(true);
+        alert('Datos actualizados correctamente');
 
 }
 
@@ -242,6 +235,20 @@ const putEstatusLegal=async()=>{
     });
 }
 
+/* const menu=()=>{
+        
+    //Retorno al menú principal        
+    window.location.href='/menu';
+}
+const cerrarSesion=()=>{
+    cookies.remove('id', {path: "/"});
+    cookies.remove('primer_apellido', {path: "/"});
+    cookies.remove('segundo_apellido', {path: "/"});
+    cookies.remove('nombre', {path: "/"});
+    cookies.remove('username', {path: "/"});
+    window.location.href='./';
+} */
+
 useEffect(()=>{
     
     if(!cookies.get('username')){
@@ -257,11 +264,14 @@ useEffect(()=>{
 
 
     return (
-        <main>
-              
-              <h1><b>Estatus Legal <FontAwesomeIcon icon={faFileSignature}/></b></h1> 
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
+
+        <main>              
+              <label style={{ fontWeight:'900', fontSize:'32px' }}>Estatus Legal <FontAwesomeIcon icon={faFileSignature}/></label> 
               <br/>
-                <label>Clave Catastral: <b>{clave_predio.campo}</b></label> <td> </td>
+                <label>Clave Catastral: {clave_predio.campo}</label> <td> </td>
                 
               <br/>
 
@@ -278,8 +288,8 @@ useEffect(()=>{
                 <br/>
                 <p>
                 <tr>    
-                    <br/>
-                    <td>Predio con título:</td>
+                    
+                    <label for="titulo" style={{ fontWeight:'900' }}>Predio con título:</label>
                         <td>
                         <select 
                             className="custom-select"
@@ -305,7 +315,7 @@ useEffect(()=>{
                 <p>
 
                 <tr>            
-                    <td>Escritura:</td>
+                    <label for="escritura" style={{ fontWeight:'900' }}>Escritura:</label>
                     <td>
                     <select 
                         className="custom-select"
@@ -331,7 +341,7 @@ useEffect(()=>{
                 <p>
                 <tr>    
         
-                    <td>Celebrado ante:</td>
+                    <label for="celebrado_ante" style={{ fontWeight:'900' }}>Celebrado ante:</label>
                     <td>
                     <select 
                         className="custom-select"
@@ -353,8 +363,7 @@ useEffect(()=>{
                     </select> </td>
                 </tr>
                 </p> 
-                <br/>
-                <br/>
+                
                 <p>
                     <ComponenteInput
                         estado={nombre_numero_notaria}
@@ -396,14 +405,10 @@ useEffect(()=>{
     <center>
         <div style={{marginLeft: '-5rem' }}>
             <br/>
-                         
-
-                    <tr> 
-                    <p><td><b>Fecha de Protocolización:</b></td></p>
+                <label style={{ fontWeight:'900' }}><td>Fecha de Protocolización:</td></label>
+                    <tr>                                    
                     
-                    
-                    <p>
-                    <td>Dia:</td>
+                    <label for="dia_protocolizacion" >Dia:</label>                    
                     <td>
                         <select 
                             className="custom-select"
@@ -452,12 +457,12 @@ useEffect(()=>{
                         <option value="31">31</option>
                                 
                     </select> </td>
-                    </p>
+                    
                     </tr>
                                             
                     <tr>
-                    <p>
-                    <td>Mes:</td>
+                    
+                    <label for="mes_protocolizacion" >Mes:</label>
                     <td>
                             <select 
                             className="custom-select"
@@ -486,12 +491,12 @@ useEffect(()=>{
                         <option value="Noviembre">Noviembre</option>
                         <option value="Diciembre">Diciembre</option>
                         </select> </td>
-                        </p>    
+                          
                         </tr>
                         
                         <tr>
-                        <p>
-                        <td>Año:</td>
+                        
+                        <label for="anio_protocolizacion" >Año:</label>
                         <td>
                         
                         <select 
@@ -597,7 +602,7 @@ useEffect(()=>{
                         <option value="2017">2017</option>
                         <option value="2018">2018</option>
                         </select> </td>
-                        </p>
+                        
                         </tr>
                 
                 <br/>
@@ -641,13 +646,11 @@ useEffect(()=>{
 
     <center>
         <div style={{marginLeft: '-6rem' }}>
-            <br/>
-            <br/>
-                        <tr> 
-                        <p><td><b>Fecha Inscripción Registro propiedad:</b></td></p>
-                                                
-                        <p>
-                        <td>Dia:</td>
+                        
+                    <label style={{ fontWeight:'900' }}>Fecha Inscripción Registro propiedad:</label>
+                        <tr>                    
+                        
+                        <label for="dia_inscripcion_registro_propiedad" >Dia:</label>
                         <td>
                             <select 
                                 className="custom-select"
@@ -695,12 +698,12 @@ useEffect(()=>{
                             <option value="31">31</option>
                                     
                         </select> </td>
-                        </p>
+                        
                         </tr>
                             
                             <tr>
-                            <p>
-                            <td>Mes:</td>
+                            
+                            <label for="mes_inscripcion_registro_propiedad" >Mes:</label>
                             <td>
                             <select 
                                 className="custom-select"
@@ -728,12 +731,12 @@ useEffect(()=>{
                             <option value="Noviembre">Noviembre</option>
                             <option value="Diciembre">Diciembre</option>
                             </select> </td>
-                            </p>
+                            
                             </tr>
                             
                             <tr>
-                            <p>
-                            <td>Año:</td>
+                            
+                            <label for="anio_inscripcion_registro_propiedad" >Año:</label>
                             <td>
                             <select 
                                 className="custom-select"
@@ -838,15 +841,13 @@ useEffect(()=>{
                             <option value="2017">2017</option>
                             <option value="2018">2018</option>
                             </select> </td>
-                            </p>
+                            
                             </tr>
         </div>
     </center>
 
     <center>
         <div style={{marginLeft: '-5rem' }}>
-            <br/>
-            <br/>           
                         <p>
                             <ComponenteInput
                             estado={area_segun_titulo}
@@ -858,11 +859,9 @@ useEffect(()=>{
                             leyendaError = "Solo números"
                             expresionRegular = {expresiones.area}                
                         />
-                        <br/>
-
+                        <br/>                        
                         <tr> 
-                        <br/>       
-                        &nbsp;<td>Unidad de medida:</td>
+                        <label for="unidad_medida" style={{ fontWeight:'900' }}>Unidad de medida:</label>                                            
                             <td>
                             <select 
                                 className="custom-select"
@@ -889,9 +888,9 @@ useEffect(()=>{
                                     
                         </select> </td>
                         </tr>
-                        <br/>
+                        
                         <tr>        
-                        <td>Forma de tenencia:</td>
+                        <label for="forma_tenencia" style={{ fontWeight:'900' }}>Forma de tenencia:</label>
                             <td>
                             <select 
                                 className="custom-select"
@@ -915,11 +914,9 @@ useEffect(()=>{
                                                 
                         </select> </td>
                         </tr>                        
-                    
-                    <br/>
-                    
+                                                            
                         <tr>    
-                        <td>Forma de Adquisición:</td>
+                        <label for="forma_adquisicion" style={{ fontWeight:'900' }}>Forma de Adquisición:</label>
                             <td>
                             <select 
                                 className="custom-select"
@@ -957,15 +954,37 @@ useEffect(()=>{
 
     <ContenedorBotonCentrado>
         <h3>Datos de Predio sin Título</h3>
+        <br/>
+            <label for="adquisicion_sin_titulo" style={{ fontWeight:'900' }}>Forma de Adquisición:</label>                            
+                            <tr>                            
+                            <select 
+                                className="custom-select"
+                                id="adquisicion_sin_titulo" 
+                                name="adquisicion_sin_titulo"
+                                value= {adquisicion_sin_titulo}
+                                onChange = {(e) => {
+                                const adquisicionSeleccionado = e.target.value;
+                                cambiarAdquisicionSinTitulo({campo: adquisicionSeleccionado});
+                                }} 
+                            >
+                        
+                            <option value={adquisicion_sin_titulo.campo} checked>{adquisicion_sin_titulo.campo}</option>
+                            <option value="" disabled>----------</option>
+                            
+                            <option value="Sucesión de posesión">Sucesión de posesión </option>
+                            <option value="Cesión de posesión">Cesión de posesión </option>
+                            <option value="Posesión individual">Posesión individual </option>
+                            <option value="Otros">Otros </option>
+                                    
+                        </select> </tr>
+                        
     </ContenedorBotonCentrado>
 
     <center>
         <div style={{marginLeft: '-6rem' }}>
-            <br/>
-            <br/>            
-                    <p>
-                        <tr>                     
-                        <td>Requiere perfeccionamiento:</td>
+            <br/>                        
+                        <tr>
+                        <label for="requiere_perfeccionamiento" style={{ fontWeight:'900' }}>Requiere perfeccionamiento:</label>               
                             <td>
                             <select 
                                 className="custom-select"
@@ -986,10 +1005,10 @@ useEffect(()=>{
                                     
                         </select> </td>
                         </tr>
-                    </p>
-                    <br/>
-                    <p>                                                
-                        <label><b>Años sin perfeccionamiento:</b></label> <td> 
+
+                        <tr>                
+                        <td> 
+                        <label style={{ fontWeight:'900' }}>Años sin perfeccionamiento:</label>
                         <NumericInput 
                             className="form-control" 
                             value={ anios_sin_perfeccionamiento.campo } 
@@ -997,7 +1016,7 @@ useEffect(()=>{
                             max={ 5000 } 
                             step={ 1 } 
                             precision={ 0 } 
-                            size={ 6 }                         
+                            size={ 4 }                         
                             strict
                             style={{
                                 wrap: {
@@ -1005,7 +1024,7 @@ useEffect(()=>{
                                     boxShadow: '0 0 1px 1px #fff inset, 1px 1px 5px -1px #000',
                                     
                                     borderRadius: '6px 3px 3px 6px',
-                                    fontSize: 30
+                                    fontSize: 18
                                 },
                                 input: {
                                     borderRadius: '4px 2px 2px 4px',
@@ -1031,8 +1050,9 @@ useEffect(()=>{
                         />
 
                         </td>
-                        <br/>                        
-                        <label><b>Años en posesión: </b></label> <td> 
+                                           
+                        <td> 
+                        <label style={{ fontWeight:'900' }}>Años en posesión:</label>
                         <NumericInput 
                             className="form-control" 
                             value={ anios_posesion.campo } 
@@ -1040,7 +1060,7 @@ useEffect(()=>{
                             max={ 5000 } 
                             step={ 1 } 
                             precision={ 0 } 
-                            size={ 6 }                         
+                            size={ 4 }                         
                             strict
                             style={{
                                 wrap: {
@@ -1048,7 +1068,7 @@ useEffect(()=>{
                                     boxShadow: '0 0 1px 1px #fff inset, 1px 1px 5px -1px #000',
                                     
                                     borderRadius: '6px 3px 3px 6px',
-                                    fontSize: 30
+                                    fontSize: 18
                                 },
                                 input: {
                                     borderRadius: '4px 2px 2px 4px',
@@ -1072,21 +1092,16 @@ useEffect(()=>{
                                 }
                             }}
                         />
-
-                        </td>
+                        </td> 
+                        </tr>                       
                         <br/>
-                        <br/>
-                    </p>
+                    
         </div>
     </center>
 
     <center>
         <div style={{marginLeft: '-5rem' }}>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>                                
+                                                             
                 <p>                    
                     <ComponenteInput
                         estado={pueblo_etnia}
@@ -1098,33 +1113,7 @@ useEffect(()=>{
                         leyendaError = "Solo letras. Puede llevar acentos"
                         expresionRegular = {expresiones.nombre}                
                     /> 
-                    <br/>
-                    <tr>    
-                        <br/>
-                        <td>Forma de Adquisición:</td>
-                            <td>
-                            <select 
-                                className="custom-select"
-                                id="adquisicion_sin_titulo" 
-                                name="adquisicion_sin_titulo"
-                                value= {adquisicion_sin_titulo}
-                                onChange = {(e) => {
-                                const adquisicionSeleccionado = e.target.value;
-                                cambiarAdquisicionSinTitulo({campo: adquisicionSeleccionado});
-                                }} 
-                            >
-                        
-                            <option value={adquisicion_sin_titulo.campo} checked>{adquisicion_sin_titulo.campo}</option>
-                            <option value="" disabled>----------</option>
-                            
-                            <option value="Sucesión de posesión">Sucesión de posesión </option>
-                            <option value="Cesión de posesión">Cesión de posesión </option>
-                            <option value="Posesión individual">Posesión individual </option>
-                            <option value="Otros">Otros </option>
-                                    
-                        </select> </td>
-                        </tr>
-                                                                        
+                                                                                                                
                     <ComponenteInput
                         estado={documento_presentado}
                         cambiarEstado={cambiarDocumentoPresentado}
@@ -1135,7 +1124,7 @@ useEffect(()=>{
                         leyendaError = "Letras y números"
                         expresionRegular = {expresiones.usuario}                
                     />
-
+                    
                 </p>
         </div>
     </center>
@@ -1199,7 +1188,7 @@ useEffect(()=>{
                 <br/>                     
                 <p>
                     <tr>    
-                    <td>Tipo de documento:</td>
+                    <label for="tipo_documento_posesionario" style={{ fontWeight:'900' }}>Tipo de documento:</label>
                         <td>
                         <select 
                             className="custom-select"
@@ -1255,36 +1244,13 @@ useEffect(()=>{
                 </p>
         </div>
     </center>
-
-        <br/>           
-
-                <ContenedorTerminos>
-                    <Label>
-                        <input 
-                            type="checkbox" 
-                            name="terminos" 
-                            id="terminos" 
-                            checked={terminos}
-                            onChange={onChangeTerminos}
-                            
-                            />
-                        Acepto los Términos y Condiciones
-                    </Label>                    
-                </ContenedorTerminos>
-                {formularioValido === false && <MensajeError>
-                    <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                    </p>                    
-                </MensajeError>}
-                <ContenedorBotonCentrado>
+        <br/>
+                <ContenedorBotonCentrado>                
                     <Boton type="submit">Enviar</Boton>
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                </ContenedorBotonCentrado>                
-                
+                </ContenedorBotonCentrado>
             </Formulario>
-
         </main>
+        </div>
     )
 
 }

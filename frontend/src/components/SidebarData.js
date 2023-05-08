@@ -67,12 +67,12 @@ export const SidebarData = [
         icon: <FaIcons.FaSearch />,
         cName: 'nav-text'
     },
-    {
+    /* {
         title: 'Opciones de Uso',
         path:  '/categorias/opciones',
         icon: <IoIcons.IoIosSwitch />,
         cName: 'nav-text'
-    },
+    }, */
     {
         title: 'Uso del Predio',
         path:  '/categorias/uso',

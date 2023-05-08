@@ -5,7 +5,7 @@ import '../css/estilos.css';
 import axios from 'axios';
 //import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faMapMarkedAlt, faReply, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import ComponenteInput from './componentes/input.js'
 //import styled from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -21,18 +21,24 @@ const Ubicacion = () => {
     
     var id = ''
     var clave = ''
-
+    var idPropietario = ''
+   
     for (var i=0 ; i < path.length ; i++) {
-        if(path.substring(i, i+1)==':' )
+        if(path.substring(i, i+1)===':' )
         {
-        for (var j=i+2; j < path.length ; j++) {
-            if(path.substring(j, j+1)==':' ) {
-            id= path.substring(i+1, j)
-            clave=path.substring(j+1, path.length)
+          for (var j=i+2; j < path.length ; j++) {
+            if(path.substring(j, j+1)===':' ) {
+              for (var k=j+2; k < path.length; k++){
+                if(path.substring(k, k+1)===':'){
+                    id= path.substring(i+1, j)
+                    clave=path.substring(j+1, k)              
+                    idPropietario=path.substring(k+1, path.length)                
+                }
+              }          
             }
+          }
         }
-        }
-    }
+      }
         
      
     const baseUrl='http://localhost/apicatastro/index.php/ubicacion/?id='+id; //'http://f0783168.xsph.ru/index.php/ubicacion/?id='+id;
@@ -109,19 +115,29 @@ const Ubicacion = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(            
-            terminos
-        ){            
             // CONEXION CRUD (PETICIONES AJAX/HTTP)
             putUbicacion();
             peticionGet();
             cambiarFormularioValido(true);
-            //alert('Datos actualizados correctamente');
+            alert('Datos actualizados correctamente');
             
-        } else {
-            cambiarFormularioValido(false);         
-        }
+        
     }
+    const menu=()=>{
+        
+        //Retorno al menú principal        
+        window.location.href='/menu';
+    }
+    const cerrarSesion=()=>{
+        cookies.remove('id', {path: "/"});
+        cookies.remove('primer_apellido', {path: "/"});
+        cookies.remove('segundo_apellido', {path: "/"});
+        cookies.remove('nombre', {path: "/"});
+        cookies.remove('username', {path: "/"});
+        window.location.href='./';
+    }
+
+
 
 useEffect(()=>{
     
@@ -135,21 +151,23 @@ useEffect(()=>{
 },[])
     
 
-    return (        
+    return (
+        <div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}        
         <main>
-              
-              <h1><b>Ubicación  <FontAwesomeIcon icon={faMapMarkedAlt}/></b></h1> 
+              <label style={{ fontWeight:'900', fontSize:'32px' }} >Ubicación  <FontAwesomeIcon icon={faMapMarkedAlt}/></label> 
               <br/>
-                <label>Clave Catastral: <b>{clave_catastral.campo}</b></label> <td> </td>                
+                <label>Clave Catastral: {clave_catastral.campo}</label> <td> </td>                
               <br/>
 
             <Formulario onSubmit={onSubmit}>
 
             <center>
-            <div style={{textAlign: 'center'}}>                
+            <div>                
                 
                 <p>
-                    <td><b>Eje principal:</b></td>
+                    <label for="eje_principal" style={{ fontWeight:'900' }} >Eje principal:</label>
                     <tr>                    
                     
                     <td>
@@ -175,7 +193,7 @@ useEffect(()=>{
                 </p>
                 
                 <p>
-                    <td><b>Eje Secundario (calle):</b></td>
+                    <label for="eje_secundario" style={{ fontWeight:'900' }}>Eje Secundario (calle):</label>
                     <tr>    
                     
                     <td>
@@ -200,12 +218,11 @@ useEffect(()=>{
                     </select> </td>
                     </tr>
                 </p>  
-                <br/>              
+                            
         </div>            
     </center>
 
-    <center>          
-        <br/>
+    <center>        
         <div> 
             <p> 
                 <ComponenteInput
@@ -234,12 +251,11 @@ useEffect(()=>{
         </div>
       </center>
                 
-                <ContenedorBotonCentrado>
-                
+                <ContenedorBotonCentrado>                
                 <p>
                 <tr>    
                     
-                    <td><b>Nombre del Sector:</b></td> &nbsp;&nbsp;
+                    <label for="sector" style={{ fontWeight:'900' }}>Nombre del Sector:</label> &nbsp;&nbsp;
                     <td>
                     <select 
                         className="custom-select"
@@ -262,39 +278,15 @@ useEffect(()=>{
                     <br/>
                     <br/>
                 </p>
-                </ContenedorBotonCentrado>
-                <ContenedorTerminos>
-                    <Label>
-                        <input 
-                            type="checkbox" 
-                            name="terminos" 
-                            id="terminos" 
-                            checked={terminos}
-                            onChange={onChangeTerminos}
-                            
-                            />
-                        Acepto los Términos y Condiciones
-                    </Label>                    
-                </ContenedorTerminos>
+                </ContenedorBotonCentrado>                                
                 
-                {formularioValido === false && <MensajeError>
-                    <p>
-                        <FontAwesomeIcon icon={faExclamationTriangle} />
-                        <b>Error: </b> Por favor rellena correctamente el formulario. 
-                    </p>                    
-                </MensajeError>}
                 <ContenedorBotonCentrado>
-                    <Boton type="submit">Enviar</Boton>
-                    {formularioValido === true && <MensajeExito> Formulario enviado exitosamente! </MensajeExito>}
-                </ContenedorBotonCentrado>                
-                
+                    <Boton type="submit">Enviar</Boton>                
+                </ContenedorBotonCentrado>
             </Formulario>
-
         </main>
+        </div>
     )
-
 }
-
-
 
 export default Ubicacion;
