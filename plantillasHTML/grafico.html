@@ -1,0 +1,201 @@
+<div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
+        <main>
+               <label style={{ fontWeight:'900', fontSize:'32px' }}>Gráfico  <FontAwesomeIcon icon={faGlobeAmericas}/></label> 
+              <br/>
+              <label>Clave Catastral: {clave_predio.campo}</label> 
+              
+              
+            <Formulario action="" onSubmit={onSubmit}>
+            <ContenedorBotonCentrado>
+                <div style={{ margin:'1.8rem', marginLeft :'1rem' , width:'58.5vw', height:'84.5vh', border: '2px solid black'}}>                                    
+                    <MapView idClave={clave} />
+                    <br/>                                    
+                </div>
+                </ContenedorBotonCentrado> 
+            
+            <div>                              
+                <center>
+                <div id="contenedor2"> 
+
+                <h4>Colindantes del predio</h4>
+                <hr/>
+                                            
+                                <ComponenteInput
+                                estado={calle_norte}
+                                cambiarEstado={cambiarCalleNorte}
+                                tipo= "text"
+                                label="Calle Norte: "
+                                placeholder= "Nombre de la vía, calle o avenida"
+                                name = "calle_norte"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                                
+                                <ComponenteInput
+                                estado={calle_sur}
+                                cambiarEstado={cambiarCalleSur}
+                                tipo= "text"
+                                label="Calle Sur: "
+                                placeholder= "Nombre de la vía, calle o avenida"
+                                name = "calle_sur"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                               
+                                <ComponenteInput
+                                estado={calle_este}
+                                cambiarEstado={cambiarCalleEste}
+                                tipo= "text"
+                                label="Calle Este: "
+                                placeholder= "Nombre de la vía, calle o avenida"
+                                name = "calle_este"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                                
+                                <ComponenteInput
+                                estado={calle_oeste}
+                                cambiarEstado={cambiarCalleOeste}
+                                tipo= "text"
+                                label="Calle Oeste"
+                                placeholder= "Nombre de la vía, calle o avenida"
+                                name = "calle_oeste"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            <br/>    
+                            </div>
+                        </center>
+                        <br/>                               
+                </div>
+                
+                <div>
+                    <center>
+                                
+                    <div id="contenedor2">
+                    <h4>Dimensiones del gráfico</h4>
+                    <hr/>
+                        
+                                   <ComponenteInput
+                                    estado={area_grafica_lote}
+                                    cambiarEstado={cambiarAreaGraficaLote}
+                                    tipo= "text"
+                                    label="Área gráfica del lote (m²): "
+                                    placeholder= ""
+                                    name = "area_grafica_lote"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+                        
+                        
+                                    <ComponenteInput
+                                    estado={dimension_frente}
+                                    cambiarEstado={cambiarDimensionFrente}
+                                    tipo= "text"
+                                    label="Dimensión del frente (m):"
+                                    placeholder= ""
+                                    name = "dimension_frente"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+                                                
+                                    <ComponenteInput
+                                    estado={fondo_relativo}
+                                    cambiarEstado={cambiarFondoRelativo}
+                                    tipo= "text"
+                                    label="Fondo relativo (m)"
+                                    placeholder= ""
+                                    name = "fondo_relativo"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+                                                        
+                                <hr/>                         
+                                                
+                                    <ComponenteInput
+                                    estado={coordenada_x}
+                                    cambiarEstado={cambiarCoordenada_x}
+                                    tipo= "text"
+                                    label="Coordenada X (WGS 84 17S):"
+                                    placeholder= "Ingrese el valor de 'X'"
+                                    name = "coordenada_x"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+                                                     
+                                    <ComponenteInput
+                                    estado={coordenada_y}
+                                    cambiarEstado={cambiarCoordenada_y}
+                                    tipo= "text"
+                                    label="Coordenada Y (WGS 84 17S):"
+                                    placeholder= "Ingrese el valor de 'Y'"
+                                    name = "coordenada_y"
+                                    leyendaError = "Valores enteros y decimales hasta 5 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                />                            
+                        <br/>               
+                        </div>                           
+                                
+                        </center>                            
+                        </div>                                
+
+                <ContenedorTerminos>
+                    
+                    <br/>                
+                    <div id="contenedor3">
+                    <center><h4>Avalúo Municipal</h4></center>
+                    <hr/>
+                            <p>
+                                
+                                <ComponenteInput
+                                    estado={avaluo_tierras}
+                                    cambiarEstado={cambiarAvaluoTierras}
+                                    tipo= "text"
+                                    label="Avalúo tierra: "
+                                    placeholder= ""
+                                    name = "avaluo_tierras"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+
+                                <ComponenteInput
+                                    estado={avaluo_construcciones}
+                                    cambiarEstado={cambiarAvaluoConstrucciones}
+                                    tipo= "text"
+                                    label="Avalúo construcciones: "
+                                    placeholder= ""
+                                    name = "avaluo_construcciones"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+
+                                <ComponenteInput
+                                    estado={avaluo_total}
+                                    cambiarEstado={cambiarAvaluoTotal}
+                                    tipo= "text"
+                                    label="Avalúo total: "
+                                    placeholder= ""
+                                    name = "avaluo_total"
+                                    leyendaError = "Valores enteros y decimales hasta 3 dígitos de precisión"
+                                    expresionRegular = {expresiones.dimension}                
+                                /> 
+
+                    
+                            </p>
+                    </div>
+                    <br/>
+                    <br/>
+                    
+                                      
+                </ContenedorTerminos>
+                
+                <ContenedorBotonCentrado>
+                <br/>                
+                    <Boton type="submit">Enviar</Boton>                
+                </ContenedorBotonCentrado>
+            </Formulario>
+
+        </main>
+        </div>

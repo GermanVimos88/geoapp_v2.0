@@ -1,0 +1,134 @@
+<div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesi�n'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a men� principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Men� <br/> Principal </a></ul>  </h6> */}        
+        <main>
+              <label style={{ fontWeight:'900', fontSize:'32px' }} >Ubicaci�n  <FontAwesomeIcon icon={faMapMarkedAlt}/></label> 
+              <br/>
+                <label>Clave Catastral: {clave_catastral.campo}</label> <td> </td>                
+              <br/>
+
+            <Formulario onSubmit={onSubmit}>
+
+            <center>
+            <div>                
+                
+                <p>
+                    <label for="eje_principal" style={{ fontWeight:'900' }} >Eje principal:</label>
+                    <tr>                    
+                    
+                    <td>
+                    <select 
+                        className="custom-select"
+                        id="eje_principal" 
+                        name="eje_principal" 
+                        value= {eje_principal}
+                        onChange = {(e) => {
+                            const ejePrincipalSeleccionado = e.target.value;
+                            cambiarEjePrincipal({campo: ejePrincipalSeleccionado});
+                        }} 
+                    >
+                        
+                    <option value={eje_principal.campo} checked>{eje_principal.campo}</option>
+                    <option value="" disabled>----------</option>
+                                                       
+                    <option value="V�a Interoce�nica">V�a Interoce�nica </option>
+                    <option value="Huila">Huila </option>
+                            
+                </select> </td>
+                </tr>
+                </p>
+                
+                <p>
+                    <label for="eje_secundario" style={{ fontWeight:'900' }}>Eje Secundario (calle):</label>
+                    <tr>    
+                    
+                    <td>
+                    <select 
+                        className="custom-select"
+                        id="eje_secundario" 
+                        name="eje_secundario"
+                        value={eje_secundario}
+                        onChange = {(e) => {
+                            const ejeSecundarioSeleccionado = e.target.value;
+                            cambiarEjeSecundario({campo:ejeSecundarioSeleccionado});
+                        }}                      
+                    >                       
+
+                    <option value={eje_secundario.campo} checked>{eje_secundario.campo}</option>
+                    <option value="" disabled>----------</option>    
+                                    
+                    <option value="Jes�s del Gran Poder">Jes�s del Gran Poder </option>
+                    <option value="Huila">Huila </option>
+                    <option value="Oriente">Oriente </option>
+                            
+                    </select> </td>
+                    </tr>
+                </p>  
+                            
+        </div>            
+    </center>
+
+    <center>        
+        <div> 
+            <p> 
+                <ComponenteInput
+                    estado={codigo_placa}
+                    cambiarEstado={cambiarCodigoPlaca}
+                    tipo= "text"
+                    label="Placa predial"
+                    placeholder= "Ingrese el c�digo de placa predial"
+                    name = "placa_predial"
+                    leyendaError = "Letras y n�meros. Puede llevar acentos"
+                    expresionRegular = {expresiones.usuario}                
+                /> 
+                <ComponenteInput
+                    estado={nombre_predio}
+                    cambiarEstado={cambiarNombrePredio}
+                    tipo= "text"
+                    label="Nombre predio"
+                    placeholder= "Ingrese el nombre del predio"
+                    name = "nombre_predio"
+                    leyendaError = "Letras y espacios. Puede llevar acentos"
+                    expresionRegular = {expresiones.usuario}                
+                /> 
+                
+            </p>
+            
+        </div>
+      </center>
+                
+                <ContenedorBotonCentrado>                
+                <p>
+                <tr>    
+                    
+                    <label for="sector" style={{ fontWeight:'900' }}>Nombre del Sector:</label> &nbsp;&nbsp;
+                    <td>
+                    <select 
+                        className="custom-select"
+                        id="sector" 
+                        name="sector" 
+                        value={sector}
+                        onChange = {(e) => {
+                            const sectorSeleccionado = e.target.value;
+                            cambiarSector({campo: sectorSeleccionado});
+                        }}
+                    >
+                    <option value={sector.campo} checked>{sector.campo}</option>
+                    <option value="" disabled>----------</option>  
+                                        
+                    <option value="Cuyuja">Cuyuja </option>
+                    <option value="La Bah�a">La Bah�a </option>
+                                
+                    </select> </td>
+                    </tr>
+                    <br/>
+                    <br/>
+                </p>
+                </ContenedorBotonCentrado>                                
+                
+                <ContenedorBotonCentrado>
+                    <Boton type="submit">Enviar</Boton>                
+                </ContenedorBotonCentrado>
+            </Formulario>
+        </main>
+        </div>

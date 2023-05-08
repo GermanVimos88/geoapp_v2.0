@@ -1,0 +1,39 @@
+<div className="containerPrincipal">
+            <div>
+            <label style={{color:'blue'}}><strong>Sistema de catastro y cartograf�a</strong></label>
+                <br/>
+                <br/>
+            </div> 
+            
+            <div className="containerSecundario">
+                <div className="form-group">
+                    <label for="username"> Usuario: 
+                    <br/>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="username"
+                        name="username"
+                        onChange={handleChange}
+                    />
+                    </label>    
+                    <br />
+                    <label for="password" > Contrase�a:
+                    <br/>
+                    <input 
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        name="password"
+                        onChange={handleChange}
+                    />
+                    </label>
+                    <br/>
+                    <button className="btn btn-primary" onClick={()=> iniciarSesion()}>Iniciar sesi�n</button>                    
+                    <br/>
+                    <button className="btn btn-primary" onClick={()=> registro()}>Registrarse</button>                    
+                    
+                </div>         
+            </div>
+        
+        </div>

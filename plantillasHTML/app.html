@@ -1,0 +1,284 @@
+<div style={{textAlign: 'center'}}> 
+                
+    <img src={logo} alt="" style={{marginLeft:'4rem', marginTop:'-1rem', width:'70px', height:'90px', float: 'left'}} />
+    <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'1rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>                     
+    <h3 style={{color:'#20d757', marginLeft: '3rem', marginTop:'2rem' }} >Lista de predios registrados <FontAwesomeIcon icon={faLaptopHouse}/></h3> 
+    <br/>                              
+    <hr/>                
+    <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '2rem'}} onClick={()=>abrirCerrarModalInsertar()} >Nuevo Predio <FontAwesomeIcon icon={faPlus}/></button>                
+    {/* <button className="btn btn-primary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '5rem'}} onClick={()=>abrirCerrarModalReporteDescriptivo()} >Reporte Descriptivo <FontAwesomeIcon icon={faClipboardList}/></button>  */}
+    <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '2rem'}} onClick={()=> reporte()/* abrirCerrarModalReporteEstadistico() */} >Reporte Estadístico <FontAwesomeIcon icon={faClipboardList}/></button>                
+    <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '2rem'}} onClick={()=>nuevo_propietario()} >Propietarios <FontAwesomeIcon icon={faPlus}/></button>                
+    <button className="btn btn-outline-secondary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '1rem', marginRight: '3rem'}} onClick={()=>menu()}>Menú Principal <FontAwesomeIcon icon={faReply}/> </button>
+    <div className='barraBusqueda' style={{ float:'left', marginLeft:'2rem' }}>
+        <label for="busqueda">
+        <input
+            type='text'
+            title="Ingrese clave catastral"
+            placeholder='Buscar predio'
+            className='textField'
+            id='busqueda'
+            name='busqueda'
+            value={busqueda.campo}
+            onChange={(e)=>setBusqueda({campo: e.target.value})}
+        />
+        <button type='button' className='btnBuscar'>
+            <FontAwesomeIcon icon={faSearch} />
+        </button>
+        </label>
+    </div>
+    <br/>
+    <br/>                
+    <div class="center-block fix-width scroll-inner" style={{ scale: "100%", marginLeft:'1rem', marginRight:'1rem', width:'97%', backgroundColor:'#d1e8e7'}}>
+    <table className="table table-striped table-hover">
+        <thead style={{ position: 'sticky', top: 0 }}>
+            <tr>
+                <th><strong>ID</strong></th>
+                <th><strong>ID Propietario</strong></th>
+                <th>Clave catastral</th>
+                <th>Cédula</th>
+                <th>Nombre y apellidos</th>                            
+                <th>Tipo propietario</th>
+                <th>Razon social</th>                                                    
+                <th>Piso</th>  
+                <th>Unidad</th>  
+                
+                <th>ACCIONES</th>                                                   
+
+            </tr>
+        </thead>
+        <tbody>
+            {data.filter(searchingTerm(busqueda.campo)).map(predio=>( 
+                
+                <tr key={predio.idpredio}>
+                <td>{predio.idpredio} </td>
+                <td>{predio.idpropietario} </td>                                    
+                <td>{predio.clavecatastral}</td>
+                <td>{predio.identificacion}</td>
+                <td>{predio.primer_apellido+' '+predio.segundo_apellido+' '+predio.primer_nombre}</td>
+                <td>{predio.tipo_propietario}</td>
+                <td>{predio.razon_social}</td>
+                <td>{predio.piso}</td>
+                <td>{predio.unidad}</td>
+                <td>
+                            <button className="btn btn-primary btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPredio(predio,"Editar")} >Editar <FontAwesomeIcon icon={faEdit}/></button>{"   "}                                        
+                            <button className="btn btn-danger btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPredio(predio,"Eliminar")}>Eliminar <FontAwesomeIcon icon={faTrashAlt}/></button>{"   "}                                        
+                            <button className="btn btn-info btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPredio(predio,"Configuracion")}>Categorías  <FontAwesomeIcon icon={faClipboardList}/></button>
+                        </td>
+                    </tr>                            
+            ))}
+            
+        </tbody>                    
+    </table>  
+    </div>
+    
+    <Modal isOpen={modalInsertar}>
+            <ModalHeader>Insertar nuevo predio</ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                    
+                            <label for="idpropietario" >Propietario 
+                                <select 
+                                    class="form-select form-select-lg mb-3" 
+                                    className="custom-select" 
+                                    id="idpropietario" 
+                                    name="idpropietario"
+                                    
+                                    onChange = {(e) => {
+                                        const idSeleccionado = e.target.value;
+                                        setPredioSeleccionado((prevState)=>(
+                                            {...prevState,
+                                                idpropietario: idSeleccionado})
+                                            );
+                                        /* propietarios?.map(elemento =>{
+                                            if(elemento.idpropietario===idSeleccionado){
+                                                setPredioSeleccionado((prevState)=>(
+                                                    {...prevState,
+                                                        identificacion: elemento.identificacion})
+                                                    );
+                                            }
+                                        })     */                                                
+                                    }}
+                                >
+                                {propietarios?.map(element => <option key={element.idpropietario} value={element.idpropietario}>{element.idpropietario+'-'+element.nombre}</option>)}
+                                
+                                </select>
+                        </label>
+                                                                                                   
+                        <br/>
+                        <label for="tipo">Tipo
+                        
+                                <select 
+                                    class="form-select form-select-sm mb-1" 
+                                    className="custom-select" 
+                                    id="tipo" 
+                                    name="tipo"
+                                    
+                                    onChange = {handleChange}
+                                >
+                                  <option value="Urbano">Urbano</option>
+                                  <option value="Rural">Rural</option>                                          
+                                </select>
+                        </label>
+                        
+                        <label for="clavecatastral" style={{float: 'right'}}>Clave catastral (*) 
+                        <input type="text" className="form-control" name="clavecatastral" id="clavecatastral" onChange={handleChange} />
+                        </label>
+                                                            
+                        <br/>                                    
+                        <label for="regimen" >Régimen                                    
+                        <input type="text" className="form-control" name="regimen" id="regimen" onChange={handleChange} />
+                        </label>
+                        
+                        <label for="bloque" style={{float: 'right'}}>Bloque
+                        <input type="text" className="form-control" name="bloque" id="bloque" onChange={handleChange} />
+                        </label>
+                                                            
+                        <br/>  
+                        <label for="unidad" >Unidad
+                        <input type="text" className="form-control" name="unidad" id="unidad" onChange={handleChange} />
+                        </label>
+                        
+                        <label for="piso" style={{float: 'right'}}>Piso
+                        <input type="text" className="form-control" name="piso" id="piso" onChange={handleChange} />
+                        </label>
+                        
+                    </div>
+    </ModalBody>
+    <ModalFooter>
+        
+        <button className="btn btn-primary" onClick={()=>postPredio()} >Insertar</button>{"  "}                  
+        
+        <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>                   
+        
+    </ModalFooter>
+</Modal>
+
+
+
+<Modal isOpen={modalEditar}>
+    <ModalHeader>Editar Predio</ModalHeader>
+    <ModalBody>
+        <div className="form-group">
+                        <center>
+                        <label htmlFor="id">ID predio: {predioSeleccionado && predioSeleccionado.idpredio} </label>                                    
+                        </center>                                                                        
+                            <label for="idpropietario" >Propietario
+                                <select 
+                                    class="form-select form-select-lg mb-3" 
+                                    className="custom-select" 
+                                    id="idpropietario" 
+                                    name="idpropietario"
+                                    
+                                    onChange = {(e) => {
+                                        const idSeleccionado = e.target.value;
+                                        setPredioSeleccionado((prevState)=>(
+                                            {...prevState,
+                                                idpropietario: idSeleccionado}
+                                                ));
+
+                                            /* propietarios?.map(elemento =>{
+                                                if(elemento.idpropietario===idSeleccionado){
+                                                    setPredioSeleccionado((prevState)=>(
+                                                        {...prevState,
+                                                            identificacion: elemento.identificacion})
+                                                        );
+                                                }
+                                            })      */                                                   
+                                    }}
+                                >
+                                <option value={predioSeleccionado.idpropietario}>{predioSeleccionado.primer_nombre+' '+predioSeleccionado.primer_apellido+' '+predioSeleccionado.segundo_apellido}</option>
+                                <option value="" disabled>----------</option>
+                                {propietarios?.map(element => <option key={element.idpropietario} value={element.idpropietario}>{element.idpropietario+'-'+element.nombre}</option>)}
+                                
+                                </select>
+                            </label>
+
+                        <br/> 
+                        <label for="tipo">Tipo de predio
+                        <br/>
+                                <select 
+                                    class="form-select form-select-lg mb-3" 
+                                    className="custom-select" 
+                                    id="tipo" 
+                                    name="tipo"
+                                    value={predioSeleccionado && predioSeleccionado.tipo}
+                                    onChange = {handleChange}
+                                >
+                                    <option value="Urbano">Urbano</option>
+                                    <option value="Rural">Rural</option>                                          
+                                </select>
+                        </label>
+                        
+                        <label for="identificacion" style={{float: 'right'}}>Identificación
+                        <br/>
+                        <input type="text" className="form-control" name="identificacion" id="identificacion" readOnly 
+                                            onChange={()=>{
+                                                propietarios?.map(elemento =>{
+                                                    if(elemento.idpropietario===predioSeleccionado.idpropietario){
+                                                        setPredioSeleccionado((prevState)=>(
+                                                            {...prevState,
+                                                                identificacion: elemento.identificacion})
+                                                            );
+                                                    }
+                                                })     
+                                                } 
+                                            }
+                                                
+                                            value={predioSeleccionado && predioSeleccionado.identificacion}/>
+                        </label>
+                        
+                        <br/>  
+                        <label for="tipo_propietario" >Tipo de propietario
+                        <br/>
+                        <input type="text" className="form-control" name="tipo_propietario" id="tipo_propietario" readOnly onChange={handleChange} value={predioSeleccionado && predioSeleccionado.tipo_propietario}/>
+                        </label>
+                        
+                        <label for="clave_catastral"  style={{float: 'right'}}>Clave catastral
+                        <br/>
+                        <input type="text" className="form-control" name="clave_catastral" id="clave_catastral" readOnly onChange={handleChange} value={predioSeleccionado && predioSeleccionado.clavecatastral}/>
+                        </label>
+                        <br/>                                    
+                                                            
+                        <label for="regimen" >Régimen
+                        <br/>
+                        <input type="text" className="form-control" name="regimen" id="regimen" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.regimen}/>
+                        </label>
+                        
+                        <label for="bloque" style={{float: 'right'}}>Bloque
+                        <br/>
+                        <input type="text" className="form-control" name="bloque" id="bloque" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.bloque}/>
+                        </label>
+                        <br/>  
+                        <label for="unidad" >Unidad
+                        <br/>
+                        <input type="text" className="form-control" name="unidad" id="unidad" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.unidad}/>
+                        </label>
+                         
+                        <label for="piso" style={{float: 'right'}}>Piso
+                        <br/>
+                        <input type="text" className="form-control" name="piso" id="piso" onChange={handleChange} value={predioSeleccionado && predioSeleccionado.piso}/>
+                        </label>
+                        
+        </div>
+    </ModalBody>
+    <ModalFooter>
+        <button className="btn btn-primary" onClick={()=>putPredio()}>Editar</button>{"  "}
+        <button className="btn btn-danger" onClick={()=>abrirCerrarModalEditar()}>Cancelar</button>
+    </ModalFooter>
+</Modal>
+
+<Modal isOpen={modalEliminar}>
+    <ModalBody>
+        ¿Estás seguro de eliminar este registro {predioSeleccionado && predioSeleccionado.clavecatastral}?
+    </ModalBody>
+    <ModalFooter>
+        <button className="btn btn-danger" onClick={()=>deletePredio()}>
+            Si
+        </button>
+        <button className="btn btn-secondary" onClick={()=>abrirCerrarModalEliminar()}>
+            No
+        </button>
+    </ModalFooter>            
+</Modal>                       
+</div>

@@ -1,0 +1,1169 @@
+<div>
+    {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+    <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
+<main>
+       <label style={{ fontWeight:'900', fontSize:'32px' }}>Investigación predial <FontAwesomeIcon icon={faBook}/></label> 
+      <br/>
+      <label>Clave Catastral: {clave_predio.campo}</label> <td> </td>              
+      <center>
+        <button className="btn btn-success btn-lg" onClick={()=>abrirCerrarModalInsertar()} >Nueva Investigación <FontAwesomeIcon icon={faUpload}/></button> 
+      </center>     
+  
+      <Formulario action="" onSubmit={onSubmit}>
+
+      <div class="center-block fix-width scroll-inner" style={{textAlign: 'center', scale: "88%", marginLeft: '-6rem'}}>                  
+        <table className="table table-striped table-hover" >
+            <thead id="cabecera">
+                <tr>
+                    <th id="idinv" style={{position: 'sticky', left: 0, top: 0, padding: '40px'}}>ID investigación</th>
+                    
+                    
+                    <th id="informante" colspan="5"><h5>Informante</h5>
+                    <center>
+                    <tr>     
+                        
+                    <th id="tipo" style={{paddingLeft: '90px', width: '200px'}}>Tipo</th>
+                    <th id="apellidos" style={{paddingLeft: '120px', width: '150px'}}>Apellidos</th>
+                    <th id="nombres" style={{paddingLeft: '100px', width: '150px'}}>Nombres</th>
+                    <th id="telefono" style={{paddingLeft: '90px', width: '150px'}}>Teléfono</th>
+                    <th id="email" style={{paddingLeft: '70px', width: '180px'}}>Email</th>                            
+                        
+                    </tr>
+                    </center>
+                    </th>
+                    
+                    
+                    <th id="propietario_desc">Propietario desconocido</th>
+                    <th id="otra_fuente">Otra fuente de información</th>
+                    <th id="dimensiones_terreno_irregular">Dimensiones terreno irregular</th>
+                    <th id="linderos_definidos">Linderos definidos</th>
+                    <th id="nuevo_bloque">Nuevo Bloque</th>
+                    <th id="ampliacion_bloque">Ampliación bloque</th>
+                    
+                    
+                    <th id="actualizador" colspan="4"><h5>Actualizador</h5>
+                    
+                    <tr>
+                    <th id="nombre" style={{paddingLeft: '0px', width: '200px'}}>Nombre</th>
+                    <th id="apellidos_actualizador" style={{paddingLeft: '20px', width: '100px'}}>Apellidos</th>                            
+                    <th id="cedula_actualizador" style={{paddingLeft: '130px', width: '200px'}}>Cédula</th>
+                    <th id="firma_actualizador" style={{paddingLeft: '90px', width: '200px'}}>Firma</th>                            
+                    </tr>
+                    </th>
+                    <th id="fecha_actualizacion">Fecha de actualización</th>
+
+                    <th id="supervisor" colspan="4"><h5>Supervisor</h5>
+                    <tr>
+                    <th id="nombre_supervisor" style={{paddingLeft: '0px', width: '200px'}}>Nombre</th>
+                    <th id="apellidos_supervisor" style={{paddingLeft: '40px', width: '100px'}}>Apellidos</th>
+                    <th id="cedula_supervisor" style={{paddingLeft: '130px', width: '200px'}}>Cédula</th>                            
+                    <th id="firma_supervisor" style={{paddingLeft: '90px', width: '200px'}}>Firma</th>
+                    </tr>
+                    
+                    </th>
+
+                    <th id="fecha_supervision">Fecha de supervisión</th>
+                    <th id="acciones">ACCIONES</th>                                                   
+
+                </tr>
+            </thead>
+            <tbody>
+               { Array.isArray(data)
+                    ?data.map(inv=>(
+                        
+                                <tr key={inv.idinvestigacion}>
+                                <td headers='id investigacion' style={{position: 'sticky', top: 130, left: 0, padding: '60px', paddingLeft:'70px', verticalAlign:'middle', background: '#eee'}} >{inv.idinvestigacion}</td>                                        
+                                
+                                <td headers='tipo informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'100px'}}>{inv.tipo_informante}</td>
+                                <td headers='apellidos informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.apellidos_informante}</td>
+                                <td headers='nombre informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.nombre_informante}</td>
+                                <td headers='telefono informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.telefono_informante}</td>
+                                <td headers='email informante' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.email_informante}</td>
+                                
+                                
+                                <td headers='propietario desconocido' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.propietario_desconocido}</td>
+                                <td headers='otre fuente informacion' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.otra_fuente_informacion}</td>
+                                <td headers='dimensiones terreno irregular' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dimensiones_terreno_irregular}</td>
+                                <td headers='linderos definidos' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.linderos_definidos}</td>
+                                <td headers='nuevo bloque numero' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.nuevo_bloque_numero}</td>
+                                <td headers='ampliacion bloque numero' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.ampliacion_bloque_numero}</td>
+                                
+                                
+                                <td headers='nombre actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'80px'}}>{inv.nombre_actualizador}</td>
+                                <td headers='apellido actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'60px'}}>{inv.apellido_actualizador}</td>
+                                <td headers='cedula actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.cedula_actualizador}</td>
+                                <td headers='firma actualizador' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.firma_actualizador}</td>
+
+                                <td headers='fecha actualizacion' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dia_actualizacion + "/" + inv.mes_actualizacion + "/" + inv.anio_actualizacion}</td>
+                                
+                                <td headers='nombre supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'75px'}}>{inv.nombre_supervisor}</td>
+                                <td headers='apellido supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.apellido_supervisor}</td>
+                                <td headers='cedila supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.cedula_supervisor}</td>
+                                <td headers='firma supervisor' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.firma_supervisor}</td>
+                                
+                                <td headers='fecha supervision' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>{inv.dia_supervision + "/" + inv.mes_supervision + "/" + inv.anio_supervision}</td>
+
+                                <td headers='botones acciones' style={{padding: '60px',verticalAlign:'middle', paddingLeft:'70px'}}>
+                                <button className="btn btn-primary btn-md" onClick={()=>seleccionarInvestigacion(inv,"Editar")}>Editar<FontAwesomeIcon icon={faEdit}/></button>
+                                <button className="btn btn-danger btn-md" onClick={()=>seleccionarInvestigacion(inv,"Eliminar")}>Eliminar<FontAwesomeIcon icon={faTrashAlt}/></button>  
+                                                                        
+                            </td>
+                        </tr>                            
+                    )):null
+                }
+                
+            </tbody>                    
+        </table>
+
+        </div>
+        
+
+        </Formulario>
+
+        <Modal isOpen={modalInsertar}>
+                <ModalHeader>Insertar nueva investigación</ModalHeader>
+                    <ModalBody>
+                        <div className="form-group" style={{ textAlign: 'center' }}>                                    
+                            <center>
+                                <h5>Informante</h5>
+                                <hr/>
+                                <br/>
+                                <label for="tipo_informante" style={{ fontWeight:'900' }}>Tipo: </label>
+                                <td>   
+                                    <select 
+                                        className="custom-select" 
+                                        id="tipo_informante" 
+                                        name="tipo_informante" 
+                                        value = {tipo_informante.campo}
+                                        onChange = {(e) => {
+                                            const tipoSeleccionado = e.target.value;
+                                            cambiarTipoInformante({campo: tipoSeleccionado});
+                                        }}                                            
+                                    >
+                                        
+                                        <option value="">----------</option>
+                                        <option value="Arrendatario">Arrendatario</option>
+                                        <option value="Ocupante familiar">Ocupante familiar</option>
+                                        <option value="Vecino/Guía">Vecino/Guía</option>
+                                        <option value="Sin informante">Sin informante</option>
+                                        </select>   
+                                        </td>
+                                </center>                         
+                            
+                            <br/>
+                                <ComponenteInput
+                                estado={apellidos_informante}
+                                cambiarEstado={cambiarApellidosInformante}
+                                tipo= "text"
+                                label="Apellidos "
+                                placeholder= ""
+                                name = "apellidos_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                            
+                                <ComponenteInput
+                                estado={nombre_informante}
+                                cambiarEstado={cambiarNombreInformante}
+                                tipo= "text"
+                                label="Nombre "
+                                placeholder= ""
+                                name = "nombre_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={telefono_informante}
+                                cambiarEstado={cambiarTelefonoInformante}
+                                tipo= "text"
+                                label="Teléfono "
+                                placeholder= ""
+                                name = "telefono_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={email_informante}
+                                cambiarEstado={cambiarEmailInformante}
+                                tipo= "text"
+                                label="Email "
+                                placeholder= ""
+                                name = "email_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                            <br/>
+                            <br/>
+                                <hr/>
+                            
+                                    <center>
+                                    <br/>                                                                                    
+                                    <label for="propietario_desconocido" style={{ fontWeight:'900' }}>Propietario desconocido: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="propietario_desconocido" 
+                                            name="propietario_desconocido" 
+                                            value = {propietario_desconocido.campo}
+                                            onChange = {(e) => {
+                                                const propietarioSeleccionado = e.target.value;
+                                                cambiarPropietarioDesconocido({campo: propietarioSeleccionado});
+                                            }}                                            
+                                        >
+                                            
+                                            
+                                            <option value="" >----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+
+                                    <br/>                                                                                    
+                                    <label for="otra_fuente_informacion" style={{ fontWeight:'900' }}>Otra fuente de información: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="otra_fuente_informacion" 
+                                            name="otra_fuente_informacion" 
+                                            value = {otra_fuente_informacion.campo}
+                                            onChange = {(e) => {
+                                                const fuenteSeleccionada = e.target.value;
+                                                cambiarOtraFuenteInformacion({campo: fuenteSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value="">----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+                                    <br/>                                                                                    
+                                    <label for="dimensiones_terreno_irregular" style={{ fontWeight:'900' }}>Dimensiones de terreno irregular: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="dimensiones_terreno_irregular" 
+                                            name="dimensiones_terreno_irregular" 
+                                            value = {dimensiones_terreno_irregular.campo}
+                                            onChange = {(e) => {
+                                                const dimensionesSeleccionada = e.target.value;
+                                                cambiarDimensionesTerrenoIrregular({campo: dimensionesSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value="">----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+                                    <br/>                                                                                    
+                                    <label for="linderos_definidos" style={{ fontWeight:'900' }}>Linderos definidos: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="linderos_definidos" 
+                                            name="linderos_definidos" 
+                                            value = {linderos_definidos.campo}
+                                            onChange = {(e) => {
+                                                const linderosSeleccionado = e.target.value;
+                                                cambiarLinderosDefinidos({campo: linderosSeleccionado});
+                                            }}                                            
+                                        >   
+                                            <option value="" >----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+                                    <br/>   
+                                    </center>        
+                            <br/>  
+                            <ComponenteInput
+                                estado={nuevo_bloque_numero}
+                                cambiarEstado={cambiarNuevoBloqueNumero}
+                                tipo= "text"
+                                label="Nuevo bloque número"
+                                placeholder= ""
+                                name = "nuevo_bloque_numero"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={ampliacion_bloque_numero}
+                                cambiarEstado={cambiarAmpliacionBloqueNumero}
+                                tipo= "text"
+                                label="Ampliación bloque número"
+                                placeholder= ""
+                                name = "ampliacion_bloque_numero"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                <br/>
+                                <br/>
+                                <br/>
+                                <center>
+                                <h5>Actualizador</h5>                                        
+                                <hr/>
+                                </center>
+                            
+                                <ComponenteInput
+                                estado={nombre_actualizador}
+                                cambiarEstado={cambiarNombreActualizador}
+                                tipo= "text"
+                                label="Nombre :"
+                                placeholder= ""
+                                name = "nombre_actualizador"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={apellido_actualizador}
+                                cambiarEstado={cambiarApellidoActualizador}
+                                tipo= "text"
+                                label="Apellido :"
+                                placeholder= ""
+                                name = "apellido_actualizador"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                <ComponenteInput
+                                estado={cedula_actualizador}
+                                cambiarEstado={cambiarCedulaActualizador}
+                                tipo= "text"
+                                label="Cédula :"
+                                placeholder= ""
+                                name = "cedula_actualizador"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                
+                                <center>
+                                <br/>                                                                                    
+                                <label for="firma_actualizador" style={{ fontWeight:'900' }}>Firma: </label>
+                                <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="firma_actualizador" 
+                                            name="firma_actualizador" 
+                                            value = {firma_actualizador.campo}
+                                            onChange = {(e) => {
+                                                const firmaActualizadorSeleccionada = e.target.value;
+                                                cambiarFirmaActualizador({campo: firmaActualizadorSeleccionada});
+                                            }}                                            
+                                        >                                                                                                        
+                                            <option value="" >----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                </td>
+                                </center>
+                                <br/>
+                            
+                                <ComponenteInput
+                                estado={anio_actualizacion}
+                                cambiarEstado={cambiarAnioActualizacion}
+                                tipo= "text"
+                                label="Año de actualización"
+                                placeholder= ""
+                                name = "anio_actualizacion"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> &nbsp;&nbsp;&nbsp;
+                                <center>
+                                  
+                                
+                                    <tr>
+                                    <label for="mes_actualizacion" style={{ fontWeight:'900' }}>Mes: </label>
+                                    <td>
+                                    <select className="custom-select" 
+                                    id="mes_actualizacion" 
+                                    name="mes_actualizacion" 
+                                    value = {mes_actualizacion.campo}
+                                    onChange = {(e) => {
+                                        const mesSeleccionado = e.target.value;
+                                        cambiarMesActualizacion({campo: mesSeleccionado});
+                                    }}                                                             
+                                    
+                                    >                
+                                    
+                                    <option value="">----------</option>
+                                    <option value="Enero">Enero</option>
+                                    <option value="Febrero">Febrero</option>
+                                    <option value="Marzo">Marzo</option>
+                                    <option value="Abril">Abril</option>
+                                    <option value="Mayo">Mayo</option>
+                                    <option value="Junio">Junio</option>
+                                    <option value="Julio">Julio</option>
+                                    <option value="Agosto">Agosto</option>
+                                    <option value="Septiembre">Septiembre</option>
+                                    <option value="Octubre">Octubre</option>
+                                    <option value="Noviembre">Noviembre</option>
+                                    <option value="Diciembre">Diciembre</option>
+                                    </select> </td>
+
+                                    &nbsp;&nbsp;&nbsp;<label for="dia_actualizacion" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
+                                    <td>
+                                    <select className="custom-select" 
+                                    id="dia_actualizacion" 
+                                    name="dia_actualizacion" 
+                                    value = {dia_actualizacion.campo}
+                                    onChange = {(e) => {
+                                        const diaSeleccionado = e.target.value;
+                                        cambiarMesActualizacion({campo: diaSeleccionado});
+                                    }}                                                             
+                                    
+                                    >                
+                                    
+                                    <option value="" >----------</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    </select> </td>
+                                    </tr>
+                                
+                            </center>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <center>
+                            <h5>Supervisor</h5>
+                            </center>
+                            <hr/>
+                            
+                                <ComponenteInput
+                                estado={nombre_supervisor}
+                                cambiarEstado={cambiarNombreSupervisor}
+                                tipo= "text"
+                                label="Nombre : "
+                                placeholder= ""
+                                name = "nombre_supervisor"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={apellido_supervisor}
+                                cambiarEstado={cambiarApellidoSupervisor}
+                                tipo= "text"
+                                label="Apellido :"
+                                placeholder= ""
+                                name = "apellido_supervisor"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={cedula_supervisor}
+                                cambiarEstado={cambiarCedulaSupervisor}
+                                tipo= "text"
+                                label="Cédula :"
+                                placeholder= ""
+                                name = "cedula_supervisor"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                
+                                <center>
+                                <br/>                                                                                    
+                                <label for="firma_supervisor" style={{ fontWeight:'900' }}>Firma: </label>
+                                <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="firma_supervisor" 
+                                            name="firma_supervisor" 
+                                            value = {firma_supervisor.campo}
+                                            onChange = {(e) => {
+                                                const firmaSupervisorSeleccionada = e.target.value;
+                                                cambiarFirmaSupervisor({campo: firmaSupervisorSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            
+                                            <option value="" >----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                </td>
+                                </center>
+                                <br/>
+                            
+                                <ComponenteInput
+                                estado={anio_supervision}
+                                cambiarEstado={cambiarAnioSupervision}
+                                tipo= "text"
+                                label="Año de supervisión"
+                                placeholder= ""
+                                name = "anio_supervision"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                />&nbsp;&nbsp;
+
+                                <center>
+                                
+                                  <tr>
+                                  <label for="mes_supervision" style={{ fontWeight:'900' }}>Mes: &nbsp;</label>&nbsp;
+                                  <td>
+                                  <select className="custom-select" 
+                                  id="mes_supervision" 
+                                  name="mes_supervision" 
+                                  value = {mes_supervision.campo}
+                                  onChange = {(e) => {
+                                      const mesSupervisionSeleccionado = e.target.value;
+                                      cambiarMesSupervision({campo: mesSupervisionSeleccionado});
+                                  }}                                                             
+                                  
+                                  >                
+                                  
+                                  <option value="">----------</option>
+                                  <option value="Enero">Enero</option>
+                                  <option value="Febrero">Febrero</option>
+                                  <option value="Marzo">Marzo</option>
+                                  <option value="Abril">Abril</option>
+                                  <option value="Mayo">Mayo</option>
+                                  <option value="Junio">Junio</option>
+                                  <option value="Julio">Julio</option>
+                                  <option value="Agosto">Agosto</option>
+                                  <option value="Septiembre">Septiembre</option>
+                                  <option value="Octubre">Octubre</option>
+                                  <option value="Noviembre">Noviembre</option>
+                                  <option value="Diciembre">Diciembre</option>
+                                  </select> </td>
+
+                                  &nbsp;&nbsp;&nbsp;<label for="dia_supervision" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
+                                  <td>
+                                  <select className="custom-select" 
+                                  id="dia_supervision" 
+                                  name="dia_supervision" 
+                                  value = {dia_supervision.campo}
+                                  onChange = {(e) => {
+                                      const diaSupervisionSeleccionado = e.target.value;
+                                      cambiarDiaSupervision({campo: diaSupervisionSeleccionado});
+                                  }}                                                             
+                                  
+                                  >                
+                                  
+                                  <option value="">----------</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                  <option value="9">9</option>
+                                  <option value="10">10</option>
+                                  <option value="11">11</option>
+                                  <option value="12">12</option>
+                                  <option value="13">13</option>
+                                  <option value="14">14</option>
+                                  <option value="15">15</option>
+                                  <option value="16">16</option>
+                                  <option value="17">17</option>
+                                  <option value="18">18</option>
+                                  <option value="19">19</option>
+                                  <option value="20">20</option>
+                                  <option value="21">21</option>
+                                  <option value="22">22</option>
+                                  <option value="23">23</option>
+                                  <option value="24">24</option>
+                                  <option value="25">25</option>
+                                  <option value="26">26</option>
+                                  <option value="27">27</option>
+                                  <option value="28">28</option>
+                                  <option value="29">29</option>
+                                  <option value="30">30</option>
+                                  <option value="31">31</option>
+                                  </select> </td>
+                                  </tr>
+                              
+                            </center>
+                            <br/>
+                             <label for="fecha_supervision" style={{ fontWeight:'900' }}>Fecha de Supervisión:&nbsp;&nbsp;</label>     
+                            <input type="date" id="fecha_supervision" name="fecha" min="1970-01-01" max="2018-05-25" step="1" value="2017-04-28"/>
+                            <br/>                                  
+
+                        
+                        </div>
+        </ModalBody>
+        <ModalFooter>
+            
+            <button className="btn btn-primary" onClick={()=>postInvestigacion()} >Insertar</button>{"  "}
+            <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>                   
+            
+        </ModalFooter>
+    </Modal>
+
+
+
+    <Modal isOpen={modalEditar}>
+        <ModalHeader>Editar Investigación</ModalHeader>
+        <ModalBody>                    
+            <div className="form-group">                                 
+                            <div className="form-group" style={{ textAlign: 'center' }}>
+                            <label htmlFor="id" style={{ float: 'left' }} >ID Investigación: {idinvestigacion_predial.campo} </label>
+                            <br/>
+                            <br/>
+                                <center>
+                                <h5>Informante</h5>
+                                <hr/>
+                                
+                                <label for="tipo_informante" style={{ fontWeight:'900' }}>Tipo: </label>
+                                <td>   
+                                    <select 
+                                        className="custom-select" 
+                                        id="tipo_informante" 
+                                        name="tipo_informante" 
+                                        value = {tipo_informante.campo}
+                                        onChange = {(e) => {
+                                            const tipoSeleccionado = e.target.value;
+                                            cambiarTipoInformante({campo: tipoSeleccionado});
+                                        }}                                            
+                                    >
+                                        <option value={tipo_informante.campo}>{tipo_informante.campo}</option>
+                                        <option value="" disabled>----------</option>
+                                        <option value="Arrendatario">Arrendatario</option>
+                                        <option value="Ocupante familiar">Ocupante familiar</option>
+                                        <option value="Vecino/Guía">Vecino/Guía</option>
+                                        <option value="Sin informante">Sin informante</option>
+                                        </select>   
+                                        </td>
+                                </center>
+                                
+                                <ComponenteInput
+                                estado={apellidos_informante}
+                                cambiarEstado={cambiarApellidosInformante}
+                                tipo= "text"
+                                label="Apellidos: "
+                                placeholder= ""
+                                name = "apellidos_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={nombre_informante}
+                                cambiarEstado={cambiarNombreInformante}
+                                tipo= "text"
+                                label="Nombre :"
+                                placeholder= ""
+                                name = "nombre_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={telefono_informante}
+                                cambiarEstado={cambiarTelefonoInformante}
+                                tipo= "text"
+                                label="Teléfono :"
+                                placeholder= ""
+                                name = "telefono_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={email_informante}
+                                cambiarEstado={cambiarEmailInformante}
+                                tipo= "text"
+                                label="Email :"
+                                placeholder= ""
+                                name = "email_informante"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                <br/>
+                                <hr/>
+                            
+                                    <center>
+                                    <br/>                                                                                    
+                                    <label for="propietario_desconocido" style={{ fontWeight:'900' }}>Propietario desconocido: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="propietario_desconocido" 
+                                            name="propietario_desconocido" 
+                                            value = {propietario_desconocido.campo}
+                                            onChange = {(e) => {
+                                                const propietarioSeleccionado = e.target.value;
+                                                cambiarPropietarioDesconocido({campo: propietarioSeleccionado});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value={propietario_desconocido.campo}>{propietario_desconocido.campo}</option>
+                                            <option value="" disabled>----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+
+                                    <br/>                                                                                    
+                                    <label for="otra_fuente_informacion" style={{ fontWeight:'900' }}>Otra fuente de información: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="otra_fuente_informacion" 
+                                            name="otra_fuente_informacion" 
+                                            value = {otra_fuente_informacion.campo}
+                                            onChange = {(e) => {
+                                                const fuenteSeleccionada = e.target.value;
+                                                cambiarOtraFuenteInformacion({campo: fuenteSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value={otra_fuente_informacion.campo}>{otra_fuente_informacion.campo}</option>
+                                            <option value="" disabled>----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+                                    <br/>                                                                                    
+                                    <label for="dimensiones_terreno_irregular" style={{ fontWeight:'900' }}>Dimensiones de terreno irregular: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="dimensiones_terreno_irregular" 
+                                            name="dimensiones_terreno_irregular" 
+                                            value = {dimensiones_terreno_irregular.campo}
+                                            onChange = {(e) => {
+                                                const dimensionesSeleccionada = e.target.value;
+                                                cambiarDimensionesTerrenoIrregular({campo: dimensionesSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value={dimensiones_terreno_irregular.campo}>{dimensiones_terreno_irregular.campo}</option>
+                                            <option value="" disabled>----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+                                    <br/>                                                                                    
+                                    <label for="linderos_definidos" style={{ fontWeight:'900' }}>Linderos definidos: </label>
+                                    <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="linderos_definidos" 
+                                            name="linderos_definidos" 
+                                            value = {linderos_definidos.campo}
+                                            onChange = {(e) => {
+                                                const linderosSeleccionado = e.target.value;
+                                                cambiarLinderosDefinidos({campo: linderosSeleccionado});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value={linderos_definidos.campo}>{linderos_definidos.campo}</option>
+                                            <option value="" disabled>----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                            </td>
+                                    <br/>   
+                                    </center>        
+                                    
+                            
+                                <ComponenteInput
+                                estado={nuevo_bloque_numero}
+                                cambiarEstado={cambiarNuevoBloqueNumero}
+                                tipo= "text"
+                                label="Nuevo bloque número"
+                                placeholder= ""
+                                name = "nuevo_bloque_numero"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={ampliacion_bloque_numero}
+                                cambiarEstado={cambiarAmpliacionBloqueNumero}
+                                tipo= "text"
+                                label="Ampliación bloque número"
+                                placeholder= ""
+                                name = "ampliacion_bloque_numero"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                <br/>
+                                <br/>
+                                <center>
+                                <h5>Actualizador</h5>                                        
+                                <hr/>
+                                </center>
+                            
+                                <ComponenteInput
+                                estado={nombre_actualizador}
+                                cambiarEstado={cambiarNombreActualizador}
+                                tipo= "text"
+                                label="Nombre :"
+                                placeholder= ""
+                                name = "nombre_actualizador"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={apellido_actualizador}
+                                cambiarEstado={cambiarApellidoActualizador}
+                                tipo= "text"
+                                label="Apellido :"
+                                placeholder= ""
+                                name = "apellido_actualizador"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                                <ComponenteInput
+                                estado={cedula_actualizador}
+                                cambiarEstado={cambiarCedulaActualizador}
+                                tipo= "text"
+                                label="Cédula :"
+                                placeholder= ""
+                                name = "cedula_actualizador"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+
+                                <center>
+                                <br/>                                                                                    
+                                <label for="firma_actualizador" style={{ fontWeight:'900' }}>Firma: </label>
+                                <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="firma_actualizador" 
+                                            name="firma_actualizador" 
+                                            value = {firma_actualizador.campo}
+                                            onChange = {(e) => {
+                                                const firmaActualizadorSeleccionada = e.target.value;
+                                                cambiarFirmaActualizador({campo: firmaActualizadorSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value={firma_actualizador.campo}>{firma_actualizador.campo}</option>
+                                            <option value="" disabled>----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                </td>
+                                </center>
+                                <br/>
+                            
+                                <ComponenteInput
+                                estado={anio_actualizacion}
+                                cambiarEstado={cambiarAnioActualizacion}
+                                tipo= "text"
+                                label="Año de actualización"
+                                placeholder= ""
+                                name = "anio_actualizacion"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> &nbsp;&nbsp;&nbsp;
+                                <center>
+                                  
+                                
+                                    <tr>
+                                    <label for="mes_actualizacion" style={{ fontWeight:'900' }}>Mes: </label>
+                                    <td>
+                                    <select className="custom-select" 
+                                    id="mes_actualizacion" 
+                                    name="mes_actualizacion" 
+                                    value = {mes_actualizacion.campo}
+                                    onChange = {(e) => {
+                                        const mesSeleccionado = e.target.value;
+                                        cambiarMesActualizacion({campo: mesSeleccionado});
+                                    }}                                                             
+                                    
+                                    >                
+                                    <option value={mes_actualizacion.campo}>{mes_actualizacion.campo}</option>
+                                    <option value="" disabled>----------</option>
+                                    <option value="Enero">Enero</option>
+                                    <option value="Febrero">Febrero</option>
+                                    <option value="Marzo">Marzo</option>
+                                    <option value="Abril">Abril</option>
+                                    <option value="Mayo">Mayo</option>
+                                    <option value="Junio">Junio</option>
+                                    <option value="Julio">Julio</option>
+                                    <option value="Agosto">Agosto</option>
+                                    <option value="Septiembre">Septiembre</option>
+                                    <option value="Octubre">Octubre</option>
+                                    <option value="Noviembre">Noviembre</option>
+                                    <option value="Diciembre">Diciembre</option>
+                                    </select> </td>
+
+                                    &nbsp;&nbsp;&nbsp;<label for="dia_actualizacion" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
+                                    <td>
+                                    <select className="custom-select" 
+                                    id="dia_actualizacion" 
+                                    name="dia_actualizacion" 
+                                    value = {dia_actualizacion.campo}
+                                    onChange = {(e) => {
+                                        const diaSeleccionado = e.target.value;
+                                        cambiarMesActualizacion({campo: diaSeleccionado});
+                                    }}                                                             
+                                    
+                                    >                
+                                    <option value={dia_actualizacion.campo}>{dia_actualizacion.campo}</option>
+                                    <option value="" disabled>----------</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    </select> </td>
+                                    </tr>
+                                
+                            </center>
+                            <br/>
+                            <br/>
+                            <center>
+                            <h5>Supervisor</h5>
+                            </center>
+                            <hr/>
+                            
+                                <ComponenteInput
+                                estado={nombre_supervisor}
+                                cambiarEstado={cambiarNombreSupervisor}
+                                tipo= "text"
+                                label="Nombre : "
+                                placeholder= ""
+                                name = "nombre_supervisor"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={apellido_supervisor}
+                                cambiarEstado={cambiarApellidoSupervisor}
+                                tipo= "text"
+                                label="Apellido :"
+                                placeholder= ""
+                                name = "apellido_supervisor"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+                            
+                                <ComponenteInput
+                                estado={cedula_supervisor}
+                                cambiarEstado={cambiarCedulaSupervisor}
+                                tipo= "text"
+                                label="Cédula :"
+                                placeholder= ""
+                                name = "cedula_supervisor"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                /> 
+
+                                <center>
+                                <br/>                                                                                    
+                                <label for="firma_supervisor" style={{ fontWeight:'900' }}>Firma: </label>
+                                <td>   
+                                        <select 
+                                            className="custom-select" 
+                                            id="firma_supervisor" 
+                                            name="firma_supervisor" 
+                                            value = {firma_supervisor.campo}
+                                            onChange = {(e) => {
+                                                const firmaSupervisorSeleccionada = e.target.value;
+                                                cambiarFirmaSupervisor({campo: firmaSupervisorSeleccionada});
+                                            }}                                            
+                                        >
+                                            
+                                            <option value={firma_supervisor.campo}>{firma_supervisor.campo}</option>
+                                            <option value="" disabled>----------</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>                                                    
+                                            </select>                                                       
+                                                                                                    
+                                </td>
+                                </center>
+                                <br/>
+                            
+                                <ComponenteInput
+                                estado={anio_supervision}
+                                cambiarEstado={cambiarAnioSupervision}
+                                tipo= "text"
+                                label="Año de supervisión"
+                                placeholder= ""
+                                name = "anio_supervision"
+                                leyendaError = "Letras y espacios. Puede llevar acentos"
+                                expresionRegular = {expresiones.nombre}                
+                                />&nbsp;&nbsp;
+
+                                <center>
+                                
+                                  <tr>
+                                  <label for="mes_supervision" style={{ fontWeight:'900' }}>Mes: </label>
+                                  <td>
+                                  <select className="custom-select" 
+                                  id="mes_supervision" 
+                                  name="mes_supervision" 
+                                  value = {mes_supervision.campo}
+                                  onChange = {(e) => {
+                                      const mesSupervisionSeleccionado = e.target.value;
+                                      cambiarMesSupervision({campo: mesSupervisionSeleccionado});
+                                  }}                                                             
+                                  
+                                  >                
+                                  <option value={mes_supervision.campo}>{mes_supervision.campo}</option>
+                                  <option value="" disabled>----------</option>
+                                  <option value="Enero">Enero</option>
+                                  <option value="Febrero">Febrero</option>
+                                  <option value="Marzo">Marzo</option>
+                                  <option value="Abril">Abril</option>
+                                  <option value="Mayo">Mayo</option>
+                                  <option value="Junio">Junio</option>
+                                  <option value="Julio">Julio</option>
+                                  <option value="Agosto">Agosto</option>
+                                  <option value="Septiembre">Septiembre</option>
+                                  <option value="Octubre">Octubre</option>
+                                  <option value="Noviembre">Noviembre</option>
+                                  <option value="Diciembre">Diciembre</option>
+                                  </select> </td>
+
+                                  &nbsp;&nbsp;&nbsp;<label for="dia_supervision" style={{ fontWeight:'900' }}>Día: &nbsp;&nbsp;</label>
+                                  <td>
+                                  <select className="custom-select" 
+                                  id="dia_supervision" 
+                                  name="dia_supervision" 
+                                  value = {dia_supervision.campo}
+                                  onChange = {(e) => {
+                                      const diaSupervisionSeleccionado = e.target.value;
+                                      cambiarDiaSupervision({campo: diaSupervisionSeleccionado});
+                                  }}                                                             
+                                  
+                                  >                
+                                  <option value={dia_supervision.campo}>{dia_supervision.campo}</option>
+                                  <option value="" disabled>----------</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                  <option value="9">9</option>
+                                  <option value="10">10</option>
+                                  <option value="11">11</option>
+                                  <option value="12">12</option>
+                                  <option value="13">13</option>
+                                  <option value="14">14</option>
+                                  <option value="15">15</option>
+                                  <option value="16">16</option>
+                                  <option value="17">17</option>
+                                  <option value="18">18</option>
+                                  <option value="19">19</option>
+                                  <option value="20">20</option>
+                                  <option value="21">21</option>
+                                  <option value="22">22</option>
+                                  <option value="23">23</option>
+                                  <option value="24">24</option>
+                                  <option value="25">25</option>
+                                  <option value="26">26</option>
+                                  <option value="27">27</option>
+                                  <option value="28">28</option>
+                                  <option value="29">29</option>
+                                  <option value="30">30</option>
+                                  <option value="31">31</option>
+                                  </select> </td>
+                                  </tr>
+                              
+                            </center>
+                            <br/>
+                             <label for="fecha_supervision" style={{ fontWeight:'900' }}>Fecha de Supervisión:&nbsp;&nbsp;</label>     
+                            <input type="date" id="fecha_supervision" name="fecha" min="1970-01-01" max="2018-05-25" step="1" value="2017-04-28"/>
+                            <br/>                                          
+                        </div>
+
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            
+            <button className="btn btn-primary" onClick={()=>putInvestigacion()}>Editar</button>                   
+            <button className="btn btn-danger btn-md" onClick={()=>abrirCerrarModalEditar()}>Cancelar</button>
+        </ModalFooter>
+    </Modal>
+
+    <Modal isOpen={modalEliminar}>
+        <ModalBody>
+            ¿Estás seguro de eliminar este registro {investigacionSeleccionada && investigacionSeleccionada.clavecatastral}?
+        </ModalBody>
+        <ModalFooter>
+            <button className="btn btn-danger" onClick={()=>deleteInvestigacion()}>
+                Si
+            </button>
+            <button className="btn btn-secondary" onClick={()=>abrirCerrarModalEliminar()}>
+                No
+            </button>
+        </ModalFooter>            
+    </Modal>
+</main>
+</div>

@@ -1,0 +1,156 @@
+<div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
+        <main>
+               <label style={{ fontWeight:'900', fontSize:'32px' }}>Uso del Predio <FontAwesomeIcon icon={faStoreAlt} /></label> 
+              <br/>
+              <label>Clave Catastral: {clave}</label> <td> </td>                
+              <br/>
+
+            <Formulario action="" onSubmit={onSubmit}>
+
+            <center>
+            <div>
+                <p>
+                        <tr>    
+                                
+                        <label for="uso_principal" style={{ fontWeight:'900' }}>Uso Principal:</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <td>
+                        <select
+                            className="custom-select"
+                            id="uso_principal" 
+                            name="uso_principal" 
+                            value={uso_principal.campo}
+                            onChange = {(e) => {
+                            const usoPrincipalSeleccionado = e.target.value;
+                            cambiarUsoPrincipal({campo: usoPrincipalSeleccionado});
+                        }}     
+                        >
+                
+                        <option value={uso_principal.campo} checked>{uso_principal.campo}</option>
+                        <option value="" disabled>----------</option>
+                              
+                        <option value="No tiene">No tiene </option>
+                        <option value="Acuacultura">Acuacultura </option>
+                        <option value="Agrícola">Agrícola </option>
+                        <option value="Agroindustrial">Agroindustrial </option>
+                        <option value="Bienestar social">Bienestar social </option>
+                        <option value="Casa comunal">Casa comunal </option>
+                        <option value="Comercial">Comercial </option>
+                        <option value="Comercial y residencial">Comercial y residencial </option>
+                        <option value="Conservación">Conservación </option>
+                        <option value="Cultural">Cultural </option>
+                        <option value="Diplomático">Diplomático </option>
+                        <option value="Educación">Educación </option>
+                        <option value="Espacio público">Espacio público </option>
+                        <option value="Financiero">Financiero </option>
+                        <option value="Forestal">Forestal </option>
+                        <option value="Hidrocarburo">Hidrocarburo </option>
+                        <option value="Industrial">Industrial </option>
+                        <option value="Institucional privado">Institucional privado </option>
+                        <option value="Institucional público">Institucional público </option>
+                        <option value="Minero">Minero </option>
+                        <option value="Pecuario">Pecuario </option>
+                        <option value="Preservación patrimonial">Preservación patrimonial </option>
+                        <option value="Protección ecológica">Protección ecológica </option>
+                        <option value="Recreación y deporte">Recreación y deporte </option>
+                        <option value="Religioso">Religioso </option>
+                        <option value="Residencial">Residencial </option>
+                        <option value="Salúd">Salúd </option>
+                        <option value="Seguridad">Seguridad </option>
+                        <option value="Servicios">Servicios </option>
+                        <option value="Servicios especiales">Servicios especiales </option>
+                        <option value="Transporte">Transporte </option>
+                        <option value="Turismo">Turismo </option>
+                        
+                        </select> </td>
+                    </tr>
+                </p> 
+                                                              
+            </div>            
+        </center>
+
+        <center>
+            <div>
+                <p>
+                    <tr>            
+                        <label for="uso_secundario" style={{ fontWeight:'900' }}>Uso Secundario:</label>
+                        <td>
+                        <select
+                            className="custom-select"
+                            id="uso_secundario" 
+                            name="uso_secundario" 
+                            value={uso_secundario.campo}
+                            onChange = {(e) => {
+                            const usoSecundarioSeleccionado = e.target.value;
+                            cambiarUsoSecundario({campo: usoSecundarioSeleccionado});
+                            
+                        }} 
+                        >
+                        
+                        <option value={uso_secundario.campo} checked>{uso_secundario.campo}</option>
+                        <option value="" disabled>----------</option>
+                                        
+                        <option value="No tiene">No tiene </option>
+                        <option value="Acuacultura">Acuacultura </option>
+                        <option value="Agrícola">Agrícola </option>
+                        <option value="Agroindustrial">Agroindustrial </option>
+                        <option value="Bienestar social">Bienestar social </option>
+                        <option value="Casa comunal">Casa comunal </option>
+                        <option value="Comercial">Comercial </option>
+                        <option value="Comercial y residencial">Comercial y residencial </option>
+                        <option value="Conservación">Conservación </option>
+                        <option value="Cultural">Cultural </option>
+                        <option value="Diplomático">Diplomático </option>
+                        <option value="Educación">Educación </option>
+                        <option value="Espacio público">Espacio público </option>
+                        <option value="Financiero">Financiero </option>
+                        <option value="Forestal">Forestal </option>
+                        <option value="Hidrocarburo">Hidrocarburo </option>
+                        <option value="Industrial">Industrial </option>
+                        <option value="Institucional privado">Institucional privado </option>
+                        <option value="Institucional público">Institucional público </option>
+                        <option value="Minero">Minero </option>
+                        <option value="Pecuario">Pecuario </option>
+                        <option value="Preservación patrimonial">Preservación patrimonial </option>
+                        <option value="Protección ecológica">Protección ecológica </option>
+                        <option value="Recreación y deporte">Recreación y deporte </option>
+                        <option value="Religioso">Religioso </option>
+                        <option value="Residencial">Residencial </option>
+                        <option value="Salúd">Salúd </option>
+                        <option value="Seguridad">Seguridad </option>
+                        <option value="Servicios">Servicios </option>
+                        <option value="Servicios especiales">Servicios especiales </option>
+                        <option value="Transporte">Transporte </option>
+                        <option value="Turismo">Turismo </option>
+                        
+                        </select> </td>
+                    </tr>
+                </p>
+            </div>
+        </center>
+
+                <ContenedorBotonCentrado>
+                
+                    <ComponenteInput
+                        estado={descripcion}
+                        cambiarEstado={cambiarDescripcion}
+                        tipo= "text"
+                        label="Descripción"
+                        placeholder= "Ingrese una observación"
+                        name = "descripcion"
+                        leyendaError = ""
+                        expresionRegular = ""
+                    />
+                <br/>
+                <br/>    
+                
+                </ContenedorBotonCentrado>
+                                
+                <ContenedorBotonCentrado>                
+                    <Boton type="submit">Enviar</Boton>                
+                </ContenedorBotonCentrado>                
+                
+            </Formulario>
+        </main>
+        </div>

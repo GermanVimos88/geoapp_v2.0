@@ -1,0 +1,62 @@
+<img src={logo} alt="" style={{marginLeft:'4rem', marginTop:'0.5rem', width:'70px', height:'90px', float: 'left'}} />
+                <label style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </label>
+                <label style={{fontSize:'28px' , color:'#20d757', marginLeft: '0.5rem', marginTop:'2rem' }} >Reporte Estadístico <FontAwesomeIcon icon={faChartPie}/></label>
+                <br/>
+                <hr/>
+                <button className="btn btn-outline-secondary btn-sm" style={{ float: 'right', borderRadius:'22px', marginLeft: '1rem', marginRight: '3rem' }} onClick={()=>menu()}>Regresar <FontAwesomeIcon icon={faReply}/> </button>
+                
+                    {cargando ? (<p>Cargando...</p>):(
+                    <>
+                        <div className="form-group">
+                            <center>
+                            <div className="chart-container" style={{width:'80%', height:'400px'}}>
+                            <h5>Tipo de propietarios</h5>
+                                <Pie 
+                                    data={dataGrafica}                        
+                                    options={opcionesGrafica}  
+                                    />                         
+                            <br/>
+                            <br/>
+                            </div>
+                            </center>
+                            <br/>
+                            <br/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>                    
+                        <br/>
+                        <div className="form-group">
+                            <center>
+                            <div className="chart-container" style={{width:'80%', height:'400px'}}>
+                            <h5>Forma de adquisición predial</h5>
+                            
+                                <Pie 
+                                    data={dataAdquisicion}                        
+                                    options={opcionesAdquisicion}  
+                                    />                            
+                            <br/>
+                            <br/>
+                            </div>
+                            <br/>
+                            <br/>
+                            </center>                        
+                        </div>                    
+                        <br/>
+                        <div className="form-group">
+                            <center>
+                            <div className="chart-container" style={{width:'80%', height:'400px'}}>
+                            <h5>Tipo de suelo</h5>
+                            
+                                <Pie 
+                                    data={dataSuelo}                        
+                                    options={opcionesSuelo}  
+                                    />
+                            <br/>
+                            <br/>
+                            </div>
+                            </center>
+                        </div>                        
+                    </>
+                    )}                        
+        </div>

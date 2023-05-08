@@ -1,0 +1,216 @@
+<div style={{textAlign: 'center'}}> 
+                
+    <img src={logo} alt="" style={{marginLeft:'4rem', marginTop:'-1rem', width:'70px', height:'90px', float: 'left'}} />
+    <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'1rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>                     
+    <h3 style={{color:'#20d757', marginLeft: '3rem', marginTop:'2rem' }} >Propietarios registrados <FontAwesomeIcon icon={faIdCard}/></h3>                 
+    <br/>                                
+    <hr/>
+    <button className="btn btn-success btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '3rem'}} onClick={()=>abrirCerrarModalInsertar()} >Nuevo propietario <FontAwesomeIcon icon={faPlus}/></button>                                
+    <button className="btn btn-outline-secondary btn-sm" style={{ float: 'right', borderRadius:'22px', marginRight: '3rem' }} onClick={()=>menu()}>Predios registrados <FontAwesomeIcon icon={faReply}/> </button>
+    <div className='barraBusqueda' style={{ float:'left', marginLeft:'7rem' }}>
+        <label for="busqueda">
+        <input
+            type='text'
+            placeholder='Buscar por cédula'
+            className='textField'
+            id='busqueda'
+            name='busqueda'
+            value={busqueda.campo}
+            onChange={(e)=>setBusqueda({campo: e.target.value})}
+        />
+        <button type='button' className='btnBuscar'>
+            <FontAwesomeIcon icon={faSearch} />
+        </button>
+        </label>
+    </div>
+    <br/>                                
+    <div class="center-block fix-width scroll-inner" style={{float: 'right', scale: "100%", marginRight: '3rem'}}>
+    <table className="table table-striped table-hover">
+        <thead style={{ position: 'sticky', top: 0 }}>
+            <tr>                            
+                <th><strong>ID Propietario</strong></th>                            
+                <th>Cédula</th>
+                <th>Tipo de propietario</th>
+                <th>Nombres y apellidos</th>                            
+                <th>Razón social</th>
+                <th>Representante legal</th>                                                    
+                <th>RUC representante</th> 
+                <th>ACCIONES</th>                                                   
+
+            </tr>
+        </thead>
+        <tbody>
+            {data.filter(searchingTerm(busqueda.campo)).map(propietario=>( //data?.map(propietario=>(
+                
+                <tr key={propietario.idpropietario}>
+                <td>{propietario.idpropietario} </td>
+                <td>{propietario.identificacion} </td>                                    
+                <td>{propietario.tipo}</td>                            
+                <td>{propietario.primer_apellido+' '+propietario.segundo_apellido+' '+propietario.primer_nombre+' '+propietario.segundo_nombre}</td>
+                <td>{propietario.razon_social}</td>
+                <td>{propietario.representante_legal}</td>
+                <td>{propietario.idrepresentante}</td>
+                <td>
+                            <button className="btn btn-primary btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPropietario(propietario,"Editar")} >Editar <FontAwesomeIcon icon={faEdit}/></button>{"   "}                                        
+                            <button className="btn btn-danger btn-sm" style={{borderRadius:'22px'}} onClick={()=>seleccionarPropietario(propietario,"Eliminar")}>Eliminar <FontAwesomeIcon icon={faTrashAlt}/></button>{"   "}                                        
+                        </td>
+                    </tr>                            
+            ))}
+            
+        </tbody>                    
+    </table>  
+    </div>
+    <Modal isOpen={modalInsertar}>
+            <ModalHeader>Insertar nuevo propietario</ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                            <label for="tipo">Tipo de propietario:                               
+                            <select 
+                                    class="form-select form-select-lg mb-3" 
+                                    className="custom-select" 
+                                    id="tipo" 
+                                    name="tipo"
+                                    
+                                    onChange = {handleChange}
+                                >
+                                  <option value="Natural">Natural</option>
+                                  <option value="Jurídico">Jurídico</option>
+                                  <option value="Posesionario">Posesionario</option>
+                                </select>
+                            </label>                                                        
+                        <br/> 
+                        <label for="primer_nombre" >Primer nombre
+                        <br/>
+                        <input type="text" className="form-control" name="primer_nombre" id="primer_nombre" onChange={handleChange} />
+                        </label>
+                        <label for="segundo_nombre" style={{float: 'right'}}>Segundo nombre
+                        <br/>
+                        <input type="text" className="form-control" name="segundo_nombre" id="segundo_nombre" onChange={handleChange} />
+                        </label>
+                        <br/>
+                        <label for="primer_apellido" >Primer apellido
+                        <br/>
+                        <input type="text" className="form-control" name="primer_apellido" id="primer_apellido" onChange={handleChange} />
+                        </label>
+                        
+                        <label for="segundo_apellido" style={{float: 'right'}}>Segundo apellido
+                        <br/>
+                        <input type="text" className="form-control" name="segundo_apellido" id="segundo_apellido" onChange={handleChange} />
+                        </label>
+                        <br/> 
+                        <label for="identificacion" >Cédula (*)
+                        <br/>
+                        <input type="text" className="form-control" name="identificacion" id="identificacion" onChange={handleChange} />
+                        </label>
+                                                            
+                        <label for="razon_social" style={{float: 'right'}}>Razón social
+                        <br/>
+                        <input type="text" className="form-control" name="razon_social" id="razon_social" onChange={handleChange} />
+                        </label>                                    
+                        <br/>  
+                        
+                        <label for="representante_legal" >Representante legal
+                        <br/>
+                        <input type="text" className="form-control" name="representante_legal" id="representante_legal" onChange={handleChange} />
+                        </label>
+                        
+                        <label for="idrepresentante" style={{float: 'right'}}>RUC representante
+                        <br/>
+                        <input type="text" className="form-control" name="idrepresentante" id="idrepresentante" onChange={handleChange} />
+                        </label>                                
+                    </div>
+        </ModalBody>
+        <ModalFooter>
+            
+            <button className="btn btn-primary" onClick={()=>postPropietario()} >Insertar</button>{"  "}                         
+            <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>                   
+            
+        </ModalFooter>
+    </Modal>
+
+
+    <Modal isOpen={modalEditar}>
+            <ModalHeader>Editar propietario</ModalHeader>
+                <ModalBody>
+                    <div className="form-group"> 
+                            <label for="tipo">Tipo de propietario:                               
+                            <select 
+                                    class="form-select form-select-lg mb-3" 
+                                    className="custom-select" 
+                                    id="tipo" 
+                                    name="tipo"
+                                    value={propietarioSeleccionado && propietarioSeleccionado.tipo}
+                                    onChange = {handleChange}
+                                >
+                                  <option value="Natural">Natural</option>
+                                  <option value="Jurídico">Jurídico</option>
+                                  <option value="Posesionario">Posesionario</option>
+                                </select>
+                            </label>           
+                        <br/> 
+                        <label for="primer_nombre" >Primer nombre
+                        <br/>
+                        <input type="text" className="form-control" name="primer_nombre" id="primer_nombre" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.primer_nombre}/>
+                        </label>
+                        
+                        <label for="segundo_nombre" style={{float: 'right'}}>Segundo nombre
+                        <br/>
+                        <input type="text" className="form-control" name="segundo_nombre" id="segundo_nombre" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.segundo_nombre} />
+                        </label>
+                        <br/>  
+                        <label for="primer_apellido" >Primer apellido
+                        <br/>
+                        <input type="text" className="form-control" name="primer_apellido" id="primer_apellido" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.primer_apellido} />
+                        </label>
+                        
+                        <label for="segundo_apellido" style={{float: 'right'}}>Segundo apellido
+                        <br/>
+                        <input type="text" className="form-control" name="segundo_apellido" id="segundo_apellido" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.segundo_apellido}/>
+                        </label>
+                        <br/>  
+                        <label for="identificacion" >Cédula (*)
+                        <br/>
+                        <input type="text" className="form-control" name="identificacion" id="identificacion" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.identificacion} />
+                        </label>
+                        
+                        <label for="razon_social" style={{float: 'right'}}>Razón social
+                        <br/>
+                        <input type="text" className="form-control" name="razon_social" id="razon_social" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.razon_social}/>
+                        </label>
+                        <br/>  
+                        <label for="representante_legal" >Representante legal
+                        <br/>
+                        <input type="text" className="form-control" name="representante_legal" id="representante_legal" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.representante_legal} />
+                        </label>
+                        
+                        <label for="idrepresentante" style={{float: 'right'}}>RUC representante
+                        <br/>
+                        <input type="text" className="form-control" name="idrepresentante" id="idrepresentante" onChange={handleChange} value={propietarioSeleccionado && propietarioSeleccionado.idrepresentante}/>
+                        </label>
+                                                        
+                    </div>
+        </ModalBody>
+        <ModalFooter>
+            
+            <button className="btn btn-primary" onClick={()=>putPropietario()} >Editar</button>{"  "}                  
+            
+            <button className="btn btn-danger" onClick={()=>abrirCerrarModalEditar()}>Cancelar</button>                   
+            
+        </ModalFooter>
+    </Modal>
+
+    <Modal isOpen={modalEliminar}>
+    <ModalBody>
+        ¿Estás seguro de eliminar este propietario {propietarioSeleccionado && propietarioSeleccionado.idpropietario}?
+    </ModalBody>
+    <ModalFooter>
+        <button className="btn btn-danger" onClick={()=>deletePropietario()}>
+            Si
+        </button>
+        <button className="btn btn-secondary" onClick={()=>abrirCerrarModalEliminar()}>
+            No
+        </button>
+    </ModalFooter>            
+</Modal>
+
+</div>

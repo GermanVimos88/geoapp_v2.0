@@ -1,0 +1,299 @@
+<div>
+            {/* <h6 style={{ float: 'right', marginRight:'3rem', marginTop:'2rem'}}><ul><a onClick={()=>cerrarSesion()} title='Cerrar sesión'> <FontAwesomeIcon icon={faUserCircle} size={'lg'} /> {cookies.get('username')} </a></ul>  </h6>
+            <h6 style={{ float: 'right', marginRight: '-4.5rem', marginTop:'5rem'}}><ul><a onClick={()=>menu()} title='Regresar a menú principal'> <FontAwesomeIcon icon={faReply} size={'lg'} /> Menú <br/> Principal </a></ul>  </h6> */}
+        <main>
+               <label style={{ fontWeight:'900', fontSize:'32px' }}>Características del Lote <FontAwesomeIcon icon={faBorderStyle} /></label> 
+              <br/> 
+              <label>Clave Catastral: {clave_predio.campo}</label> <td> </td>
+              
+
+            <Formulario action="" onSubmit={onSubmit}>
+
+            <center>
+            <div id="contenedor">
+                
+                <br/>
+                <p>
+                    <tr>
+                    <label for="ocupacion" style={{ fontWeight:'900' }}>Ocupación:</label>
+                    <td>
+                    <select 
+                        className='custom-select'
+                        id="ocupacion" 
+                        name="ocupacion"
+                        value= {ocupacion}
+                        onChange = {(e) => {
+                            const ocupacionSeleccionado = e.target.value;
+                            cambiarOcupacion({campo: ocupacionSeleccionado});
+                        }}  
+                    
+                    >
+                    <option value={ocupacion.campo} checked>{ocupacion.campo}</option>
+                    <option value="" disabled>----------</option>    
+                    
+                    <option value="Edificado">Edificado </option>
+                    <option value="No Edificado">No Edificado </option>
+                    <option value="En construcción">En construcción </option>
+                            
+                    </select> </td>
+                    </tr>
+                </p>
+                
+                <p>
+                <tr>    
+                    <label for="localizacion_manzana" style={{ fontWeight:'900' }}>Localización en la manzana:</label>
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="localizacion_manzana" 
+                            name="localizacion_manzana"
+                            value= {localizacion_manzana}
+                            onChange = {(e) => {
+                                const localizacionSeleccionado = e.target.value;
+                                cambiarLocalizacionManzana({campo: localizacionSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={localizacion_manzana.campo} checked>{localizacion_manzana.campo}</option>
+                        <option value="" disabled>----------</option>     
+
+                        <option value="No tiene">No tiene </option>
+                        <option value="Esquinero">Esquinero </option>
+                        <option value="En cabecera">En cabecera </option>
+                        <option value="Intermedio">Intermedio </option>
+                        <option value="En L">En L </option>
+                        <option value="En T">En T </option>
+                        <option value="En cruz">En cruz </option>
+                        <option value="Manzanero">Manzanero </option>
+                        <option value="Triángulo">Triángulo </option>
+                        <option value="En callejón">En callejón </option>
+                        <option value="Interior">Interior </option>
+                                
+                    </select> </td>
+                    </tr>
+                </p>  
+                
+                <p>
+                    <tr>   
+                    <label for="forma" style={{ fontWeight:'900' }}>Forma:</label>
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="forma" 
+                            name="forma" 
+                            value= {forma}
+                            onChange = {(e) => {
+                                const formaSeleccionado = e.target.value;
+                                cambiarForma({campo: formaSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={forma.campo} checked>{forma.campo}</option>
+                        <option value="" disabled>----------</option> 
+                        
+                        <option value="Regular">Regular </option>
+                        <option value="Irregular">Irregular </option>
+                        <option value="Muy irregular">Muy irregular </option>
+                                
+                        </select> </td>
+                    </tr>
+                </p>       
+        </div>            
+    </center>
+
+    <center>          
+        
+        <div id="contenedor">              
+                <p>
+                    <tr>        
+                        <label for="topografia" style={{ fontWeight:'900' }}>Topografía:</label>
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="topografia" 
+                            name="topografia" 
+                            value= {topografia}
+                            onChange = {(e) => {
+                                const topografiaSeleccionado = e.target.value;
+                                cambiarTopografia({campo: topografiaSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={topografia.campo} checked>{topografia.campo}</option>
+                        <option value="" disabled>----------</option>                        
+
+                        <option value="A nivel">A nivel </option>
+                        <option value="Bajo nivel">Bajo nivel </option>
+                        <option value="Sobre nivel">Sobre nivel </option>
+                        <option value="Escarpado arriba">Escarpado arriba </option>
+                        <option value="Escarpado abajo">Escarpado abajo </option>
+                        <option value="Accidentado">Accidentado </option>
+                                    
+                        </select> </td>
+                    </tr>
+                </p>
+                
+                <p>
+                <tr>                   
+                    <label for="cobertura_nativa_predominante" style={{ fontWeight:'900', marginLeft:'-0.8rem' }}>Cobertura nativa <br/> predominante:</label>
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="cobertura_nativa_predominante" 
+                            name="cobertura_nativa_predominante"
+                            value= {cobertura_nativa_predominante}
+                            onChange = {(e) => {
+                                const coberturaSeleccionado = e.target.value;
+                                cambiarCoberturaNativaPredominante({campo: coberturaSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={cobertura_nativa_predominante.campo} checked>{cobertura_nativa_predominante.campo}</option>
+                        <option value="" disabled>----------</option>  
+
+                        <option value="No tiene">No tiene </option>
+                        <option value="Arbórea">Arbórea </option>
+                        <option value="Arbustiva">Arbustiva </option>
+                        <option value="Herbácea">Herbácea </option>
+                        <option value="Otro">Otro </option>
+                        
+                    </select> </td>
+                    </tr>
+                </p>
+                
+                <p>
+                <tr>    
+                    
+                    <label for="ecosistema_relevante" style={{ fontWeight:'900' }}>Ecosistema relevante (Rural):</label>
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="ecosistema_relevante" 
+                            name="ecosistema_relevante" 
+                            value= {ecosistema_relevante}
+                            onChange = {(e) => {
+                                const ecosistemaSeleccionado = e.target.value;
+                                cambiarEcosistemaRelevante({campo: ecosistemaSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={ecosistema_relevante.campo} checked>{ecosistema_relevante.campo}</option>
+                        <option value="" disabled>----------</option>                          
+                        
+                        <option value="No tiene">No tiene </option>
+                        <option value="Páramo">Páramo </option>
+                        <option value="Humedal">Humedal </option>
+                        <option value="Manglar">Manglar </option>
+                        <option value="Bosque primario">Bosque primario </option>
+                        <option value="Bosque secundario">Bosque secundario </option>
+                                
+                    </select> </td>
+                    </tr>
+                </p>
+
+            </div>
+        
+        </center>
+        
+        <center>
+            <div id="contenedor">
+                <p>
+                    <tr>        
+                    <label for="afectaciones" style={{ fontWeight:'900' }}>Afectaciones:</label> 
+                    <td>
+                    <select 
+                        className='custom-select'
+                        id="afectaciones" 
+                        name="afectaciones" 
+                        value= {afectaciones}
+                            onChange = {(e) => {
+                                const afectacionesSeleccionado = e.target.value;
+                                cambiarAfectaciones({campo: afectacionesSeleccionado});
+                        }}  
+                    
+                    >
+                    <option value={afectaciones.campo} checked>{afectaciones.campo}</option>
+                    <option value="" disabled>----------</option>                          
+                    
+                    <option value="No tiene">No tiene </option>
+                    <option value="Río">Río </option>
+                    <option value="Estero">Estero </option>
+                    <option value="Quebrada">Quebrada </option>
+                    <option value="Oleoducto">Oleoducto </option>
+                    <option value="Red alta o media tensión">Red alta o media tensión </option>
+                    <option value="Proyectos urbanísticos">Proyectos urbanísticos </option>
+                    <option value="Protección patrimonial">Protección patrimonial </option>
+                    
+                            
+                    </select> </td>
+                    </tr>
+                </p>
+                
+                <p>
+                <tr>      
+                        <label for="riesgos" style={{ fontWeight:'900' }}>Riesgos:</label> 
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="riesgos" 
+                            name="riesgos" 
+                            value= {riesgos}
+                            onChange = {(e) => {
+                                const riesgosSeleccionado = e.target.value;
+                                cambiarRiesgos({campo: riesgosSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={riesgos.campo} checked>{riesgos.campo}</option>
+                        <option value="" disabled>----------</option>                          
+                        
+                        <option value="No tiene">No tiene </option>
+                        <option value="Inundable">Inundable </option>
+                        <option value="Deleznable">Deleznable </option>
+                        <option value="Volcánico">Volcánico </option>
+                        <option value="Al borde del barranco">Al borde del barranco </option>
+                        <option value="Al borde de la quebrada">Al borde de la quebrada </option>
+                                
+                    </select> </td>
+                    </tr>
+                </p>
+                
+                <p>
+                <tr>          
+                        <label for="calidad_suelo" style={{ fontWeight:'900' }}>Calidad de suelo:</label>
+                        <td>
+                        <select 
+                            className='custom-select'
+                            id="calidad_suelo" 
+                            name="calidad_suelo" 
+                            value= {calidad_suelo}
+                            onChange = {(e) => {
+                                const calidadSeleccionado = e.target.value;
+                                cambiarCalidadSuelo({campo: calidadSeleccionado});
+                        }}  
+                    
+                    >
+                        <option value={calidad_suelo.campo} checked>{calidad_suelo.campo}</option>
+                        <option value="" disabled>----------</option>                                                  
+                        
+                        <option value="Seco">Seco </option>
+                        <option value="Húmedo">Húmedo </option>
+                        <option value="Cenagoso">Cenagoso </option>
+                        <option value="Inundable">Inundable </option>
+                                    
+                    </select> </td>
+                    </tr>
+                </p>
+            </div>  
+        </center>      
+        <br/>
+        <br/>                                        
+                <ContenedorBotonCentrado>
+                <br/> 
+                <br/> 
+                    <Boton type="submit">Enviar</Boton>
+                
+                </ContenedorBotonCentrado> 
+            </Formulario>
+        </main>
+        </div>
